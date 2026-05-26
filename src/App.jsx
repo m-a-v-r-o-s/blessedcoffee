@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Testimonials from "./components/Testimonials";
 
 
-const LOGO = "/blessed-logo.png";
+const LOGO = "/blessed-logo.webp";
 
 // ─── TRANSLATIONS ─────────────────────────────────────────────────────────────
 const T = {
@@ -590,7 +590,7 @@ const Header = () => (
         <div style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: "url('/background.jpg')",
+          backgroundImage: "url('/background.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -630,10 +630,10 @@ const Header = () => (
             <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 400, fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "#fff", marginBottom: 8, textAlign: "center" }}>{t.orderVia}</p>
             <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
               <a href="https://www.e-food.gr/delivery/athina/blessed-coffee-kai-coctails-7652934" target="_blank" rel="noreferrer" className="platform-btn">
-                <img src="/efood-logo.png" alt="e-food" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img src="/efood-logo.webp" alt="e-food" style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
               </a>
               <a href="https://wolt.com/en/grc/athens/restaurant/blessed-coffee-ro-do" target="_blank" rel="noreferrer" className="platform-btn">
-                <img src="/wolt-logo.png" alt="Wolt" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img src="/wolt-logo.webp" alt="Wolt" style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
               </a>
               <a href="https://box.gr/delivery/kato-patisia/blessed-coffee-and-spirits" target="_blank" rel="noreferrer" className="platform-btn" style={{ background: "#0d1117", borderColor: "rgba(255,255,255,0.18)" }}>
                 <img src="/box-logo.png" alt="Box" style={{ width: "80%", height: "80%", objectFit: "contain" }} />
@@ -663,8 +663,9 @@ const Header = () => (
             {t.coffeePartnerLabel}
           </p>
           <img
-            src="/mrsrose.png"
+            src="/mrsrose.webp"
             alt="Mrs. Rose Caffè"
+            loading="lazy"
             style={{
               height: 140,
               width: "auto",
