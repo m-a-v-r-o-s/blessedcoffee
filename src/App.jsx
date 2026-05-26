@@ -426,6 +426,7 @@ const css = `
       :root { --slide-cols: 1fr 1fr; }
       .nav-desktop { display: none !important; }
       .mobile-menu-btn { display: flex !important; }
+      .call-desktop { display: none !important; }
       .order-cards-grid { flex-direction: column; align-items: stretch; }
       .review-card { padding: 28px 24px; }
       .find-grid { grid-template-columns: 1fr !important; }
@@ -437,105 +438,78 @@ const css = `
 
   const review = t.reviews[reviewIdx];
 
- // ── HEADER (Black background + white/light grey text) ─────────────────────────
+ // ── HEADER ────────────────────────────────────────────────────────────────────
+const NAV_ITEMS = [
+  { id: "home",   label: t.nav.home },
+  { id: "menu",   label: t.nav.menu },
+  { id: "findus", label: t.nav.findUs, scroll: true },
+  { id: "joinus", label: t.nav.joinUs },
+];
+
+const navBtnStyle = {
+  background: "none", border: "none", cursor: "pointer",
+  fontFamily: "'Barlow Semi Condensed', sans-serif",
+  fontWeight: 700, fontSize: 12, letterSpacing: "0.15em",
+  color: "#ccc", transition: "color 0.2s", textAlign: "left",
+};
+
+const handleNavClick = (item) => {
+  if (item.scroll) {
+    navigate("home");
+    setTimeout(() => document.getElementById("findus")?.scrollIntoView({ behavior: "smooth" }), 100);
+  } else {
+    navigate(item.id);
+  }
+};
+
 const Header = () => (
-  <header 
-    style={{ 
-      background: "#000000",
-      position: "sticky",
-      top: 0,
-      zIndex: 100,
-      borderBottom: "1px solid #222"
-    }}
-  >
-    <div 
-      style={{ 
-        maxWidth: 1300,
-        margin: "0 auto",
-        padding: "0 24px",
-        height: 70,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between"
-      }}
-    >
+  <header style={{ background: "#000", position: "sticky", top: 0, zIndex: 100, borderBottom: "1px solid #222" }}>
+    <div style={{ maxWidth: 1300, margin: "0 auto", padding: "0 24px", height: 70, display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
 
-      {/* LEFT NAV */}
-      <nav 
-        className="nav-desktop" 
-        style={{ display: "flex", gap: 28, alignItems: "center" }}
-      >
-        {[
-          { id: "home", label: t.nav.home },
-          { id: "menu", label: t.nav.menu },
-          { id: "findus", label: t.nav.findUs, scroll: true },
-          { id: "joinus", label: t.nav.joinUs }
-        ].map(item => (
-          <button
-            key={item.id}
-            className="nav-link"
-            onClick={() => {
-              if (item.scroll) {
-                navigate("home");
-                setTimeout(() => 
-                  document.getElementById("findus")?.scrollIntoView({ behavior: "smooth" }), 
-                100);
-              } else {
-                navigate(item.id);
-              }
-            }}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-             fontFamily: "'Barlow Semi Condensed', sans-serif",
-              fontWeight: 700,
-              fontSize: 12,
-              letterSpacing: "0.15em",
-              color: "#ccc",            // light grey
-              transition: "color 0.2s"
-            }}
-            onMouseEnter={e => e.currentTarget.style.color = "#fff"}
-            onMouseLeave={e => e.currentTarget.style.color = "#ccc"}
-          >
-            {item.label}
-          </button>
-        ))}
-      </nav>
+      {/* LEFT: desktop nav OR mobile hamburger */}
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <nav className="nav-desktop" style={{ display: "flex", gap: 28, alignItems: "center" }}>
+          {NAV_ITEMS.map(item => (
+            <button key={item.id} style={navBtnStyle}
+              onClick={() => handleNavClick(item)}
+              onMouseEnter={e => e.currentTarget.style.color = "#fff"}
+              onMouseLeave={e => e.currentTarget.style.color = "#ccc"}
+            >
+              {item.label}
+            </button>
+          ))}
+        </nav>
 
-      {/* CENTER LOGO */}
-      <div 
-        style={{ 
-          position: "absolute",
-          left: "50%",
-          transform: "translateX(-50%)",
-          cursor: "pointer",
-          top: 1
-        }}
-        onClick={() => navigate("home")}
-      >
-        <img 
-          src={LOGO} 
-          alt="Blessed Coffee" 
-          style={{ 
-            height: 150,
-            width: "auto",
-            objectFit: "contain"
-          }} 
-        />
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setMobileMenuOpen(o => !o)}
+          style={{ background: "none", border: "none", cursor: "pointer", padding: 6, display: "none" }}
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+        >
+          {mobileMenuOpen ? (
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          ) : (
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round">
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          )}
+        </button>
       </div>
 
-      {/* RIGHT SIDE */}
-      <div 
-        className="nav-desktop" 
-        style={{ display: "flex", alignItems: "center", gap: 16 }}
-      >
+      {/* CENTER LOGO */}
+      <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", cursor: "pointer", top: 1 }} onClick={() => navigate("home")}>
+        <img src={LOGO} alt="Blessed Coffee" style={{ height: 150, width: "auto", objectFit: "contain" }} />
+      </div>
 
-        {/* Instagram */}
-        <a 
-          href="https://www.instagram.com/blessedcoffee2024/"
-          target="_blank"
-          rel="noreferrer"
+      {/* RIGHT: Instagram + Facebook always visible, Call desktop-only, Language always visible */}
+      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+
+        <a href="https://www.instagram.com/blessedcoffee2024/" target="_blank" rel="noreferrer"
           style={{ color: "#ccc", transition: "color 0.2s" }}
           onMouseEnter={e => e.currentTarget.style.color = "#fff"}
           onMouseLeave={e => e.currentTarget.style.color = "#ccc"}
@@ -547,11 +521,7 @@ const Header = () => (
           </svg>
         </a>
 
-        {/* Facebook */}
-        <a 
-          href="https://www.facebook.com/profile.php?id=61569255849766"
-          target="_blank"
-          rel="noreferrer"
+        <a href="https://www.facebook.com/profile.php?id=61569255849766" target="_blank" rel="noreferrer"
           style={{ color: "#ccc", transition: "color 0.2s" }}
           onMouseEnter={e => e.currentTarget.style.color = "#fff"}
           onMouseLeave={e => e.currentTarget.style.color = "#ccc"}
@@ -561,128 +531,40 @@ const Header = () => (
           </svg>
         </a>
 
-        {/* CALL BUTTON */}
-        <a href="tel:+302112181815" style={{ textDecoration: "none" }}>
-          <button 
-            style={{
-              padding: "8px 16px",
-              fontSize: 11,
-              fontFamily: "'Barlow Semi Condensed', sans-serif",
-              fontWeight: 700,
-              letterSpacing: "0.15em",
-              background: "#333",
-              border: "1px solid #555",
-              color: "#fff",
-              cursor: "pointer",
-              transition: "all 0.2s"
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = "#444";
-              e.currentTarget.style.border = "1px solid #777";
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = "#333";
-              e.currentTarget.style.border = "1px solid #555";
-            }}
+        <a href="tel:+302112181815" className="call-desktop" style={{ textDecoration: "none" }}>
+          <button
+            style={{ padding: "8px 16px", fontSize: 11, fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, letterSpacing: "0.15em", background: "#333", border: "1px solid #555", color: "#fff", cursor: "pointer", transition: "all 0.2s" }}
+            onMouseEnter={e => { e.currentTarget.style.background = "#444"; e.currentTarget.style.borderColor = "#777"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "#333"; e.currentTarget.style.borderColor = "#555"; }}
           >
             {t.callBtn}
           </button>
         </a>
 
-        {/* LANGUAGE BUTTON */}
         <button
           onClick={() => setLang(l => l === "en" ? "gr" : "en")}
-          style={{
-            background: "#333",
-            border: "1px solid #555",
-            padding: "7px 13px",
-            fontFamily: "'Barlow Semi Condensed', sans-serif",
-            fontWeight: 700,
-            fontSize: 11,
-            letterSpacing: "0.15em",
-            cursor: "pointer",
-            color: "#fff",
-            transition: "all 0.2s"
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.background = "#444";
-            e.currentTarget.style.border = "1px solid #777";
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.background = "#333";
-            e.currentTarget.style.border = "1px solid #555";
-          }}
+          style={{ background: "#333", border: "1px solid #555", padding: "7px 13px", fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: "0.15em", cursor: "pointer", color: "#fff", transition: "all 0.2s" }}
+          onMouseEnter={e => { e.currentTarget.style.background = "#444"; e.currentTarget.style.borderColor = "#777"; }}
+          onMouseLeave={e => { e.currentTarget.style.background = "#333"; e.currentTarget.style.borderColor = "#555"; }}
         >
           {t.langBtn}
         </button>
       </div>
-
-      {/* MOBILE MENU BUTTON */}
-      <button 
-        className="mobile-menu-btn"
-        onClick={() => setMobileMenuOpen(o => !o)}
-        style={{ background: "none", border: "none", cursor: "pointer", padding: 4 }}
-      >
-        {[0,1,2].map(i => (
-          <div key={i} style={{ width: 24, height: 2, background: "#fff", marginBottom: 5 }} />
-        ))}
-      </button>
     </div>
 
     {/* MOBILE DROPDOWN */}
     {mobileMenuOpen && (
-      <div 
-        style={{ 
-          background: "#000",
-          borderTop: "1px solid #222",
-          padding: "16px 24px",
-          display: "flex",
-          flexDirection: "column",
-          gap: 12
-        }}
-      >
-        {["home","menu","joinus"].map(p => (
-          <button 
-            key={p}
-            className="nav-link"
-            onClick={() => navigate(p)}
-            style={{
-              textAlign: "left",
-              background: "none",
-              border: "none",
-              color: "#ccc",
-              fontFamily: "'Barlow Semi Condensed', sans-serif",
-              fontWeight: 700,
-              letterSpacing: "0.15em",
-              fontSize: 12
-            }}
+      <div style={{ background: "#111", borderTop: "1px solid #222", padding: "8px 0 16px" }}>
+        {NAV_ITEMS.map(item => (
+          <button key={item.id}
+            onClick={() => handleNavClick(item)}
+            style={{ ...navBtnStyle, display: "block", width: "100%", padding: "12px 24px", fontSize: 13, borderBottom: "1px solid #1a1a1a" }}
+            onMouseEnter={e => { e.currentTarget.style.color = "#fff"; e.currentTarget.style.background = "#1a1a1a"; }}
+            onMouseLeave={e => { e.currentTarget.style.color = "#ccc"; e.currentTarget.style.background = "transparent"; }}
           >
-            {p === "home" ? t.nav.home : p === "menu" ? t.nav.menu : t.nav.joinUs}
+            {item.label}
           </button>
         ))}
-
-        <button 
-          className="nav-link"
-          style={{ textAlign: "left", background: "none", border: "none", color: "#ccc" }}
-          onClick={() => { 
-            navigate("home"); 
-            setTimeout(() => document.getElementById("findus")?.scrollIntoView({ behavior: "smooth" }), 100); 
-          }}
-        >
-          {t.nav.findUs}
-        </button>
-
-        <div style={{ display: "flex", gap: 12, alignItems: "center", paddingTop: 8 }}>
-          <a href="tel:+302112181815" style={{ fontSize: 11, padding: "8px 14px", background: "#333", border: "1px solid #555", color: "#fff", textDecoration: "none" }}>
-            {t.callBtn}
-          </a>
-          <button 
-            onClick={() => { setLang(l => l === "en" ? "gr" : "en"); setMobileMenuOpen(false); }}
-            style={{ background: "#333", border: "1px solid #555", padding: "8px 14px", fontWeight: 700, fontSize: 11, cursor: "pointer", color: "#fff" }}
-          >
-            {t.langBtn}
-          </button>
-        </div>
       </div>
     )}
   </header>
