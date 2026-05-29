@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 const Testimonials = React.memo(function Testimonials({ t }) {
   const [idx, setIdx] = useState(1);
-  const review = t.reviews[idx];
 
   return (
     <section
@@ -89,74 +88,86 @@ const Testimonials = React.memo(function Testimonials({ t }) {
           </div>
         </div>
 
-        {/* Review Card */}
-        <div style={{
-          background: "#fff",
-          border: "1.5px solid #E8DDD0",
-          padding: "44px 48px",
-          position: "relative",
-          marginBottom: 28
-        }}>
-          {/* Opening quote mark */}
-          <div style={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: 72,
-            lineHeight: 0.6,
-            color: "#E8DDD0",
-            marginBottom: 24,
-            textAlign: "left"
-          }}>
-            "
-          </div>
+        {/* Review Card — all reviews share one grid cell, so the card height
+            stays fixed at the tallest review and the dots below never shift */}
+        <div style={{ display: "grid", marginBottom: 28 }}>
+          {t.reviews.map((r, i) => (
+            <div
+              key={i}
+              aria-hidden={i !== idx}
+              style={{
+                gridArea: "1 / 1",
+                background: "#fff",
+                border: "1.5px solid #E8DDD0",
+                padding: "26px 48px",
+                position: "relative",
+                opacity: i === idx ? 1 : 0,
+                pointerEvents: i === idx ? "auto" : "none",
+                transition: "opacity 0.3s ease"
+              }}
+            >
+              {/* Opening quote mark */}
+              <div style={{
+                fontFamily: "'Playfair Display', serif",
+                fontSize: 56,
+                lineHeight: 0.6,
+                color: "#E8DDD0",
+                marginBottom: 12,
+                textAlign: "left"
+              }}>
+                "
+              </div>
 
-          {/* Stars */}
-          <div style={{ marginBottom: 20, color: "#C9972A", fontSize: 15, letterSpacing: 3 }}>
-            {"★".repeat(review.stars)}
-          </div>
+              {/* Stars */}
+              <div style={{ marginBottom: 14, color: "#C9972A", fontSize: 15, letterSpacing: 3 }}>
+                {"★".repeat(r.stars)}
+              </div>
 
-          {/* Review text */}
-          <p style={{
-            fontFamily: "'Playfair Display', serif",
-            fontStyle: "italic",
-            fontSize: "clamp(16px, 2vw, 19px)",
-            lineHeight: 1.75,
-            color: "#2C1A0E",
-            marginBottom: 32
-          }}>
-            {review.text}
-          </p>
-
-          {/* Reviewer */}
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 12
-          }}>
-            <div style={{ width: 32, height: 1, background: "#C9972A" }} />
-            <div>
+              {/* Review text */}
               <p style={{
                 fontFamily: "'Barlow Semi Condensed', sans-serif",
-                fontWeight: 700,
-                fontSize: 12,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "#3D2B1F"
+                fontStyle: "italic",
+                fontSize: "clamp(16px, 2vw, 19px)",
+                lineHeight: 1.55,
+                color: "#2C1A0E",
+                marginBottom: 22
               }}>
-                {review.name}
+                {r.text}
               </p>
-              <p style={{
-                fontFamily: "'Barlow Semi Condensed', sans-serif",
-                fontSize: 11,
-                color: "#8A7060",
-                letterSpacing: "0.08em",
-                marginTop: 3
+
+              {/* Reviewer */}
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 12
               }}>
-                {review.date}
-              </p>
+                <div style={{ width: 32, height: 1, background: "#C9972A" }} />
+                <div>
+                  <p style={{
+                    fontFamily: "'Barlow Semi Condensed', sans-serif",
+                    fontWeight: 700,
+                    fontSize: 12,
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    color: "#3D2B1F"
+                  }}>
+                    {r.name}
+                  </p>
+                  <p style={{
+                    fontFamily: "'Barlow Semi Condensed', sans-serif",
+                    fontSize: 11,
+                    color: "#8A7060",
+                    letterSpacing: "0.08em",
+                    marginTop: 3
+                  }}>
+                    {r.date}
+                  </p>
+                </div>
+                <div style={{ width: 32, height: 1, background: "#C9972A" }} />
+              </div>
             </div>
-            <div style={{ width: 32, height: 1, background: "#C9972A" }} />
-          </div>
+          ))}
         </div>
 
         {/* Navigation dots */}

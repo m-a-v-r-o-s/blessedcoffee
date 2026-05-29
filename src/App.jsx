@@ -15,6 +15,7 @@ const T = {
     viewMenu: "View Menu & Call Us",
     heroTagline: "",
     heroSub: "A taste of heaven in every cup.",
+    seeReviews: "See What Our Guests Say",
     testimonialTitle: "What Our Guests Say",
     testimonialSub: "Real reviews from real people",
     coffeePartnerLabel: "Our Coffee Partner",
@@ -61,6 +62,7 @@ const T = {
     viewMenu: "Δειτε το Μενου & Καλεστε μας",
     heroTagline: "",
     heroSub: "Παραδεισένια γεύση σε κάθε ποτήρι.",
+    seeReviews: "Δείτε τι λένε οι πελάτες μας",
     testimonialTitle: "Τι λένε οι πελάτες μας",
     testimonialSub: "Αληθινες κριτικες από αληθινους ανθρωπους",
     coffeePartnerLabel: "ΣΥΝΕΡΓΑΤΗΣ ΚΑΦΕ",
@@ -183,6 +185,19 @@ export default function BlessedCoffee() {
   // Language persistence
   useEffect(() => { localStorage.setItem("bc_lang", lang); }, [lang]);
 
+  // Sync browser history so the back button works (e.g. Menu/Openings → Home)
+  useEffect(() => {
+    // Establish a baseline entry for the home page
+    window.history.replaceState({ page: "home" }, "");
+    const onPopState = (e) => {
+      setPage(e.state?.page || "home");
+      setMobileMenuOpen(false);
+      window.scrollTo({ top: 0 });
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
   // Background slideshow
  
 
@@ -195,6 +210,9 @@ export default function BlessedCoffee() {
   };
 
   const navigate = (p) => {
+    if (p !== page) {
+      window.history.pushState({ page: p }, "");
+    }
     setPage(p);
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -420,10 +438,13 @@ const css = `
         radial-gradient(circle at 80% 20%, rgba(107,76,53,0.05) 0%, transparent 40%);
     }
 
+    .hero-bg { background-position: center; }
+
     :root { --slide-cols: 1fr 1fr 1fr; }
 
     @media (max-width: 768px) {
       :root { --slide-cols: 1fr 1fr; }
+      .hero-bg { background-position: left center; }
       .nav-desktop { display: none !important; }
       .mobile-menu-btn { display: flex !important; }
       .call-desktop { display: none !important; }
@@ -587,12 +608,11 @@ const Header = () => (
       <section className="texture-bg" style={{ minHeight: "88vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "80px 24px", position: "relative", overflow: "hidden", background: "#000" }}>
 
         {/* Static background image */}
-        <div style={{
+        <div className="hero-bg" style={{
           position: "absolute",
           inset: 0,
           backgroundImage: "url('/background.webp')",
           backgroundSize: "cover",
-          backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           zIndex: 0,
           filter: "brightness(0.55)"
@@ -641,6 +661,39 @@ const Header = () => (
             </div>
           </div>
         </div>
+
+        {/* Scroll hint → reviews section below the hero */}
+        <button
+          onClick={() => document.getElementById("reviews")?.scrollIntoView({ behavior: "smooth" })}
+          style={{
+            position: "absolute",
+            bottom: 18,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 2,
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 5,
+            fontFamily: "'Barlow Semi Condensed', sans-serif",
+            fontWeight: 700,
+            fontSize: 11,
+            letterSpacing: "0.25em",
+            textTransform: "uppercase",
+            color: "#fff",
+            transition: "opacity 0.2s",
+          }}
+          onMouseEnter={e => e.currentTarget.style.opacity = "0.65"}
+          onMouseLeave={e => e.currentTarget.style.opacity = "1"}
+        >
+          {t.seeReviews}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
       </section>
 
       
@@ -712,13 +765,13 @@ const Header = () => (
                 <div>
                   <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: "0.25em", textTransform: "uppercase", color: warmPalette.gold, marginBottom: 12 }}>{t.findUsHours}</p>
                   {t.hours.map((h, i) => (
-                    <p key={i} style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 15, color: warmPalette.text, lineHeight: 2 }}>{h}</p>
+                    <p key={i} style={{ fontFamily: "'Playfair Display', serif", fontSize: 19, color: warmPalette.text, lineHeight: 1.4 }}>{h}</p>
                   ))}
                 </div>
                 <div>
                   <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: "0.25em", textTransform: "uppercase", color: warmPalette.gold, marginBottom: 8 }}>Phone</p>
-                  <a href="tel:+302112181815" style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 16, color: warmPalette.darkBrown, textDecoration: "none", display: "block" }}>211 218 1815</a>
-                  <a href="tel:+306932917800" style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 16, color: warmPalette.darkBrown, textDecoration: "none" }}>693 291 7800</a>
+                  <a href="tel:+302112181815" style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: warmPalette.darkBrown, textDecoration: "none", display: "block" }}>211 218 1815</a>
+                  <a href="tel:+306932917800" style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: warmPalette.darkBrown, textDecoration: "none" }}>693 291 7800</a>
                 </div>
               </div>
             </div>
