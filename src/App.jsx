@@ -472,6 +472,7 @@ const navBtnStyle = {
   fontFamily: "'Barlow Semi Condensed', sans-serif",
   fontWeight: 700, fontSize: 12, letterSpacing: "0.15em",
   color: "#ccc", transition: "color 0.2s", textAlign: "left",
+  textTransform: "uppercase",
 };
 
 const handleNavClick = (item) => {
