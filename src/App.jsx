@@ -15,6 +15,7 @@ const T = {
     viewMenu: "View Menu & Call Us",
     heroTagline: "",
     heroSub: "A taste of heaven in every cup.",
+    heroLine: { pre: "A taste of", mid: "heaven", post: "in every cup." },
     seeReviews: "See What Our Guests Say",
     testimonialTitle: "What Our Guests Say",
     testimonialSub: "Real reviews from real people",
@@ -40,6 +41,11 @@ const T = {
     applySuccess: "Thanks! We'll be in touch soon.",
     footerLeft: "© 2026 Blessed Coffee. All Rights Reserved.",
     footerRight: "© 2026 Akos Digital. All Rights Reserved.",
+    cookieText: "We use cookies and third-party content (Google Maps & Fonts) to give you the best experience. Accept to enable them, or reject to browse with them disabled.",
+    cookieAccept: "Accept",
+    cookieReject: "Reject",
+    mapHidden: "Map hidden because cookies were declined.",
+    mapOpen: "Open in Google Maps",
     positions: ["Barista", "Delivery Driver"],
     jobs: [
       { title: "Barista", desc: "We're looking for a passionate barista with experience in specialty coffee. Full or part-time available.", tags: ["Full-time", "Part-time", "Experience required"] },
@@ -54,15 +60,16 @@ const T = {
     ],
   },
   gr: {
-    nav: { home: "Αρχικη", menu: "Μενου", findUs: "Βρειτε μας", joinUs: "Θεσεις εργασιας" },
+    nav: { home: "Αρχικη", menu: "Μενου", findUs: "Βρειτε μας", joinUs: "Εργασια" },
     langBtn: "EN",
-    callBtn: "Καλέστε μας",
+    callBtn: "ΚΑΛΕΣΤΕ ΜΑΣ",
     orderNow: "ΠΑΡΑΓΓΕΙΛΕ ΤΩΡΑ",
     orderVia: "Ή Μέσω",
     viewMenu: "Δειτε το Μενου & Καλεστε μας",
     heroTagline: "",
     heroSub: "Παραδεισένια γεύση σε κάθε ποτήρι.",
-    seeReviews: "Δείτε τι λένε οι πελάτες μας",
+    heroLine: { pre: "Γεύση απ' τον", mid: "Παραδεισο", post: "σε καθε ποτήρι." },
+    seeReviews: "Δειτε τι λενε οι πελατες μας",
     testimonialTitle: "Τι λένε οι πελάτες μας",
     testimonialSub: "Αληθινες κριτικες από αληθινους ανθρωπους",
     coffeePartnerLabel: "ΣΥΝΕΡΓΑΤΗΣ ΚΑΦΕ",
@@ -87,6 +94,11 @@ const T = {
     applySuccess: "Ευχαριστούμε! Θα επικοινωνήσουμε σύντομα.",
     footerLeft: "© 2026 Blessed Coffee. Με επιφύλαξη παντός δικαιώματος.",
     footerRight: "© 2026 Akos Digital. Με επιφύλαξη παντός δικαιώματος.",
+    cookieText: "Χρησιμοποιούμε cookies και περιεχόμενο τρίτων (Google Maps & γραμματοσειρές) για την καλύτερη εμπειρία σας. Αποδεχτείτε για να ενεργοποιηθούν ή απορρίψτε για περιήγηση χωρίς αυτά.",
+    cookieAccept: "Αποδοχή",
+    cookieReject: "Απόρριψη",
+    mapHidden: "Ο χάρτης είναι κρυμμένος επειδή απορρίφθηκαν τα cookies.",
+    mapOpen: "Άνοιγμα στο Google Maps",
     positions: ["Barista", "Διανομέας"],
     jobs: [
       { title: "Barista", desc: "Ζητάμε barista με πάθος για τον specialty καφέ. Πλήρης ή μερική απασχόληση.", tags: ["Πληρης", "Μερικη", "Απαιτειται εμπειρια"] },
@@ -179,11 +191,33 @@ export default function BlessedCoffee() {
   const [form, setForm] = useState({ name: "", phone: "", position: "" });
   const [submitted, setSubmitted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // Cookie consent: null = no choice yet, "accepted", or "rejected"
+  const [consent, setConsent] = useState(() => {
+    try { return localStorage.getItem("bc_consent"); } catch { return null; }
+  });
   const timerRef = useRef(null);
   const t = T[lang];
 
-  // Language persistence
-  useEffect(() => { localStorage.setItem("bc_lang", lang); }, [lang]);
+  // Language persistence — skipped if the visitor rejected cookies
+  useEffect(() => {
+    if (consent === "rejected") return;
+    try { localStorage.setItem("bc_lang", lang); } catch { /* storage unavailable */ }
+  }, [lang, consent]);
+
+  const acceptCookies = () => {
+    try { localStorage.setItem("bc_consent", "accepted"); } catch { /* ignore */ }
+    setConsent("accepted");
+  };
+
+  const rejectCookies = () => {
+    try {
+      localStorage.setItem("bc_consent", "rejected");
+      localStorage.removeItem("bc_lang");
+    } catch { /* ignore */ }
+    // Stop using Google Fonts for the rest of this session
+    document.getElementById("gfonts")?.remove();
+    setConsent("rejected");
+  };
 
   // Sync browser history so the back button works (e.g. Menu/Openings → Home)
   useEffect(() => {
@@ -440,11 +474,32 @@ const css = `
 
     .hero-bg { background-position: center; }
 
+    .cookie-text { white-space: nowrap; }
+
+    .header-logo { transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); transform-origin: center; }
+    .header-logo:hover { transform: scale(1.07); }
+
+    .hero-sub { white-space: nowrap; font-size: clamp(20px, 4.5vw, 58px); }
+    .hero-heaven { font-size: 1.75em; }
+    /* Greek words are longer — size down so the line still fits one row on desktop */
+    .hero-sub-gr { font-size: clamp(16px, 3.3vw, 44px); transform: translateY(0.8em); }
+    .hero-sub-gr .hero-heaven { font-size: 1.7em; }
+
     :root { --slide-cols: 1fr 1fr 1fr; }
 
     @media (max-width: 768px) {
       :root { --slide-cols: 1fr 1fr; }
       .hero-bg { background-position: left center; }
+      .cookie-text { white-space: normal; }
+      .hero-sub { white-space: normal; font-size: clamp(26px, 7.5vw, 46px); width: -moz-fit-content; width: fit-content; margin-left: auto; margin-right: auto; }
+      .hero-space { display: none; }
+      .hero-l1, .hero-heaven, .hero-l3 { display: block; }
+      .hero-l1 { text-align: left; }
+      .hero-l3 { text-align: right; }
+      .hero-heaven { font-size: 2.6em; text-align: center; }
+      /* Greek: smaller so ΠΑΡΑΔΕΙΣΟΥ fits without clipping */
+      .hero-sub-gr { font-size: clamp(19px, 6.4vw, 32px); }
+      .hero-sub-gr .hero-heaven { font-size: 2.25em; }
       .nav-desktop { display: none !important; }
       .mobile-menu-btn { display: flex !important; }
       .call-desktop { display: none !important; }
@@ -461,16 +516,25 @@ const css = `
 
  // ── HEADER ────────────────────────────────────────────────────────────────────
 const NAV_ITEMS = [
-  { id: "home",   label: t.nav.home },
-  { id: "menu",   label: t.nav.menu },
-  { id: "findus", label: t.nav.findUs, scroll: true },
-  { id: "joinus", label: t.nav.joinUs },
+  { id: "home",   label: t.nav.home,   en: T.en.nav.home,   gr: T.gr.nav.home },
+  { id: "menu",   label: t.nav.menu,   en: T.en.nav.menu,   gr: T.gr.nav.menu },
+  { id: "findus", label: t.nav.findUs, en: T.en.nav.findUs, gr: T.gr.nav.findUs, scroll: true },
+  { id: "joinus", label: t.nav.joinUs, en: T.en.nav.joinUs, gr: T.gr.nav.joinUs },
 ];
+
+// Renders both language labels stacked so the element keeps the width of the
+// wider one — header items don't shift when the language is toggled.
+const BiLabel = ({ en, gr }) => (
+  <span style={{ display: "inline-grid", justifyItems: "center" }}>
+    <span style={{ gridArea: "1 / 1", visibility: lang === "en" ? "visible" : "hidden" }}>{en}</span>
+    <span style={{ gridArea: "1 / 1", visibility: lang === "gr" ? "visible" : "hidden" }}>{gr}</span>
+  </span>
+);
 
 const navBtnStyle = {
   background: "none", border: "none", cursor: "pointer",
   fontFamily: "'Barlow Semi Condensed', sans-serif",
-  fontWeight: 700, fontSize: 12, letterSpacing: "0.15em",
+  fontWeight: 700, fontSize: lang === "en" ? 13 : 12, letterSpacing: "0.15em",
   color: "#ccc", transition: "color 0.2s", textAlign: "left",
   textTransform: "uppercase",
 };
@@ -492,12 +556,13 @@ const Header = () => (
       <div style={{ display: "flex", alignItems: "center" }}>
         <nav className="nav-desktop" style={{ display: "flex", gap: 28, alignItems: "center" }}>
           {NAV_ITEMS.map(item => (
-            <button key={item.id} style={navBtnStyle}
+            <button key={item.id}
+              style={item.id === "findus" && lang === "en" ? { ...navBtnStyle, marginLeft: -6, marginRight: -6 } : navBtnStyle}
               onClick={() => handleNavClick(item)}
               onMouseEnter={e => e.currentTarget.style.color = "#fff"}
               onMouseLeave={e => e.currentTarget.style.color = "#ccc"}
             >
-              {item.label}
+              <BiLabel en={item.en} gr={item.gr} />
             </button>
           ))}
         </nav>
@@ -525,7 +590,7 @@ const Header = () => (
 
       {/* CENTER LOGO */}
       <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", cursor: "pointer", top: 1 }} onClick={() => navigate("home")}>
-        <img src={LOGO} alt="Blessed Coffee" style={{ height: 150, width: "auto", objectFit: "contain" }} />
+        <img className="header-logo" src={LOGO} alt="Blessed Coffee" style={{ height: 150, width: "auto", objectFit: "contain" }} />
       </div>
 
       {/* RIGHT: Instagram + Facebook always visible, Call desktop-only, Language always visible */}
@@ -555,11 +620,11 @@ const Header = () => (
 
         <a href="tel:+302112181815" className="call-desktop" style={{ textDecoration: "none" }}>
           <button
-            style={{ padding: "8px 16px", fontSize: 11, fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, letterSpacing: "0.15em", background: "#333", border: "1px solid #555", color: "#fff", cursor: "pointer", transition: "all 0.2s" }}
+            style={{ padding: "8px 16px", fontSize: 11, fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, letterSpacing: "0.15em", background: "#333", border: "1px solid #555", color: warmPalette.gold, cursor: "pointer", transition: "all 0.2s" }}
             onMouseEnter={e => { e.currentTarget.style.background = "#444"; e.currentTarget.style.borderColor = "#777"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "#333"; e.currentTarget.style.borderColor = "#555"; }}
           >
-            {t.callBtn}
+            211 218 1815
           </button>
         </a>
 
@@ -569,7 +634,7 @@ const Header = () => (
           onMouseEnter={e => { e.currentTarget.style.background = "#444"; e.currentTarget.style.borderColor = "#777"; }}
           onMouseLeave={e => { e.currentTarget.style.background = "#333"; e.currentTarget.style.borderColor = "#555"; }}
         >
-          {t.langBtn}
+          <BiLabel en={T.en.langBtn} gr={T.gr.langBtn} />
         </button>
       </div>
     </div>
@@ -587,6 +652,14 @@ const Header = () => (
             {item.label}
           </button>
         ))}
+
+        {/* Call Us — phone link (desktop has its own button) */}
+        <a href="tel:+302112181815"
+          onClick={() => setMobileMenuOpen(false)}
+          style={{ ...navBtnStyle, display: "block", width: "100%", padding: "14px 24px", fontSize: 13, color: warmPalette.gold, textDecoration: "none" }}
+        >
+          {t.callBtn} · 211 218 1815
+        </a>
       </div>
     )}
   </header>
@@ -606,7 +679,7 @@ const Header = () => (
   const HomePage = () => (
     <div>
       {/* HERO */}
-      <section className="texture-bg" style={{ minHeight: "88vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "80px 24px", position: "relative", overflow: "hidden", background: "#000" }}>
+      <section className="texture-bg" style={{ minHeight: "88vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "80px 24px", position: "relative", overflow: "hidden", background: "#000", borderBottom: `4px solid ${warmPalette.gold}` }}>
 
         {/* Static background image */}
         <div className="hero-bg" style={{
@@ -629,6 +702,16 @@ const Header = () => (
           pointerEvents: "none"
         }} />
 
+        {/* Bottom edge gradient — hides the white bar baked into the image */}
+        <div style={{
+          position: "absolute",
+          bottom: 0, left: 0, right: 0,
+          height: 90,
+          background: "linear-gradient(to top, #000 0%, transparent 100%)",
+          zIndex: 1,
+          pointerEvents: "none"
+        }} />
+
         
 
         {/* Content */}
@@ -637,8 +720,17 @@ const Header = () => (
             {t.heroTagline}
           </p>
           
-          <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontWeight: 700, fontSize: "clamp(20px, 4.5vw, 58px)", color: "#fff", whiteSpace: "nowrap", lineHeight: 1.3, letterSpacing: "0.01em", marginTop: "1em", marginBottom: 48 }}>
-            {t.heroSub}
+          <p className={lang === "gr" ? "hero-sub hero-sub-gr" : "hero-sub"} style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontWeight: 700, color: "#fff", lineHeight: 1.3, letterSpacing: "0.01em", marginTop: "1em", marginBottom: 48 }}>
+            <span className="hero-l1">{t.heroLine.pre}</span>
+            <span className="hero-space">{"\u00A0\u00A0"}</span>
+            <span className="hero-heaven" style={{ textTransform: "uppercase" }}>{t.heroLine.mid}</span>
+            {t.heroLine.post && (
+              <>
+                <span className="hero-space">{"\u00A0\u00A0"}</span>
+                <span className="hero-l3">{t.heroLine.post}</span>
+              </>
+            )}
+            {lang === "gr" && <span style={{ display: "block" }}>{"\u00A0"}</span>}
           </p>
           <div style={{ marginTop: 280, marginBottom: 5, width: "100%", maxWidth: 400, margin: "210px auto 5px" }}>
 
@@ -685,6 +777,7 @@ const Header = () => (
             letterSpacing: "0.25em",
             textTransform: "uppercase",
             color: "#fff",
+            whiteSpace: "nowrap",
             transition: "opacity 0.2s",
           }}
           onMouseEnter={e => e.currentTarget.style.opacity = "0.65"}
@@ -747,14 +840,22 @@ const Header = () => (
   justifyItems: "center"
 }}>
 
-            {/* Map */}
-            <div style={{ border: `2px solid ${warmPalette.tan}`, overflow: "hidden", height: 380 }}>
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3143.848258999412!2d23.72437279554395!3d38.00399970171721!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a1a2d0879e2663%3A0xae1b9a8dccbf3a7e!2zzqHPjM60zr_PhSA2OCwgzpHOuM6uzr3OsSAxMDQgNDU!5e0!3m2!1sel!2sgr!4v1779614962924!5m2!1sel!2sgr"
-                width="100%" height="100%" style={{ border: 0 }}
-                allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-                title="Blessed Coffee location"  
-              />
+            {/* Map — hidden if cookies were rejected (Google Maps sets cookies) */}
+            <div style={{ border: `2px solid ${warmPalette.tan}`, overflow: "hidden", height: 380, width: "100%" }}>
+              {consent === "rejected" ? (
+                <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", gap: 16, padding: "24px", background: warmPalette.tan }}>
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: warmPalette.darkBrown }}>{t.findUsAddress}</p>
+                  <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 13, color: warmPalette.muted }}>{t.mapHidden}</p>
+                  <a href="https://www.google.com/maps?q=Rodou+68,+Athens+104+45" target="_blank" rel="noreferrer" className="btn-outline">{t.mapOpen}</a>
+                </div>
+              ) : (
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3143.848258999412!2d23.72437279554395!3d38.00399970171721!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a1a2d0879e2663%3A0xae1b9a8dccbf3a7e!2zzqHPjM60zr_PhSA2OCwgzpHOuM6uzr3OsSAxMDQgNDU!5e0!3m2!1sel!2sgr!4v1779614962924!5m2!1sel!2sgr"
+                  width="100%" height="100%" style={{ border: 0 }}
+                  allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+                  title="Blessed Coffee location"
+                />
+              )}
             </div>
             {/* Info */}
             <div>
@@ -1130,6 +1231,35 @@ const MenuPage = () => {
         {page === "joinus" && <JoinUsPage />}
       </main>
       <Footer />
+
+      {/* Cookie consent banner — only until a choice is made */}
+      {consent === null && (
+        <div style={{
+          position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1000,
+          background: "#000", borderTop: `3px solid ${warmPalette.gold}`,
+          padding: "16px 24px", display: "flex", alignItems: "center",
+          justifyContent: "center", gap: 20, flexWrap: "wrap",
+          boxShadow: "0 -6px 24px rgba(0,0,0,0.35)"
+        }}>
+          <p className="cookie-text" style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 13, lineHeight: 1.5, color: "#eee", margin: 0 }}>
+            {t.cookieText}
+          </p>
+          <div style={{ display: "flex", gap: 12, flexShrink: 0 }}>
+            <button onClick={acceptCookies} className="btn-gold">{t.cookieAccept}</button>
+            <button onClick={rejectCookies} style={{
+              background: "transparent", color: "#fff", border: "2px solid #555",
+              padding: "11px 26px", fontFamily: "'Barlow Semi Condensed', sans-serif",
+              fontWeight: 700, fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase",
+              cursor: "pointer", transition: "all 0.2s"
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = "#222"; e.currentTarget.style.borderColor = "#888"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "#555"; }}
+            >
+              {t.cookieReject}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
