@@ -472,24 +472,57 @@ const css = `
         radial-gradient(circle at 80% 20%, rgba(107,76,53,0.05) 0%, transparent 40%);
     }
 
-    .hero-bg { background-position: center; }
+    /* Desktop hero: two side photos meeting at center, video fills the middle.
+       No middle photo at all. */
+    .hero-side {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      z-index: 0;
+      filter: brightness(0.55);
+    }
+    .hero-side-left  { left: 0;  background-image: url('/hero-left.webp'); }
+    .hero-side-right { right: 0; background-image: url('/hero-right.webp'); }
+
+    /* Hero video: middle panel on desktop, kept at its true aspect ratio
+       (full height, width follows the ratio — may overlap the side photos
+       when the page is narrow) */
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 100%;
+      width: auto;
+      object-fit: cover;
+      border-left: 6px solid #000;
+      border-right: 6px solid #000;
+      z-index: 0;
+      filter: brightness(0.55);
+      pointer-events: none;
+    }
 
     .cookie-text { white-space: nowrap; }
 
     .header-logo { transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); transform-origin: center; }
     .header-logo:hover { transform: scale(1.07); }
 
-    .hero-sub { white-space: nowrap; font-size: clamp(20px, 4.5vw, 58px); }
+    .hero-sub { white-space: nowrap; font-size: clamp(20px, 4.5vw, 58px); transform: translateY(-1.5em); }
     .hero-heaven { font-size: 1.75em; }
     /* Greek words are longer — size down so the line still fits one row on desktop */
-    .hero-sub-gr { font-size: clamp(16px, 3.3vw, 44px); transform: translateY(0.8em); }
+    .hero-sub-gr { font-size: clamp(16px, 3.3vw, 44px); transform: translateY(-0.7em); }
     .hero-sub-gr .hero-heaven { font-size: 1.7em; }
 
     :root { --slide-cols: 1fr 1fr 1fr; }
 
     @media (max-width: 768px) {
       :root { --slide-cols: 1fr 1fr; }
-      .hero-bg { background-position: left center; }
+      .hero-side { display: none; }
+      .hero-video { left: 0; width: 100%; height: 100%; transform: none; object-fit: cover; border: none; }
       .cookie-text { white-space: normal; }
       .hero-sub { white-space: normal; font-size: clamp(26px, 7.5vw, 46px); width: -moz-fit-content; width: fit-content; margin-left: auto; margin-right: auto; }
       .hero-space { display: none; }
@@ -681,16 +714,21 @@ const Header = () => (
       {/* HERO */}
       <section className="texture-bg" style={{ minHeight: "88vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "80px 24px", position: "relative", overflow: "hidden", background: "#000", borderBottom: `4px solid ${warmPalette.gold}` }}>
 
-        {/* Static background image */}
-        <div className="hero-bg" style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: "url('/background.webp')",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          zIndex: 0,
-          filter: "brightness(0.55)"
-        }} />
+        {/* Desktop side photos (hidden on mobile, where the video is full bg) */}
+        <div className="hero-side hero-side-left" />
+        <div className="hero-side hero-side-right" />
+
+        {/* Hero video — middle panel on desktop, full background on mobile */}
+        <video
+          className="hero-video"
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster="/vid-poster.webp"
+        >
+          <source src="/vid.mp4" type="video/mp4" />
+        </video>
 
         {/* Top edge gradient — covers white panel borders baked into the image */}
         <div style={{
