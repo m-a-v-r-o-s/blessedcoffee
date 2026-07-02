@@ -41,9 +41,17 @@ const T = {
     applySuccess: "Thanks! We'll be in touch soon.",
     footerLeft: "© 2026 Blessed Coffee. All Rights Reserved.",
     footerRight: "© 2026 Akos Digital. All Rights Reserved.",
-    cookieText: "We use cookies and third-party content (Google Maps & Fonts) to give you the best experience. Accept to enable them, or reject to browse with them disabled.",
-    cookieAccept: "Accept",
-    cookieReject: "Reject",
+    cookieTitle: "Cookies",
+    cookieText: "This site uses necessary cookies to work. With your consent, optional external content (Google Maps & Fonts) improves your experience. You're in control — accept, reject, or manage your preferences.",
+    cookieAcceptAll: "Accept All",
+    cookieRejectAll: "Reject All",
+    cookieManage: "Manage preferences",
+    cookieSave: "Save Preferences",
+    cookieNecessary: "Strictly necessary",
+    cookieAlwaysOn: "Always active",
+    cookieNecessaryDesc: "Required for the site to work — such as security and remembering your choices (like language and this cookie preference).",
+    cookieOptional: "External content (Google Maps & Fonts)",
+    cookieOptionalDesc: "Loads the Google map and Google Fonts, which contact Google's servers. Turn off to browse without them.",
     mapHidden: "Map hidden because cookies were declined.",
     mapOpen: "Open in Google Maps",
     positions: ["Barista", "Delivery Driver"],
@@ -94,9 +102,17 @@ const T = {
     applySuccess: "Ευχαριστούμε! Θα επικοινωνήσουμε σύντομα.",
     footerLeft: "© 2026 Blessed Coffee. Με επιφύλαξη παντός δικαιώματος.",
     footerRight: "© 2026 Akos Digital. Με επιφύλαξη παντός δικαιώματος.",
-    cookieText: "Χρησιμοποιούμε cookies και περιεχόμενο τρίτων (Google Maps & γραμματοσειρές) για την καλύτερη εμπειρία σας. Αποδεχτείτε για να ενεργοποιηθούν ή απορρίψτε για περιήγηση χωρίς αυτά.",
-    cookieAccept: "Αποδοχή",
-    cookieReject: "Απόρριψη",
+    cookieTitle: "Cookies",
+    cookieText: "Αυτός ο ιστότοπος χρησιμοποιεί απαραίτητα cookies για να λειτουργεί. Με τη συγκατάθεσή σου, προαιρετικό εξωτερικό περιεχόμενο (Google Maps & γραμματοσειρές) βελτιώνει την εμπειρία σου. Έχεις τον έλεγχο — αποδοχή, απόρριψη ή διαχείριση προτιμήσεων.",
+    cookieAcceptAll: "Αποδοχή όλων",
+    cookieRejectAll: "Απόρριψη όλων",
+    cookieManage: "Διαχείριση προτιμήσεων",
+    cookieSave: "Αποθήκευση προτιμήσεων",
+    cookieNecessary: "Απολύτως απαραίτητα",
+    cookieAlwaysOn: "Πάντα ενεργά",
+    cookieNecessaryDesc: "Απαραίτητα για τη λειτουργία του ιστότοπου — όπως ασφάλεια και η αποθήκευση των επιλογών σου (π.χ. γλώσσα και αυτή η προτίμηση cookies).",
+    cookieOptional: "Εξωτερικό περιεχόμενο (Google Maps & γραμματοσειρές)",
+    cookieOptionalDesc: "Φορτώνει τον χάρτη Google και τις γραμματοσειρές Google, που επικοινωνούν με τους διακομιστές της Google. Απενεργοποίησέ το για περιήγηση χωρίς αυτά.",
     mapHidden: "Ο χάρτης είναι κρυμμένος επειδή απορρίφθηκαν τα cookies.",
     mapOpen: "Άνοιγμα στο Google Maps",
     positions: ["Barista", "Διανομέας"],
@@ -191,32 +207,45 @@ export default function BlessedCoffee() {
   const [form, setForm] = useState({ name: "", phone: "", position: "" });
   const [submitted, setSubmitted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  // Cookie consent: null = no choice yet, "accepted", or "rejected"
+  // Cookie consent: null = no choice yet, "accepted" (optional on) / "rejected" (optional off)
   const [consent, setConsent] = useState(() => {
     try { return localStorage.getItem("bc_consent"); } catch { return null; }
   });
+  const [showCookiePrefs, setShowCookiePrefs] = useState(false);
+  const [extAllowed, setExtAllowed] = useState(false); // optional toggle: Google Maps & Fonts
   const timerRef = useRef(null);
   const t = T[lang];
 
-  // Language persistence — skipped if the visitor rejected cookies
+  // Language preference is a necessary/functional cookie — always remembered
   useEffect(() => {
-    if (consent === "rejected") return;
     try { localStorage.setItem("bc_lang", lang); } catch { /* storage unavailable */ }
-  }, [lang, consent]);
+  }, [lang]);
 
-  const acceptCookies = () => {
-    try { localStorage.setItem("bc_consent", "accepted"); } catch { /* ignore */ }
-    setConsent("accepted");
+  // Apply a consent choice. optionalOn = allow Google Maps & Google Fonts.
+  const applyCookieChoice = (optionalOn) => {
+    const val = optionalOn ? "accepted" : "rejected";
+    try { localStorage.setItem("bc_consent", val); } catch { /* ignore */ }
+    if (!optionalOn) document.getElementById("gfonts")?.remove(); // stop Google Fonts this session
+    setExtAllowed(optionalOn);
+    setConsent(val);
+    setShowCookiePrefs(false);
   };
+  const acceptAllCookies = () => applyCookieChoice(true);
+  const rejectAllCookies = () => applyCookieChoice(false);
+  const saveCookiePrefs = () => applyCookieChoice(extAllowed);
 
-  const rejectCookies = () => {
-    try {
-      localStorage.setItem("bc_consent", "rejected");
-      localStorage.removeItem("bc_lang");
-    } catch { /* ignore */ }
-    // Stop using Google Fonts for the rest of this session
-    document.getElementById("gfonts")?.remove();
-    setConsent("rejected");
+  const cookieOutlineBtn = {
+    background: "transparent", color: "#fff", border: "2px solid #555",
+    padding: "11px 26px", fontFamily: "'Barlow Semi Condensed', sans-serif",
+    fontWeight: 700, fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase",
+    cursor: "pointer", transition: "all 0.2s",
+  };
+  const cookieLinkBtn = {
+    background: "none", border: "none", color: "#bbb",
+    fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700,
+    fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase",
+    cursor: "pointer", textDecoration: "underline", textUnderlineOffset: "3px",
+    padding: "8px 4px", transition: "color 0.2s",
   };
 
   // Sync browser history so the back button works (e.g. Menu/Openings → Home)
@@ -506,8 +535,6 @@ const css = `
       pointer-events: none;
     }
 
-    .cookie-text { white-space: nowrap; }
-
     .header-logo { transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); transform-origin: center; }
     .header-logo:hover { transform: scale(1.07); }
 
@@ -523,7 +550,6 @@ const css = `
       :root { --slide-cols: 1fr 1fr; }
       .hero-side { display: none; }
       .hero-video { left: 0; width: 100%; height: 100%; transform: none; object-fit: cover; border: none; }
-      .cookie-text { white-space: normal; }
       .hero-sub { white-space: normal; font-size: clamp(26px, 7.5vw, 46px); width: -moz-fit-content; width: fit-content; margin-left: auto; margin-right: auto; }
       .hero-space { display: none; }
       .hero-l1, .hero-heaven, .hero-l3 { display: block; }
@@ -1270,31 +1296,72 @@ const MenuPage = () => {
       </main>
       <Footer />
 
-      {/* Cookie consent banner — only until a choice is made */}
+      {/* Cookie consent — banner + preferences panel (until a choice is made) */}
       {consent === null && (
         <div style={{
           position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1000,
           background: "#000", borderTop: `3px solid ${warmPalette.gold}`,
-          padding: "16px 24px", display: "flex", alignItems: "center",
-          justifyContent: "center", gap: 20, flexWrap: "wrap",
-          boxShadow: "0 -6px 24px rgba(0,0,0,0.35)"
+          padding: "18px 24px", boxShadow: "0 -6px 24px rgba(0,0,0,0.35)",
+          maxHeight: "90vh", overflowY: "auto"
         }}>
-          <p className="cookie-text" style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 13, lineHeight: 1.5, color: "#eee", margin: 0 }}>
-            {t.cookieText}
-          </p>
-          <div style={{ display: "flex", gap: 12, flexShrink: 0 }}>
-            <button onClick={acceptCookies} className="btn-gold">{t.cookieAccept}</button>
-            <button onClick={rejectCookies} style={{
-              background: "transparent", color: "#fff", border: "2px solid #555",
-              padding: "11px 26px", fontFamily: "'Barlow Semi Condensed', sans-serif",
-              fontWeight: 700, fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase",
-              cursor: "pointer", transition: "all 0.2s"
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = "#222"; e.currentTarget.style.borderColor = "#888"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "#555"; }}
-            >
-              {t.cookieReject}
-            </button>
+          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+            <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: "0.35em", textTransform: "uppercase", color: warmPalette.gold, margin: "0 0 10px" }}>
+              {t.cookieTitle}
+            </p>
+
+            {!showCookiePrefs ? (
+              /* ---- Banner view ---- */
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
+                <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 13, lineHeight: 1.55, color: "#eee", margin: 0, maxWidth: 640 }}>
+                  {t.cookieText}
+                </p>
+                <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", flexShrink: 0 }}>
+                  <button onClick={acceptAllCookies} className="btn-gold">{t.cookieAcceptAll}</button>
+                  <button onClick={rejectAllCookies} style={cookieOutlineBtn}
+                    onMouseEnter={e => { e.currentTarget.style.background = "#222"; e.currentTarget.style.borderColor = "#888"; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "#555"; }}
+                  >{t.cookieRejectAll}</button>
+                  <button onClick={() => setShowCookiePrefs(true)} style={cookieLinkBtn}
+                    onMouseEnter={e => e.currentTarget.style.color = "#fff"}
+                    onMouseLeave={e => e.currentTarget.style.color = "#bbb"}
+                  >{t.cookieManage}</button>
+                </div>
+              </div>
+            ) : (
+              /* ---- Preferences view ---- */
+              <div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 16, margin: "4px 0 18px" }}>
+                  {/* Strictly necessary — always on */}
+                  <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                    <input type="checkbox" checked disabled readOnly
+                      style={{ accentColor: warmPalette.gold, width: 16, height: 16, marginTop: 3, cursor: "not-allowed", flexShrink: 0 }} />
+                    <div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                        <span style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, fontSize: 14, color: "#fff" }}>{t.cookieNecessary}</span>
+                        <span style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: warmPalette.gold }}>{t.cookieAlwaysOn}</span>
+                      </div>
+                      <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 12.5, lineHeight: 1.5, color: "#aaa", margin: "3px 0 0", maxWidth: 780 }}>{t.cookieNecessaryDesc}</p>
+                    </div>
+                  </div>
+                  {/* Optional — Google Maps & Fonts */}
+                  <label style={{ display: "flex", gap: 12, alignItems: "flex-start", cursor: "pointer" }}>
+                    <input type="checkbox" checked={extAllowed} onChange={e => setExtAllowed(e.target.checked)}
+                      style={{ accentColor: warmPalette.gold, width: 16, height: 16, marginTop: 3, cursor: "pointer", flexShrink: 0 }} />
+                    <div>
+                      <span style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, fontSize: 14, color: "#fff" }}>{t.cookieOptional}</span>
+                      <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 12.5, lineHeight: 1.5, color: "#aaa", margin: "3px 0 0", maxWidth: 780 }}>{t.cookieOptionalDesc}</p>
+                    </div>
+                  </label>
+                </div>
+                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                  <button onClick={saveCookiePrefs} style={cookieOutlineBtn}
+                    onMouseEnter={e => { e.currentTarget.style.background = "#222"; e.currentTarget.style.borderColor = "#888"; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "#555"; }}
+                  >{t.cookieSave}</button>
+                  <button onClick={acceptAllCookies} className="btn-gold">{t.cookieAcceptAll}</button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
