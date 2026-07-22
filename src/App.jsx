@@ -729,7 +729,15 @@ const Header = () => (
     <footer style={{ background: "#000000", color: warmPalette.tan, padding: "24px 24px", borderTop: `3px solid ${warmPalette.gold}` }}>
       <div style={{ maxWidth: 1300, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
         <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 11, letterSpacing: "0.12em" }}>{t.footerLeft}</p>
-        <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 11, letterSpacing: "0.12em" }}>{t.footerRight}</p>
+        <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 11, letterSpacing: "0.12em" }}>
+          {t.footerRight.split("Akos Digital")[0]}
+          <a href="https://akosds.com/" target="_blank" rel="noreferrer"
+            style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "2px", transition: "color 0.2s" }}
+            onMouseEnter={e => e.currentTarget.style.color = warmPalette.gold}
+            onMouseLeave={e => e.currentTarget.style.color = "inherit"}
+          >Akos Digital</a>
+          {t.footerRight.split("Akos Digital")[1]}
+        </p>
       </div>
     </footer>
   );
