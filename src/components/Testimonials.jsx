@@ -99,7 +99,7 @@ const Testimonials = React.memo(function Testimonials({ t }) {
                 gridArea: "1 / 1",
                 background: "#fff",
                 border: "1.5px solid #E8DDD0",
-                padding: "26px 48px",
+                padding: "clamp(20px, 6vw, 26px) clamp(20px, 8vw, 48px)",
                 position: "relative",
                 opacity: i === idx ? 1 : 0,
                 pointerEvents: i === idx ? "auto" : "none",

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: replace with the real production domain once known
+Sitemap: https://blessedcoffee.example/sitemap.xml

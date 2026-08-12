@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is a single-page app (no client-side routing with distinct URLs),
+     so there is only one crawlable document. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <!-- TODO: replace with the real production domain once known -->
+    <loc>https://blessedcoffee.example/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

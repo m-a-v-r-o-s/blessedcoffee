@@ -39,6 +39,9 @@ const T = {
     applyPositionPlaceholder: "Select a position",
     applySubmit: "Send Application",
     applySuccess: "Thanks! We'll be in touch soon.",
+    applyErrorName: "Please enter your full name.",
+    applyErrorPhone: "Please enter a valid phone number.",
+    applyErrorPosition: "Please select a position.",
     footerLeft: "© 2026 Blessed Coffee. All Rights Reserved.",
     footerRight: "© 2026 Akos Digital. All Rights Reserved.",
     cookieTitle: "Cookies",
@@ -100,6 +103,9 @@ const T = {
     applyPositionPlaceholder: "Επίλεξε θέση",
     applySubmit: "Αποστολή αίτησης",
     applySuccess: "Ευχαριστούμε! Θα επικοινωνήσουμε σύντομα.",
+    applyErrorName: "Παρακαλώ γράψε το ονοματεπώνυμό σου.",
+    applyErrorPhone: "Παρακαλώ γράψε ένα έγκυρο τηλέφωνο.",
+    applyErrorPosition: "Παρακαλώ επίλεξε θέση.",
     footerLeft: "© 2026 Blessed Coffee. Με επιφύλαξη παντός δικαιώματος.",
     footerRight: "© 2026 Akos Digital. Με επιφύλαξη παντός δικαιώματος.",
     cookieTitle: "Cookies",
@@ -205,6 +211,7 @@ export default function BlessedCoffee() {
   const [reviewIdx, setReviewIdx] = useState(0);
   const [reviewPaused, setReviewPaused] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "", position: "" });
+  const [formErrors, setFormErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   // Cookie consent: null = no choice yet, "accepted" (optional on) / "rejected" (optional off)
@@ -283,7 +290,13 @@ export default function BlessedCoffee() {
 
   const handleApply = (e) => {
     e.preventDefault();
-    if (!form.name || !form.phone || !form.position) return;
+    const phoneDigits = form.phone.replace(/[^0-9]/g, "");
+    const errs = {};
+    if (!form.name.trim()) errs.name = t.applyErrorName;
+    if (phoneDigits.length < 8) errs.phone = t.applyErrorPhone;
+    if (!form.position) errs.position = t.applyErrorPosition;
+    setFormErrors(errs);
+    if (Object.keys(errs).length > 0) return;
     setSubmitted(true);
   };
 
@@ -649,7 +662,7 @@ const Header = () => (
 
       {/* CENTER LOGO */}
       <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", cursor: "pointer", top: 1 }} onClick={() => navigate("home")}>
-        <img className="header-logo" src={LOGO} alt="Blessed Coffee" style={{ height: 150, width: "auto", objectFit: "contain" }} />
+        <img className="header-logo" src={LOGO} alt="Blessed Coffee" width={150} height={150} style={{ height: 150, width: "auto", objectFit: "contain" }} />
       </div>
 
       {/* RIGHT: Instagram + Facebook always visible, Call desktop-only, Language always visible */}
@@ -725,19 +738,44 @@ const Header = () => (
 );
 
   // ── FOOTER ──────────────────────────────────────────────────────────────────
+  const footerLinkStyle = {
+    background: "none", border: "none", cursor: "pointer", padding: 0,
+    color: "inherit", textDecoration: "underline", textUnderlineOffset: "2px",
+    fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 11, letterSpacing: "0.12em",
+    transition: "color 0.2s",
+  };
   const Footer = () => (
     <footer style={{ background: "#000000", color: warmPalette.tan, padding: "24px 24px", borderTop: `3px solid ${warmPalette.gold}` }}>
-      <div style={{ maxWidth: 1300, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
-        <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 11, letterSpacing: "0.12em" }}>{t.footerLeft}</p>
-        <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 11, letterSpacing: "0.12em" }}>
-          {t.footerRight.split("Akos Digital")[0]}
-          <a href="https://akosds.com/" target="_blank" rel="noreferrer"
-            style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "2px", transition: "color 0.2s" }}
+      <div style={{ maxWidth: 1300, margin: "0 auto" }}>
+        {/* Internal links: nav cross-links + legal pages */}
+        <nav style={{ display: "flex", flexWrap: "wrap", gap: "8px 20px", justifyContent: "center", marginBottom: 16 }}>
+          {NAV_ITEMS.map(item => (
+            <button key={item.id} onClick={() => handleNavClick(item)} style={footerLinkStyle}
+              onMouseEnter={e => e.currentTarget.style.color = warmPalette.gold}
+              onMouseLeave={e => e.currentTarget.style.color = "inherit"}
+            >{item.label}</button>
+          ))}
+          <a href="/privacy-policy.html" style={footerLinkStyle}
             onMouseEnter={e => e.currentTarget.style.color = warmPalette.gold}
             onMouseLeave={e => e.currentTarget.style.color = "inherit"}
-          >Akos Digital</a>
-          {t.footerRight.split("Akos Digital")[1]}
-        </p>
+          >{lang === "en" ? "Privacy Policy" : "Πολιτική Απορρήτου"}</a>
+          <a href="/terms-of-service.html" style={footerLinkStyle}
+            onMouseEnter={e => e.currentTarget.style.color = warmPalette.gold}
+            onMouseLeave={e => e.currentTarget.style.color = "inherit"}
+          >{lang === "en" ? "Terms of Service" : "Όροι Χρήσης"}</a>
+        </nav>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
+          <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 11, letterSpacing: "0.12em" }}>{t.footerLeft}</p>
+          <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 11, letterSpacing: "0.12em" }}>
+            {t.footerRight.split("Akos Digital")[0]}
+            <a href="https://akosds.com/" target="_blank" rel="noreferrer"
+              style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "2px", transition: "color 0.2s" }}
+              onMouseEnter={e => e.currentTarget.style.color = warmPalette.gold}
+              onMouseLeave={e => e.currentTarget.style.color = "inherit"}
+            >Akos Digital</a>
+            {t.footerRight.split("Akos Digital")[1]}
+          </p>
+        </div>
       </div>
     </footer>
   );
@@ -814,14 +852,15 @@ const Header = () => (
             {/* Delivery platforms */}
             <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 400, fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "#fff", marginBottom: 8, textAlign: "center" }}>{t.orderVia}</p>
             <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
+              {/* Above the fold (inside the hero): eager-loaded, not lazy */}
               <a href="https://www.e-food.gr/delivery/athina/blessed-coffee-kai-coctails-7652934" target="_blank" rel="noreferrer" className="platform-btn">
-                <img src="/efood-logo.webp" alt="e-food" style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
+                <img src="/efood-logo.webp" alt="e-food" width={59} height={44} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </a>
               <a href="https://wolt.com/en/grc/athens/restaurant/blessed-coffee-ro-do" target="_blank" rel="noreferrer" className="platform-btn">
-                <img src="/wolt-logo.webp" alt="Wolt" style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
+                <img src="/wolt-logo.webp" alt="Wolt" width={44} height={44} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </a>
               <a href="https://box.gr/delivery/kato-patisia/blessed-coffee-and-spirits" target="_blank" rel="noreferrer" className="platform-btn" style={{ background: "#0d1117", borderColor: "rgba(255,255,255,0.18)" }}>
-                <img src="/box-logo.png" alt="Box" style={{ width: "80%", height: "80%", objectFit: "contain" }} />
+                <img src="/box-logo.png" alt="Box" width={56} height={44} style={{ width: "80%", height: "80%", objectFit: "contain" }} />
               </a>
             </div>
           </div>
@@ -885,6 +924,8 @@ const Header = () => (
             src="/mrsrose.webp"
             alt="Mrs. Rose Caffè"
             loading="lazy"
+            width={140}
+            height={140}
             style={{
               height: 140,
               width: "auto",
@@ -1277,6 +1318,55 @@ const MenuPage = () => {
               <div>{job.tags.map((tag, j) => <span key={j} className="tag">{tag}</span>)}</div>
             </div>
           ))}
+        </div>
+
+        {/* Apply form */}
+        <div style={{ background: "#fff", border: `1.5px solid ${warmPalette.tan}`, padding: "40px 40px", marginBottom: 40 }}>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, fontWeight: 700, color: warmPalette.darkBrown, marginBottom: 24, textAlign: "center" }}>{t.applyTitle}</h2>
+
+          {submitted ? (
+            <div style={{ textAlign: "center", padding: "12px 0" }} role="status">
+              <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 19, color: warmPalette.darkBrown, marginBottom: 18 }}>{t.applySuccess}</p>
+              <button
+                onClick={() => { setSubmitted(false); setForm({ name: "", phone: "", position: "" }); setFormErrors({}); }}
+                className="btn-outline"
+              >{lang === "en" ? "Send another application" : "Στείλε νέα αίτηση"}</button>
+            </div>
+          ) : (
+            <form onSubmit={handleApply} noValidate style={{ display: "flex", flexDirection: "column", gap: 18, maxWidth: 480, margin: "0 auto" }}>
+              <div>
+                <label htmlFor="apply-name" style={{ display: "block", fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: warmPalette.brown, marginBottom: 6 }}>{t.applyName}</label>
+                <input id="apply-name" className="form-input" type="text" value={form.name}
+                  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                  aria-invalid={!!formErrors.name} aria-describedby={formErrors.name ? "apply-name-err" : undefined}
+                />
+                {formErrors.name && <p id="apply-name-err" role="alert" style={{ color: "#B3261E", fontSize: 12.5, marginTop: 6 }}>{formErrors.name}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="apply-phone" style={{ display: "block", fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: warmPalette.brown, marginBottom: 6 }}>{t.applyPhone}</label>
+                <input id="apply-phone" className="form-input" type="tel" value={form.phone}
+                  onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                  aria-invalid={!!formErrors.phone} aria-describedby={formErrors.phone ? "apply-phone-err" : undefined}
+                />
+                {formErrors.phone && <p id="apply-phone-err" role="alert" style={{ color: "#B3261E", fontSize: 12.5, marginTop: 6 }}>{formErrors.phone}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="apply-position" style={{ display: "block", fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: warmPalette.brown, marginBottom: 6 }}>{t.applyPosition}</label>
+                <select id="apply-position" className="form-input" value={form.position}
+                  onChange={e => setForm(f => ({ ...f, position: e.target.value }))}
+                  aria-invalid={!!formErrors.position} aria-describedby={formErrors.position ? "apply-position-err" : undefined}
+                >
+                  <option value="">{t.applyPositionPlaceholder}</option>
+                  {t.positions.map(p => <option key={p} value={p}>{p}</option>)}
+                </select>
+                {formErrors.position && <p id="apply-position-err" role="alert" style={{ color: "#B3261E", fontSize: 12.5, marginTop: 6 }}>{formErrors.position}</p>}
+              </div>
+
+              <button type="submit" className="btn-gold" style={{ marginTop: 8 }}>{t.applySubmit}</button>
+            </form>
+          )}
         </div>
 
        {/* Contact */}
