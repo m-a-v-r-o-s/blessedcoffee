@@ -59,7 +59,7 @@ const T = {
     mapOpen: "Open in Google Maps",
     positions: ["Barista", "Delivery Driver"],
     jobs: [
-      { title: "Barista", desc: "We're looking for a passionate barista with experience in specialty coffee. Full or part-time available.", tags: ["Full-time", "Part-time", "Experience required"] },
+      { title: "Barista", desc: "We're looking for a passionate barista with experience with specialty coffee. Full or part-time available.", tags: ["Full-time", "Part-time", "Experience required"] },
       { title: "Delivery Driver", desc: "Reliable delivery driver needed for morning and evening shifts.", tags: ["Flexible hours", "Responsible Driver"] },
     ],
     reviews: [
