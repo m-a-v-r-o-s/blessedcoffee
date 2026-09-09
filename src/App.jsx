@@ -768,7 +768,7 @@ const Header = () => (
           <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 11, letterSpacing: "0.12em" }}>{t.footerLeft}</p>
           <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: 11, letterSpacing: "0.12em" }}>
             {t.footerRight.split("Akos Digital")[0]}
-            <a href="https://akosds.com/" target="_blank" rel="noreferrer"
+            <a href="https://www.akosds.com/" target="_blank" rel="noreferrer"
               style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "2px", transition: "color 0.2s" }}
               onMouseEnter={e => e.currentTarget.style.color = warmPalette.gold}
               onMouseLeave={e => e.currentTarget.style.color = "inherit"}
