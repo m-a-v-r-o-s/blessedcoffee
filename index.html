@@ -91,7 +91,74 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- Crawlable fallback. React's createRoot() replaces everything inside
+         #root on mount, so visitors with JS never see this, while crawlers that
+         do not execute JS (most AI answer engines) and no-JS visitors get the
+         real business content in both languages the cafe serves.
+         Deliberately limited to facts that do not change: no menu prices here,
+         since a second copy of them would drift out of sync with MENU in
+         src/App.jsx and publishing a stale price is worse than none. -->
+    <div id="root">
+      <!-- Styled to the brand palette: this is on screen for the moment before
+           React mounts, so an unstyled white flash would read as a broken page
+           on a site whose every other frame is black. -->
+      <div style="background:#000;color:#EDE0CE;font-family:system-ui,sans-serif;padding:32px 24px;min-height:100vh">
+      <div lang="en">
+        <h1>Blessed Coffee &amp; Spirits</h1>
+        <p>A taste of heaven in every cup. Specialty coffee, cocktails, fresh
+          pastries and snacks in Kato Patisia, Athens.</p>
+        <h2>Find us</h2>
+        <address>Rodou 68, Athens 104 45, Greece</address>
+        <p>Phone: <a href="tel:+302112181815">211 218 1815</a> or
+          <a href="tel:+306932917800">693 291 7800</a></p>
+        <h2>Opening hours</h2>
+        <ul>
+          <li>Monday to Saturday: 06:00 to 22:00</li>
+          <li>Sunday: 07:00 to 22:00</li>
+        </ul>
+        <h2>Menu</h2>
+        <p>Coffee, soft drinks, pastries and snacks, beer. Greek coffee, freddo
+          espresso, freddo cappuccino, filter coffee and frappe, alongside
+          tyropita, spanakopita and bougatsa.</p>
+        <h2>Order online</h2>
+        <ul>
+          <li><a href="https://www.e-food.gr/delivery/athina/blessed-coffee-kai-coctails-7652934">Order on e-food</a></li>
+          <li><a href="https://wolt.com/en/grc/athens/restaurant/blessed-coffee-ro-do">Order on Wolt</a></li>
+          <li><a href="https://box.gr/delivery/kato-patisia/blessed-coffee-and-spirits">Order on Box</a></li>
+        </ul>
+      </div>
+
+      <div lang="el">
+        <h2>Blessed Coffee &amp; Spirits, καφετέρια στα Κάτω Πατήσια</h2>
+        <p>Παραδεισένια γεύση σε κάθε ποτήρι. Specialty καφές, cocktails, φρέσκα
+          σνακ και γλυκά στα Κάτω Πατήσια, Αθήνα.</p>
+        <h3>Βρείτε μας</h3>
+        <address>Ρόδου 68, Αθήνα 104 45</address>
+        <p>Τηλέφωνο: <a href="tel:+302112181815">211 218 1815</a> ή
+          <a href="tel:+306932917800">693 291 7800</a></p>
+        <h3>Ωράριο λειτουργίας</h3>
+        <ul>
+          <li>Δευτέρα έως Σάββατο: 06:00 έως 22:00</li>
+          <li>Κυριακή: 07:00 έως 22:00</li>
+        </ul>
+        <h3>Το μενού μας</h3>
+        <p>Καφές, αναψυκτικά, σνακ και γλυκά, μπύρες. Ελληνικός καφές, freddo
+          espresso, freddo cappuccino, καφές φίλτρου και φραπές, μαζί με
+          τυρόπιτα, σπανακόπιτα και μπουγάτσα.</p>
+        <h3>Παραγγελία online</h3>
+        <ul>
+          <li><a href="https://www.e-food.gr/delivery/athina/blessed-coffee-kai-coctails-7652934">Παραγγείλτε από e-food</a></li>
+          <li><a href="https://wolt.com/en/grc/athens/restaurant/blessed-coffee-ro-do">Παραγγείλτε από Wolt</a></li>
+          <li><a href="https://box.gr/delivery/kato-patisia/blessed-coffee-and-spirits">Παραγγείλτε από Box</a></li>
+        </ul>
+      </div>
+
+      <p>
+        <a href="/privacy-policy.html" style="color:#C9972A">Privacy Policy</a> |
+        <a href="/terms-of-service.html" style="color:#C9972A">Terms of Service</a>
+      </p>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
