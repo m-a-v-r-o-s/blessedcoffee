@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This is a single-page app (no client-side routing with distinct URLs),
-     so there is only one crawlable document. -->
+<!-- The main site is a single-page app (no client-side routing with distinct
+     URLs), so it is one crawlable document, plus the two static legal pages. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <!-- TODO: replace with the real production domain once known -->
-    <loc>https://blessedcoffee.example/</loc>
+    <loc>https://www.blessed.cafe/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.blessed.cafe/privacy-policy.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.blessed.cafe/terms-of-service.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>

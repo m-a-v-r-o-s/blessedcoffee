@@ -3,17 +3,74 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blessed Coffee &amp; Spirits</title>
-    <meta name="description" content="Blessed Coffee &amp; Spirits: specialty coffee, cocktails, and fresh pastries at Rodou 68, Athens. Order online or visit us daily from 06:00." />
+    <title>Blessed Coffee &amp; Spirits: Cafe in Kato Patisia, Athens</title>
+    <meta name="description" content="Specialty coffee, cocktails and fresh pastries at Rodou 68, Kato Patisia, Athens. Open daily from 06:00. Καφετέρια στα Πατήσια, delivery via e-food, Wolt and Box." />
+    <link rel="canonical" href="https://www.blessed.cafe/" />
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Blessed Coffee & Spirits" />
-    <meta property="og:description" content="Specialty coffee, cocktails, and fresh pastries at Rodou 68, Athens. Order online or visit us daily from 06:00." />
-    <!-- TODO: replace with the real production domain once known -->
-    <meta property="og:url" content="https://blessedcoffee.example/" />
-    <meta property="og:image" content="https://blessedcoffee.example/background.webp" />
+    <meta property="og:site_name" content="Blessed Coffee &amp; Spirits" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="el_GR" />
+    <meta property="og:title" content="Blessed Coffee &amp; Spirits: Cafe in Kato Patisia, Athens" />
+    <meta property="og:description" content="Specialty coffee, cocktails and fresh pastries at Rodou 68, Kato Patisia, Athens. Open daily from 06:00." />
+    <meta property="og:url" content="https://www.blessed.cafe/" />
+    <meta property="og:image" content="https://www.blessed.cafe/background.webp" />
     <meta property="og:image:width" content="1920" />
     <meta property="og:image:height" content="960" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Entity schema. Every value here is taken from the site's own content:
+         address and hours from the Find Us section, phones from the call CTAs,
+         coordinates from the Google Maps embed, links from the footer/hero. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CafeOrCoffeeShop",
+      "@id": "https://www.blessed.cafe/#business",
+      "name": "Blessed Coffee & Spirits",
+      "url": "https://www.blessed.cafe/",
+      "image": "https://www.blessed.cafe/background.webp",
+      "logo": "https://www.blessed.cafe/blessed-logo.webp",
+      "description": "Specialty coffee, cocktails and fresh pastries at Rodou 68, Kato Patisia, Athens.",
+      "telephone": "+30 211 218 1815",
+      "knowsLanguage": ["el", "en"],
+      "servesCuisine": ["Coffee", "Cocktails", "Pastries"],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Rodou 68",
+        "addressLocality": "Athens",
+        "postalCode": "104 45",
+        "addressCountry": "GR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 38.0039997,
+        "longitude": 23.7243728
+      },
+      "areaServed": { "@type": "City", "name": "Athens" },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "06:00",
+          "closes": "22:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Sunday",
+          "opens": "07:00",
+          "closes": "22:00"
+        }
+      ],
+      "sameAs": [
+        "https://www.instagram.com/blessedcoffee2024/",
+        "https://www.facebook.com/profile.php?id=61569255849766",
+        "https://www.e-food.gr/delivery/athina/blessed-coffee-kai-coctails-7652934",
+        "https://wolt.com/en/grc/athens/restaurant/blessed-coffee-ro-do",
+        "https://box.gr/delivery/kato-patisia/blessed-coffee-and-spirits"
+      ]
+    }
+    </script>
 
     <link rel="preload" as="image" href="/vid-poster.webp" fetchpriority="high" />
     <link rel="preload" as="image" href="/hero-left.webp" fetchpriority="high" media="(min-width: 769px)" />
