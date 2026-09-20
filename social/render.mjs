@@ -469,6 +469,58 @@ const POSTS = [
       en: 'Every cup, made by hand, with care.',
     },
   },
+  {
+    id: 'espresso-drip',
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Χειροποιητο</div>
+        <h1 class="sm">Σταγόνα<br><em>σταγόνα.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Καφές, όχι βιομηχανία.</div>
+      </div>`, bg, real),
+    bg: photo('Screenshot_2026-09-20_21-34-55.png'),
+    real: true,
+    caption: {
+      el: 'Σταγόνα σταγόνα. Καφές, όχι βιομηχανία.',
+      en: 'Drop by drop. Coffee, not a production line.',
+    },
+  },
+  {
+    id: 'pour-detail',
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Καθε παραγγελια</div>
+        <h1 class="sm">Με το<br><em>χέρι.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Όχι κουμπί, όχι μηχανή που αποφασίζει.</div>
+      </div>`, bg, real),
+    bg: photo('Screenshot_2026-09-20_21-36-24.png'),
+    real: true,
+    caption: {
+      el: 'Με το χέρι, κάθε παραγγελία. Όχι κουμπί που αποφασίζει μόνο του.',
+      en: 'By hand, every order. Not a button deciding on its own.',
+    },
+  },
+  // ─── Cocktails: real photos, no name/price on file yet, so the copy stays honest and vague. ──
+  {
+    id: 'cocktail-teaser',
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker" style="color:${BRAND.ink}">Και κοκτειλ</div>
+        <h1>Δεν είμαστε<br><em>μόνο καφές.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Κοκτέιλ, φτιαγμένα εδώ, στο μαγαζί.</div>
+      </div>`, bg, real),
+    bg: photo('Screenshot_2026-09-20_21-37-08.png'),
+    real: true,
+    caption: {
+      el: 'Δεν είμαστε μόνο καφές. Κοκτέιλ, φτιαγμένα εδώ, στο μαγαζί.',
+      en: "We're not just coffee. Cocktails, made right here.",
+    },
+  },
 ];
 
 const TAGS =
