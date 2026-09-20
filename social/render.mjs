@@ -34,17 +34,17 @@ const BRAND = {
   muted: '#8A7060',
 };
 
+const mime = (f) => (f.endsWith('.png') ? 'png' : f.endsWith('.jpg') || f.endsWith('.jpeg') ? 'jpeg' : 'webp');
+const dataUri = (path, f) => `data:image/${mime(f)};base64,${readFileSync(`${path}/${f}`).toString('base64')}`;
+
 const logo = `data:image/webp;base64,${readFileSync(`${ROOT}/public/blessed-logo.webp`).toString('base64')}`;
-const asset = (f) =>
-  `data:image/${f.endsWith('.png') ? 'png' : 'webp'};base64,${readFileSync(`${ROOT}/public/${f}`).toString('base64')}`;
+const asset = (f) => dataUri(`${ROOT}/public`, f);
 // AI backdrop plates: anonymous central-Athens street/neighbourhood texture only,
 // no recognisable landmark, no product shots. See social/plates/README for the rule.
-const plate = (f) =>
-  `data:image/webp;base64,${readFileSync(`${ROOT}/social/plates/${f}`).toString('base64')}`;
+const plate = (f) => dataUri(`${ROOT}/social/plates`, f);
 // Real shop photography: the cup, the machine, the storefront. No scrim needed,
 // this IS the product, unlike the AI plates it never needs disguising.
-const photo = (f) =>
-  `data:image/png;base64,${readFileSync(`${ROOT}/social/photos/${f}`).toString('base64')}`;
+const photo = (f) => dataUri(`${ROOT}/social/photos`, f);
 
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Semi+Condensed:wght@300;400;500;600;700&display=swap');
