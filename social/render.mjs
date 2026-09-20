@@ -229,13 +229,13 @@ const POSTS = [
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">★★★★★ Google Review</div>
-        <div class="quote">"Nice coffee and something for cravings, it's a must &mdash; fast and polite service."</div>
+        <div class="quote">"Nice coffee and something for cravings, it's a must, with fast and polite service."</div>
         <div class="rule"></div>
-        <div class="attrib">&mdash; Martha Grigoriou</div>
+        <div class="attrib">Martha Grigoriou</div>
       </div>`),
     caption: {
-      el: 'Πέντε αστέρια από πραγματικούς πελάτες. "Ωραίος καφές και κάτι για τη λιγούρα, είναι ό,τι πρέπει, με γρήγορη και ευγενική εξυπηρέτηση." — Martha Grigoriou, Google Maps',
-      en: 'Five stars, real customer. "Nice coffee and something for cravings, it\'s a must, with fast and polite service." — Martha Grigoriou, via Google Maps',
+      el: 'Πέντε αστέρια από πραγματικούς πελάτες. "Ωραίος καφές και κάτι για τη λιγούρα, είναι ό,τι πρέπει, με γρήγορη και ευγενική εξυπηρέτηση." Έγραψε η Martha Grigoriou στο Google Maps.',
+      en: 'Five stars, real customer. "Nice coffee and something for cravings, it\'s a must, with fast and polite service." From Martha Grigoriou, via Google Maps.',
     },
   },
   {
@@ -244,13 +244,13 @@ const POSTS = [
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">★★★★★ Google Review</div>
-        <div class="quote">"The guys are amazing &mdash; helpful, clean, and the coffee is awesome in quality and technique."</div>
+        <div class="quote">"The guys are amazing: helpful, clean, and the coffee is awesome in quality and technique."</div>
         <div class="rule"></div>
-        <div class="attrib">&mdash; Ninaki Euangelou</div>
+        <div class="attrib">Ninaki Euangelou</div>
       </div>`),
     caption: {
-      el: '"Τα παιδιά είναι καταπληκτικά, πολύ ομαδικά σε όλες τις βάρδιες, εξυπηρετικότατα κ αμεσότατα! Καθαρά, περιποιημένα, νόστιμα, ο καφές φοβερός και από ποιότητα και από τεχνική!" — Ninaki Euangelou, Google Maps',
-      en: '"The guys are amazing, very helpful and direct, clean, and the coffee is awesome in quality and technique!" — Ninaki Euangelou, via Google Maps',
+      el: '"Τα παιδιά είναι καταπληκτικά, πολύ ομαδικά σε όλες τις βάρδιες, εξυπηρετικότατα κ αμεσότατα! Καθαρά, περιποιημένα, νόστιμα, ο καφές φοβερός και από ποιότητα και από τεχνική!" Έγραψε η Ninaki Euangelou στο Google Maps.',
+      en: '"The guys are amazing, very helpful and direct, clean, and the coffee is awesome in quality and technique!" From Ninaki Euangelou, via Google Maps.',
     },
   },
   {
@@ -261,11 +261,11 @@ const POSTS = [
         <div class="kicker">★★★★★ Google Review</div>
         <div class="quote">"The only shop I've seen on delivery that sends you a glass of ice for your energy drink."</div>
         <div class="rule"></div>
-        <div class="attrib">&mdash; Blackoni Chris</div>
+        <div class="attrib">Blackoni Chris</div>
       </div>`),
     caption: {
-      el: '"Το μοναδικό μαγαζί που είδα στο ντελίβερι να σου στέλνουν ποτηράκι με πάγο για το energy drink." — Blackoni Chris, Google Maps',
-      en: '"The only shop I\'ve seen on delivery that sends you a glass of ice for your energy drink." — Blackoni Chris, via Google Maps',
+      el: '"Το μοναδικό μαγαζί που είδα στο ντελίβερι να σου στέλνουν ποτηράκι με πάγο για το energy drink." Έγραψε ο Blackoni Chris στο Google Maps.',
+      en: '"The only shop I\'ve seen on delivery that sends you a glass of ice for your energy drink." From Blackoni Chris, via Google Maps.',
     },
   },
   // ─── Menu, priced straight from MENU in src/App.jsx. ────────────────────────
