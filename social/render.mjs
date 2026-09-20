@@ -39,8 +39,10 @@ const dataUri = (path, f) => `data:image/${mime(f)};base64,${readFileSync(`${pat
 
 const logo = `data:image/webp;base64,${readFileSync(`${ROOT}/public/blessed-logo.webp`).toString('base64')}`;
 const asset = (f) => dataUri(`${ROOT}/public`, f);
-// AI backdrop plates: anonymous central-Athens street/neighbourhood texture only,
-// no recognisable landmark, no product shots. See social/plates/README for the rule.
+// Backdrop plates: anonymous central-Athens street/neighbourhood texture only,
+// no recognisable landmark, no product shots. Mixed sourcing is fine, AI-generated
+// or a real stock photo the user curated, both get the same heavy scrim treatment
+// below since the point is staying anonymous texture, never a documentary shot.
 const plate = (f) => dataUri(`${ROOT}/social/plates`, f);
 // Real shop photography: the cup, the machine, the storefront. No scrim needed,
 // this IS the product, unlike the AI plates it never needs disguising.
@@ -289,7 +291,7 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Ελληνικός 1.80€ · Φίλτρου 2€ · NES 1.80€ · Americano 2€</div>
       </div>`),
-    // bg pending: brighter/daytime replacement for athens-kiosk-dusk.webp (removed 2026-09-20)
+    // bg pending: brighter/daytime Athens street, AI-generated or a curated stock photo
     caption: {
       el: 'Ελληνικός, φίλτρου, νες, americano. Οι κλασικοί, στην τιμή που τους αξίζει.',
       en: 'Greek coffee, filter, NES, americano. The classics, at the price they deserve.',
@@ -369,16 +371,18 @@ const POSTS = [
       en: "Yes, we've got beer too. Amstel, Heineken, Corona, Alfa.",
     },
   },
-  // ─── Neighbourhood atmosphere: AI backdrop plates, low opacity, brand mark, minimal type. ──
+  // ─── Neighbourhood atmosphere: AI or curated-stock backdrop plates, low opacity, minimal type. ──
   {
     id: 'atmosphere-neighbourhood',
-    html: (bg) =>
-      shell(`<div class="body center">
-        <img class="mark big" src="${logo}">
-        <h1 class="sm" style="margin-top:28px">Κάτω<br><em>Πατήσια.</em></h1>
-        <div class="el" style="margin-top:8px">Η γειτονιά μας, πριν ανοίξουμε.</div>
-      </div>`),
-    // bg pending: brighter/daytime replacement for athens-alley-night.webp (removed 2026-09-20)
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Γειτονια</div>
+        <h1 class="sm">Κάτω<br><em>Πατήσια.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Η γειτονιά μας, πριν ανοίξουμε.</div>
+      </div>`, bg, real),
+    // bg pending: brighter/daytime Athens street, AI-generated or a curated stock photo
     caption: {
       el: 'Η γειτονιά μας, πριν ανοίξουμε. Κάτω Πατήσια.',
       en: 'Our neighbourhood, before we open. Kato Patisia.',
@@ -394,7 +398,7 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Ανοιχτά κάθε μέρα από τις 06:00.</div>
       </div>`),
-    // bg pending: brighter/daytime replacement for athens-square-dawn.webp (removed 2026-09-20)
+    // bg pending: brighter/daytime Athens street, AI-generated or a curated stock photo
     caption: {
       el: 'Πριν χαράξει, είμαστε εδώ. Ανοιχτά κάθε μέρα από τις 06:00.',
       en: "Before sunrise, we're here. Open every day from 6am.",
@@ -411,7 +415,7 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Για πρωινές και βραδινές βάρδιες. Ευέλικτο ωράριο.</div>
       </div>`),
-    // bg pending: brighter/daytime replacement for athens-wall-texture.webp (removed 2026-09-20)
+    // Intentionally plain, like the other hiring post: no bg needed here.
     caption: {
       el: 'Ψάχνουμε υπεύθυνο διανομέα για πρωινές και βραδινές βάρδιες, με ευέλικτο ωράριο. Στείλε μας μήνυμα ή πέρασε από το μαγαζί.',
       en: 'Looking for a reliable delivery driver, morning and evening shifts, flexible hours. DM us or drop by.',
@@ -543,13 +547,15 @@ const POSTS = [
   },
   {
     id: 'new-year',
-    html: (bg) =>
-      shell(`<div class="body center">
-        <img class="mark big" src="${logo}">
-        <h1 class="sm" style="margin-top:28px">Καλή<br><em>Χρονιά.</em></h1>
-        <div class="el" style="margin-top:8px">Ευχές από όλους εμάς στο Blessed.</div>
-      </div>`),
-    // bg pending: quiet Athens neighbourhood street just after midnight, New Year mood (see social/seasonal-plate-prompts.md)
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Πρωτοχρονια</div>
+        <h1 class="sm">Καλή<br><em>Χρονιά.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Ευχές από όλους εμάς στο Blessed.</div>
+      </div>`, bg, real),
+    // bg pending: quiet Athens neighbourhood street just after midnight, AI-generated or curated stock
     caption: {
       el: 'Καλή χρονιά από όλους εμάς στο Blessed. Ό,τι καλύτερο για σένα και τους δικούς σου.',
       en: 'Happy New Year from everyone at Blessed. All the best to you and yours.',
@@ -557,13 +563,15 @@ const POSTS = [
   },
   {
     id: 'easter',
-    html: (bg) =>
-      shell(`<div class="body center">
-        <img class="mark big" src="${logo}">
-        <h1 class="sm" style="margin-top:28px">Καλό<br><em>Πάσχα.</em></h1>
-        <div class="el" style="margin-top:8px">Καλή Ανάσταση, γειτονιά.</div>
-      </div>`),
-    // bg pending: spring Athens neighbourhood street, Easter mood (see social/seasonal-plate-prompts.md)
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Πασχα</div>
+        <h1 class="sm">Καλό<br><em>Πάσχα.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Καλή Ανάσταση, γειτονιά.</div>
+      </div>`, bg, real),
+    // bg pending: spring Athens neighbourhood street, AI-generated or curated stock
     caption: {
       el: 'Καλό Πάσχα και καλή Ανάσταση, από όλους εμάς στο Blessed.',
       en: 'Happy Easter from everyone at Blessed.',
@@ -571,13 +579,15 @@ const POSTS = [
   },
   {
     id: 'summer',
-    html: (bg) =>
-      shell(`<div class="body center">
-        <img class="mark big" src="${logo}">
-        <h1 class="sm" style="margin-top:28px">Καλό<br><em>Καλοκαίρι.</em></h1>
-        <div class="el" style="margin-top:8px">Από το Blessed, σε όλη τη γειτονιά.</div>
-      </div>`),
-    // bg pending: bright summer Athens neighbourhood street, daytime mood (see social/seasonal-plate-prompts.md)
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Καλοκαιρι</div>
+        <h1 class="sm">Καλό<br><em>Καλοκαίρι.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Από το Blessed, σε όλη τη γειτονιά.</div>
+      </div>`, bg, real),
+    // bg pending: bright summer Athens neighbourhood street, AI-generated or curated stock
     caption: {
       el: 'Καλό καλοκαίρι από όλους εμάς στο Blessed, σε όλη τη γειτονιά.',
       en: 'Happy summer from everyone at Blessed, to the whole neighbourhood.',
@@ -585,13 +595,15 @@ const POSTS = [
   },
   {
     id: 'apokries',
-    html: (bg) =>
-      shell(`<div class="body center">
-        <img class="mark big" src="${logo}">
-        <h1 class="sm" style="margin-top:28px">Καλές<br><em>Απόκριες.</em></h1>
-        <div class="el" style="margin-top:8px">Με κέφι, στη γειτονιά μας.</div>
-      </div>`),
-    // bg pending: late-winter evening Athens neighbourhood street, Carnival mood (see social/seasonal-plate-prompts.md)
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Αποκριες</div>
+        <h1 class="sm">Καλές<br><em>Απόκριες.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Με κέφι, στη γειτονιά μας.</div>
+      </div>`, bg, real),
+    // bg pending: late-winter evening Athens neighbourhood street, AI-generated or curated stock
     caption: {
       el: 'Καλές Απόκριες από όλους εμάς στο Blessed.',
       en: 'Happy Apokries (Greek Carnival season) from everyone at Blessed.',
