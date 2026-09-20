@@ -521,6 +521,78 @@ const POSTS = [
       en: "We're not just coffee. Cocktails, made right here.",
     },
   },
+  // ─── Seasonal occasions: pure goodwill greetings only, no menu/offer/hours claim. ──
+  // Prompts for their AI backdrops live in social/seasonal-plate-prompts.md.
+  {
+    id: 'christmas',
+    html: (bg) =>
+      shell(`<div class="body center">
+        <img class="mark big" src="${logo}">
+        <h1 class="sm" style="margin-top:28px">Καλά<br><em>Χριστούγεννα.</em></h1>
+        <div class="el" style="margin-top:8px">Από το Blessed, σε όλη τη γειτονιά.</div>
+      </div>`),
+    // bg pending: warm Athens neighbourhood street with string-lights, Christmas mood (see social/seasonal-plate-prompts.md)
+    caption: {
+      el: 'Καλά Χριστούγεννα από όλους εμάς στο Blessed, σε όλη τη γειτονιά.',
+      en: 'Merry Christmas from all of us at Blessed, to the whole neighbourhood.',
+    },
+  },
+  {
+    id: 'new-year',
+    html: (bg) =>
+      shell(`<div class="body center">
+        <img class="mark big" src="${logo}">
+        <h1 class="sm" style="margin-top:28px">Καλή<br><em>Χρονιά.</em></h1>
+        <div class="el" style="margin-top:8px">Ευχές από όλους εμάς στο Blessed.</div>
+      </div>`),
+    // bg pending: quiet Athens neighbourhood street just after midnight, New Year mood (see social/seasonal-plate-prompts.md)
+    caption: {
+      el: 'Καλή χρονιά από όλους εμάς στο Blessed. Ό,τι καλύτερο για σένα και τους δικούς σου.',
+      en: 'Happy New Year from everyone at Blessed. All the best to you and yours.',
+    },
+  },
+  {
+    id: 'easter',
+    html: (bg) =>
+      shell(`<div class="body center">
+        <img class="mark big" src="${logo}">
+        <h1 class="sm" style="margin-top:28px">Καλό<br><em>Πάσχα.</em></h1>
+        <div class="el" style="margin-top:8px">Καλή Ανάσταση, γειτονιά.</div>
+      </div>`),
+    // bg pending: spring Athens neighbourhood street, Easter mood (see social/seasonal-plate-prompts.md)
+    caption: {
+      el: 'Καλό Πάσχα και καλή Ανάσταση, από όλους εμάς στο Blessed.',
+      en: 'Happy Easter from everyone at Blessed.',
+    },
+  },
+  {
+    id: 'summer',
+    html: (bg) =>
+      shell(`<div class="body center">
+        <img class="mark big" src="${logo}">
+        <h1 class="sm" style="margin-top:28px">Καλό<br><em>Καλοκαίρι.</em></h1>
+        <div class="el" style="margin-top:8px">Από το Blessed, σε όλη τη γειτονιά.</div>
+      </div>`),
+    // bg pending: bright summer Athens neighbourhood street, daytime mood (see social/seasonal-plate-prompts.md)
+    caption: {
+      el: 'Καλό καλοκαίρι από όλους εμάς στο Blessed, σε όλη τη γειτονιά.',
+      en: 'Happy summer from everyone at Blessed, to the whole neighbourhood.',
+    },
+  },
+  {
+    id: 'apokries',
+    html: (bg) =>
+      shell(`<div class="body center">
+        <img class="mark big" src="${logo}">
+        <h1 class="sm" style="margin-top:28px">Καλές<br><em>Απόκριες.</em></h1>
+        <div class="el" style="margin-top:8px">Με κέφι, στη γειτονιά μας.</div>
+      </div>`),
+    // bg pending: late-winter evening Athens neighbourhood street, Carnival mood (see social/seasonal-plate-prompts.md)
+    caption: {
+      el: 'Καλές Απόκριες από όλους εμάς στο Blessed.',
+      en: 'Happy Apokries (Greek Carnival season) from everyone at Blessed.',
+    },
+  },
 ];
 
 const TAGS =
