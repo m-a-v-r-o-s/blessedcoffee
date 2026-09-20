@@ -288,8 +288,8 @@ const POSTS = [
         <h1>Greek.<br>Filter.<br><em>NES.</em></h1>
         <div class="rule"></div>
         <div class="lede">Ελληνικός 1.80€ · Φίλτρου 2€ · NES 1.80€ · Americano 2€</div>
-      </div>`, bg),
-    bg: plate('athens-kiosk-dusk.webp'),
+      </div>`),
+    // bg pending: brighter/daytime replacement for athens-kiosk-dusk.webp (removed 2026-09-20)
     caption: {
       el: 'Ελληνικός, φίλτρου, νες, americano. Οι κλασικοί, στην τιμή που τους αξίζει.',
       en: 'Greek coffee, filter, NES, americano. The classics, at the price they deserve.',
@@ -377,8 +377,8 @@ const POSTS = [
         <img class="mark big" src="${logo}">
         <h1 class="sm" style="margin-top:28px">Κάτω<br><em>Πατήσια.</em></h1>
         <div class="el" style="margin-top:8px">Η γειτονιά μας, πριν ανοίξουμε.</div>
-      </div>`, bg),
-    bg: plate('athens-alley-night.webp'),
+      </div>`),
+    // bg pending: brighter/daytime replacement for athens-alley-night.webp (removed 2026-09-20)
     caption: {
       el: 'Η γειτονιά μας, πριν ανοίξουμε. Κάτω Πατήσια.',
       en: 'Our neighbourhood, before we open. Kato Patisia.',
@@ -393,8 +393,8 @@ const POSTS = [
         <h1 class="sm">Πριν χαράξει,<br><em>είμαστε εδώ.</em></h1>
         <div class="rule"></div>
         <div class="lede">Ανοιχτά κάθε μέρα από τις 06:00.</div>
-      </div>`, bg),
-    bg: plate('athens-square-dawn.webp'),
+      </div>`),
+    // bg pending: brighter/daytime replacement for athens-square-dawn.webp (removed 2026-09-20)
     caption: {
       el: 'Πριν χαράξει, είμαστε εδώ. Ανοιχτά κάθε μέρα από τις 06:00.',
       en: "Before sunrise, we're here. Open every day from 6am.",
@@ -410,8 +410,8 @@ const POSTS = [
         <h1>Delivery<br><em>driver.</em></h1>
         <div class="rule"></div>
         <div class="lede">Για πρωινές και βραδινές βάρδιες. Ευέλικτο ωράριο.</div>
-      </div>`, bg),
-    bg: plate('athens-wall-texture.webp'),
+      </div>`),
+    // bg pending: brighter/daytime replacement for athens-wall-texture.webp (removed 2026-09-20)
     caption: {
       el: 'Ψάχνουμε υπεύθυνο διανομέα για πρωινές και βραδινές βάρδιες, με ευέλικτο ωράριο. Στείλε μας μήνυμα ή πέρασε από το μαγαζί.',
       en: 'Looking for a reliable delivery driver, morning and evening shifts, flexible hours. DM us or drop by.',
