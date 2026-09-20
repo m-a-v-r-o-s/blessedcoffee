@@ -525,13 +525,17 @@ const POSTS = [
   // Prompts for their AI backdrops live in social/seasonal-plate-prompts.md.
   {
     id: 'christmas',
-    html: (bg) =>
-      shell(`<div class="body center">
-        <img class="mark big" src="${logo}">
-        <h1 class="sm" style="margin-top:28px">Καλά<br><em>Χριστούγεννα.</em></h1>
-        <div class="el" style="margin-top:8px">Από το Blessed, σε όλη τη γειτονιά.</div>
-      </div>`),
-    // bg pending: warm Athens neighbourhood street with string-lights, Christmas mood (see social/seasonal-plate-prompts.md)
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Χριστουγεννα στο μαγαζι</div>
+        <h1>Καλά<br><em>Χριστούγεννα.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Από το Blessed, σε όλη τη γειτονιά.</div>
+      </div>`, bg, real),
+    // Real photo of the actual shop, decorated, not an AI plate, beats it outright.
+    bg: photo('Screenshot_2026-09-20_23-09-29.png'),
+    real: true,
     caption: {
       el: 'Καλά Χριστούγεννα από όλους εμάς στο Blessed, σε όλη τη γειτονιά.',
       en: 'Merry Christmas from all of us at Blessed, to the whole neighbourhood.',
