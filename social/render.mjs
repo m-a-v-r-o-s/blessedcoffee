@@ -41,6 +41,10 @@ const asset = (f) =>
 // no recognisable landmark, no product shots. See social/plates/README for the rule.
 const plate = (f) =>
   `data:image/webp;base64,${readFileSync(`${ROOT}/social/plates/${f}`).toString('base64')}`;
+// Real shop photography: the cup, the machine, the storefront. No scrim needed,
+// this IS the product, unlike the AI plates it never needs disguising.
+const photo = (f) =>
+  `data:image/png;base64,${readFileSync(`${ROOT}/social/photos/${f}`).toString('base64')}`;
 
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Semi+Condensed:wght@300;400;500;600;700&display=swap');
@@ -66,6 +70,12 @@ const CSS = `
   .bg::after {
     content: ''; position: absolute; inset: 0;
     background: linear-gradient(180deg, rgba(8,8,8,.72) 0%, rgba(8,8,8,.88) 55%, rgba(6,6,6,.96) 100%);
+  }
+  /* Real shop photos get a light bottom-only fade for caption legibility, not
+     the heavy full-frame scrim the AI plates need. No grayscale/contrast either. */
+  .bg.real img { filter: none; }
+  .bg.real::after {
+    background: linear-gradient(180deg, rgba(8,8,8,.05) 0%, rgba(8,8,8,.2) 60%, rgba(6,6,6,.9) 100%);
   }
   .card > *:not(.bg) { position: relative; z-index: 1; }
   .mark { width: 150px; filter: invert(1); opacity: .94; }
@@ -119,8 +129,8 @@ const CSS = `
   .attrib { font-size: 27px; font-weight: 500; color: ${BRAND.muted}; letter-spacing: .03em; }
 `;
 
-const shell = (inner, bg) => `<div class="card">
-  ${bg ? `<div class="bg"><img src="${bg}"></div>` : ''}
+const shell = (inner, bg, real) => `<div class="card">
+  ${bg ? `<div class="bg${real ? ' real' : ''}"><img src="${bg}"></div>` : ''}
   ${inner}
   <div class="foot"><span>${BRAND.address}</span><span>${BRAND.site}</span></div>
 </div>`;
@@ -409,18 +419,54 @@ const POSTS = [
   },
   {
     id: 'find-us',
-    html: (bg) =>
+    html: (bg, real) =>
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">Βρειτε μας / Find us</div>
         <h1 class="sm">Ρόδου 68,<br><em>Κάτω Πατήσια.</em></h1>
         <div class="rule"></div>
         <div class="lede">Αθήνα 104 45</div>
-      </div>`, bg),
-    bg: plate('athens-square-lights.webp'),
+      </div>`, bg, real),
+    bg: photo('Screenshot_2026-09-20_21-35-58.png'),
+    real: true,
     caption: {
       el: 'Ρόδου 68, Κάτω Πατήσια, Αθήνα 104 45. Ελάτε να μας βρείτε.',
       en: '68 Rodou Street, Kato Patisia, Athens 104 45. Come find us.',
+    },
+  },
+  // ─── Real shop photography. No scrim tricks needed, this is the actual product. ──
+  {
+    id: 'fresh-pour',
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Espresso</div>
+        <h1>Φρέσκος.<br><em>Πάντα.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Ένα σωστό espresso δεν βιάζεται.</div>
+      </div>`, bg, real),
+    bg: photo('Screenshot_2026-09-20_21-36-13.png'),
+    real: true,
+    caption: {
+      el: 'Ένα σωστό espresso δεν βιάζεται. Φρέσκος, κάθε φορά.',
+      en: 'A proper espresso is never rushed. Fresh, every time.',
+    },
+  },
+  {
+    id: 'milk-pour',
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Η τεχνη του καφε</div>
+        <h1>Με<br><em>προσοχή.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Κάθε φλιτζάνι, φτιαγμένο στο χέρι.</div>
+      </div>`, bg, real),
+    bg: photo('Screenshot_2026-09-20_21-34-43.png'),
+    real: true,
+    caption: {
+      el: 'Κάθε φλιτζάνι, φτιαγμένο στο χέρι, με προσοχή.',
+      en: 'Every cup, made by hand, with care.',
     },
   },
 ];
@@ -446,7 +492,7 @@ const page = await browser.newPage({
 });
 
 for (const post of posts) {
-  await page.setContent(`<style>${CSS}</style>${post.html(post.bg)}`, { waitUntil: 'load' });
+  await page.setContent(`<style>${CSS}</style>${post.html(post.bg, post.real)}`, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready); // webfonts, or the type renders as fallback
   await page.screenshot({ path: `${TMP}/${post.id}.png` });
   writeFileSync(
