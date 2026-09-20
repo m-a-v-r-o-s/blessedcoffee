@@ -1,30 +1,48 @@
-# Seasonal AI backdrop prompts
+# Backdrop prompts still needed
 
-Prompts for the AI backdrop plates the 5 seasonal posts in `social/render.mjs` are waiting on
-(their `html()` currently renders with no `bg`, same "bg pending" state as `old-school`,
-`atmosphere-neighbourhood`, `atmosphere-early` and `hiring-driver`).
+7 posts in `social/render.mjs` are still "bg pending" (their `html()` renders fine today with no
+background, marked with a `// bg pending:` comment above the post). `christmas` used to be on this
+list but got a real photo of the actual decorated shop instead, real always beats generated.
+`hiring` and `hiring-driver` are intentionally excluded, they stay plain on purpose, not pending.
 
-Run each prompt through an image generator by hand, save the result into `social/plates/` (e.g.
-`athens-christmas-lights.webp`), then wire it into the matching post via `plate('filename')` the
-same way `bougatsa` and `beer` do, and re-render.
+Sourcing is deliberately mixed now, not just AI: either run a prompt below through an image
+generator by hand, or drop in a real stock photo you've curated yourself that fits the same brief
+(anonymous central-Athens neighbourhood texture, no recognisable landmark, no readable text, no
+people, portrait orientation, roughly 4:5). Either source gets the same scrim treatment in the
+card, the point is staying textural backdrop, never a documentary shot standing in for the shop's
+own photography.
 
-Every prompt below already encodes the project rule: anonymous central-Athens neighbourhood
-texture only, no recognisable landmark, no readable text, no people, documentary photographic
-style, portrait orientation.
+Save the result into `social/plates/` (any of .webp/.jpg/.png work), then wire it into the
+matching post via `plate('filename')` the same way `bougatsa` and `beer` do, and re-render.
 
-## Christmas (post id: `christmas`)
+## `old-school` (Greek/filter/NES coffee card)
 
-A photorealistic documentary style photograph of a narrow residential street in central Athens,
-Greece, at dusk in winter. Warm string lights (fairy lights) strung between apartment balconies
-overhead, typical Greek balcony railings and shutters, parked scooters, worn pavement. Soft golden
-warm light mixed with cool blue twilight sky. Portrait orientation, roughly 4:5 aspect ratio. The
-street should be anonymous, generic Athens neighbourhood architecture, no famous landmark, no
-monument, no recognisable building, no readable signage or text, no people, no cars with visible
-license plates. Muted, slightly desaturated color grade, like a real photograph, not an
-illustration, not cartoonish, not over-saturated or garish. Subtle Christmas atmosphere through the
-string lights alone, nothing overtly festive or decorated beyond that.
+A photorealistic documentary style photograph of a cheerful Greek street kiosk (periptero) painted
+in fresh warm colours, on a sunny central Athens neighbourhood street, blue sky, clean pavement,
+colourful awnings. Portrait orientation, roughly 4:5 aspect ratio. Anonymous, generic Athens
+architecture, no famous landmark, no monument, no recognisable building, no readable signage,
+brand names or text, no people. Bright, positive, inviting daytime mood, like a real photograph,
+not an illustration, not cartoonish or garish.
 
-## New Year (post id: `new-year`)
+## `atmosphere-neighbourhood`
+
+A photorealistic documentary style photograph of a narrow central Athens neighbourhood street at
+midday, colorful ochre and terracotta apartment facades, blue shutters, a bougainvillea plant
+spilling over a balcony, clear blue sky, warm cheerful light. Portrait orientation, roughly 4:5
+aspect ratio. Anonymous, generic Athens architecture, no famous landmark, no monument, no
+recognisable building, no readable signage or text, no people. Bright, positive, inviting mood,
+like a real photograph, not an illustration, not cartoonish or garish.
+
+## `atmosphere-early` (06:00 / before sunrise)
+
+A photorealistic documentary style photograph of a central Athens neighbourhood square in early
+morning golden light, sun flare through tree leaves, clean pastel-coloured buildings, a few wooden
+benches, clear sky. Portrait orientation, roughly 4:5 aspect ratio. Anonymous, generic Athens
+architecture, no famous landmark, no monument, no recognisable building, no readable signage or
+text, no people. Bright, cheerful, inviting morning mood, like a real photograph, not an
+illustration, not cartoonish or garish.
+
+## `new-year`
 
 A photorealistic documentary style photograph of an empty central Athens neighbourhood street just
 after midnight in winter, quiet and calm. Streetlights glowing warm, a few lit apartment windows,
@@ -35,7 +53,7 @@ signage or text, no people, no visible license plates. Muted, slightly desaturat
 like a real photograph, not an illustration, not cartoonish or garish. A sense of quiet new
 beginning, nothing overtly celebratory like fireworks or confetti.
 
-## Easter (post id: `easter`)
+## `easter`
 
 A photorealistic documentary style photograph of a central Athens neighbourhood street in spring,
 daytime, soft warm sunlight. Ordinary Greek apartment buildings with balconies, some potted plants
@@ -46,7 +64,7 @@ slightly desaturated color grade, like a real photograph, not an illustration, n
 garish. A calm, hopeful spring morning mood, nothing overtly religious or symbolic beyond natural
 spring light and greenery.
 
-## Summer (post id: `summer`)
+## `summer`
 
 A photorealistic documentary style photograph of a central Athens neighbourhood street in summer,
 bright daylight, strong warm sunlight and hard shadows. Ordinary Greek apartment buildings with
@@ -56,7 +74,7 @@ no famous landmark, no monument, no recognisable building, no readable signage o
 no visible license plates. Vivid but natural color grade, like a real photograph, not an
 illustration, not cartoonish or garish. A bright, warm, unmistakably summer atmosphere.
 
-## Apokries / Carnival (post id: `apokries`)
+## `apokries` (Carnival)
 
 A photorealistic documentary style photograph of a central Athens neighbourhood street in late
 winter, early evening, warm streetlights just turning on against a dim blue sky. Ordinary Greek
