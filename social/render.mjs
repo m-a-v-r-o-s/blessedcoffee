@@ -283,15 +283,19 @@ const POSTS = [
   // ─── Menu, priced straight from MENU in src/App.jsx. ────────────────────────
   {
     id: 'old-school',
-    html: (bg) =>
+    html: (bg, real) =>
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">Για τους παραδοσιακους</div>
         <h1>Greek.<br>Filter.<br><em>NES.</em></h1>
         <div class="rule"></div>
         <div class="lede">Ελληνικός 1.80€ · Φίλτρου 2€ · NES 1.80€ · Americano 2€</div>
-      </div>`),
-    // bg pending: brighter/daytime Athens street, AI-generated or a curated stock photo
+      </div>`, bg, real),
+    bg: plate('athens-kiosk-day.png'),
+    // Light scrim despite being a plate, not a real venue photo: these newer bright/
+    // colorful plates lose the whole point of "brighter, more positive" under the
+    // old heavy dark scrim, which was tuned for the original moody set.
+    real: true,
     caption: {
       el: 'Ελληνικός, φίλτρου, νες, americano. Οι κλασικοί, στην τιμή που τους αξίζει.',
       en: 'Greek coffee, filter, NES, americano. The classics, at the price they deserve.',
@@ -382,7 +386,8 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Η γειτονιά μας, πριν ανοίξουμε.</div>
       </div>`, bg, real),
-    // bg pending: brighter/daytime Athens street, AI-generated or a curated stock photo
+    bg: plate('athens-street-bougainvillea.png'),
+    real: true,
     caption: {
       el: 'Η γειτονιά μας, πριν ανοίξουμε. Κάτω Πατήσια.',
       en: 'Our neighbourhood, before we open. Kato Patisia.',
@@ -390,15 +395,16 @@ const POSTS = [
   },
   {
     id: 'atmosphere-early',
-    html: (bg) =>
+    html: (bg, real) =>
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">06:00</div>
         <h1 class="sm">Πριν χαράξει,<br><em>είμαστε εδώ.</em></h1>
         <div class="rule"></div>
         <div class="lede">Ανοιχτά κάθε μέρα από τις 06:00.</div>
-      </div>`),
-    // bg pending: brighter/daytime Athens street, AI-generated or a curated stock photo
+      </div>`, bg, real),
+    bg: plate('athens-square-morning-light.png'),
+    real: true,
     caption: {
       el: 'Πριν χαράξει, είμαστε εδώ. Ανοιχτά κάθε μέρα από τις 06:00.',
       en: "Before sunrise, we're here. Open every day from 6am.",
@@ -555,7 +561,8 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Ευχές από όλους εμάς στο Blessed.</div>
       </div>`, bg, real),
-    // bg pending: quiet Athens neighbourhood street just after midnight, AI-generated or curated stock
+    bg: plate('athens-newyear-lights.png'),
+    real: true,
     caption: {
       el: 'Καλή χρονιά από όλους εμάς στο Blessed. Ό,τι καλύτερο για σένα και τους δικούς σου.',
       en: 'Happy New Year from everyone at Blessed. All the best to you and yours.',
@@ -571,7 +578,8 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Καλή Ανάσταση, γειτονιά.</div>
       </div>`, bg, real),
-    // bg pending: spring Athens neighbourhood street, AI-generated or curated stock
+    bg: plate('athens-bougainvillea-bloom.png'),
+    real: true,
     caption: {
       el: 'Καλό Πάσχα και καλή Ανάσταση, από όλους εμάς στο Blessed.',
       en: 'Happy Easter from everyone at Blessed.',
@@ -587,7 +595,8 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Από το Blessed, σε όλη τη γειτονιά.</div>
       </div>`, bg, real),
-    // bg pending: bright summer Athens neighbourhood street, AI-generated or curated stock
+    bg: plate('athens-street-summer-view.png'),
+    real: true,
     caption: {
       el: 'Καλό καλοκαίρι από όλους εμάς στο Blessed, σε όλη τη γειτονιά.',
       en: 'Happy summer from everyone at Blessed, to the whole neighbourhood.',
@@ -603,7 +612,8 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Με κέφι, στη γειτονιά μας.</div>
       </div>`, bg, real),
-    // bg pending: late-winter evening Athens neighbourhood street, AI-generated or curated stock
+    bg: plate('athens-apokries-streamers.png'),
+    real: true,
     caption: {
       el: 'Καλές Απόκριες από όλους εμάς στο Blessed.',
       en: 'Happy Apokries (Greek Carnival season) from everyone at Blessed.',
