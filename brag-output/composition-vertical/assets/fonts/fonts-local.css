@@ -1,0 +1,59 @@
+/* Self-hosted subset of the real site's own fonts (Playfair Display + Barlow Semi
+   Condensed), fetched from Google Fonts and stored locally per hyperframes-core's
+   font_family_without_font_face lint rule. Two files per Playfair Display style:
+   a broad Latin file, and a narrow exact-glyph kit that adds Greek coverage for
+   the site's real bilingual copy (Barlow Semi Condensed has no Greek subset on
+   Google Fonts at all — same gap the real site itself has). */
+
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: url('files/barlow-semi-condensed-normal-400-1.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  font-display: block;
+}
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 700;
+  src: url('files/barlow-semi-condensed-normal-700-4.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 400;
+  src: url('files/playfair-display-italic-400-5.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  font-display: block;
+}
+@font-face {
+  /* Narrow exact-glyph kit: covers the Greek line "Γεύση απ' τον Παράδεισο σε κάθε ποτήρι." */
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 400;
+  src: url('files/playfair-display-italic-400-12.woff2') format('woff2');
+  unicode-range: U+20, U+27, U+2e, U+301, U+393, U+3a0, U+3ac-3af, U+3b1, U+3b4-3b5, U+3b7-3ba, U+3bd, U+3bf-3c1, U+3c3-3c5, U+3cc-3cd;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 700;
+  src: url('files/playfair-display-italic-700-7.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  font-display: block;
+}
+@font-face {
+  /* Narrow exact-glyph kit: covers "A taste of heaven in every cup." + "Ελληνικός" */
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 700;
+  src: url('files/playfair-display-italic-700-11.woff2') format('woff2');
+  unicode-range: U+20, U+2e, U+41, U+61, U+63, U+65-66, U+68-69, U+6e-70, U+72-76, U+79, U+c1, U+e1, U+e9, U+ed, U+f3, U+fa, U+fd, U+107, U+144, U+155, U+15b, U+301, U+388, U+395, U+3ae-3af, U+3b7, U+3b9-3bb, U+3bd, U+3bf, U+3c2, U+3cc, U+1e55;
+  font-display: block;
+}
