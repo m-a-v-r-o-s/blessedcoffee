@@ -148,14 +148,13 @@ const POSTS = [
       <div class="body center" style="align-items:stretch">
         <div class="kicker" style="text-align:center">Ωραριο / Hours</div>
         <div class="rows">
-          <div class="row"><span class="k">ΔΕΥ – ΣΑΒ</span><span class="dots"></span><span class="v">06:00 – 22:00</span></div>
-          <div class="row"><span class="k">ΚΥΡΙΑΚΗ</span><span class="dots"></span><span class="v">07:00 – 22:00</span></div>
+          <div class="row"><span class="k">ΚΑΘΕ ΜΕΡΑ</span><span class="dots"></span><span class="v">07:00 – 22:00</span></div>
         </div>
         <div class="el">Κάθε μέρα, από νωρίς. / Open early, every day.</div>
       </div>`),
     caption: {
-      el: 'Είμαστε εδώ από τις 6 το πρωί, κάθε μέρα.',
-      en: "We open at 6am, every day. Sundays from 7.",
+      el: 'Είμαστε εδώ από τις 7 το πρωί, κάθε μέρα.',
+      en: "We open at 7am, every day.",
     },
   },
   {
@@ -163,14 +162,14 @@ const POSTS = [
     html: () =>
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
-        <div class="kicker">Ανοιχτα απο τις 06:00</div>
+        <div class="kicker">Ανοιχτα απο τις 07:00</div>
         <h1>The first<br><em>coffee</em><br>of the day.</h1>
         <div class="rule"></div>
         <div class="lede">Ο καφές σου σε περιμένει πριν από όλους.</div>
       </div>`),
     caption: {
-      el: 'Πριν τη βάρδια, πριν το γραφείο, πριν ξυπνήσει η γειτονιά. Από τις 06:00.',
-      en: 'Before the shift, before the office, before the neighbourhood wakes up. Open from 6am.',
+      el: 'Πριν τη βάρδια, πριν το γραφείο, πριν ξυπνήσει η γειτονιά. Από τις 07:00.',
+      en: 'Before the shift, before the office, before the neighbourhood wakes up. Open from 7am.',
     },
   },
   {
@@ -184,8 +183,8 @@ const POSTS = [
         <div class="lede">Freddo espresso 2.30€<br>Freddo cappuccino 2.60€</div>
       </div>`),
     caption: {
-      el: 'Espresso 1.80€. Freddo espresso 2.30€. Στα Κάτω Πατήσια, κάθε μέρα από τις 06:00.',
-      en: 'Espresso €1.80. Freddo espresso €2.30. Kato Patisia, every day from 6am.',
+      el: 'Espresso 1.80€. Freddo espresso 2.30€. Στα Κάτω Πατήσια, κάθε μέρα από τις 07:00.',
+      en: 'Espresso €1.80. Freddo espresso €2.30. Kato Patisia, every day from 7am.',
     },
   },
   {
@@ -398,16 +397,16 @@ const POSTS = [
     html: (bg, real) =>
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
-        <div class="kicker">06:00</div>
-        <h1 class="sm">Πριν χαράξει,<br><em>είμαστε εδώ.</em></h1>
+        <div class="kicker">07:00</div>
+        <h1 class="sm">Από νωρίς,<br><em>είμαστε εδώ.</em></h1>
         <div class="rule"></div>
-        <div class="lede">Ανοιχτά κάθε μέρα από τις 06:00.</div>
+        <div class="lede">Ανοιχτά κάθε μέρα από τις 07:00.</div>
       </div>`, bg, real),
     bg: plate('athens-square-morning-light.png'),
     real: true,
     caption: {
-      el: 'Πριν χαράξει, είμαστε εδώ. Ανοιχτά κάθε μέρα από τις 06:00.',
-      en: "Before sunrise, we're here. Open every day from 6am.",
+      el: 'Από νωρίς, είμαστε εδώ. Ανοιχτά κάθε μέρα από τις 07:00.',
+      en: "We're here early. Open every day from 7am.",
     },
   },
   // ─── Hiring, second role. ─────────────────────────────────────────────────────

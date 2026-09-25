@@ -33,7 +33,7 @@ aspect ratio. Anonymous, generic Athens architecture, no famous landmark, no mon
 recognisable building, no readable signage or text, no people. Bright, positive, inviting mood,
 like a real photograph, not an illustration, not cartoonish or garish.
 
-## `atmosphere-early` (06:00 / before sunrise)
+## `atmosphere-early` (07:00 / early morning)
 
 A photorealistic documentary style photograph of a central Athens neighbourhood square in early
 morning golden light, sun flare through tree leaves, clean pastel-coloured buildings, a few wooden

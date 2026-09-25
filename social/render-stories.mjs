@@ -129,8 +129,7 @@ const hoursStory = ({ note = 'Κάθε μέρα, από νωρίς. / Open early
   <img class="mark" src="${logo}">
   <div class="kicker">Ωραριο / Hours</div>
   <div class="rows">
-    <div class="row"><span class="k">ΔΕΥ – ΣΑΒ</span><span class="dots"></span><span class="v">06:00 – 22:00</span></div>
-    <div class="row"><span class="k">ΚΥΡΙΑΚΗ</span><span class="dots"></span><span class="v">07:00 – 22:00</span></div>
+    <div class="row"><span class="k">ΚΑΘΕ ΜΕΡΑ</span><span class="dots"></span><span class="v">07:00 – 22:00</span></div>
   </div>
   <div class="lede" style="margin-top:36px">${note}</div>
   ${foot()}
