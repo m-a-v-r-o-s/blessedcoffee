@@ -388,7 +388,7 @@ const STORIES = [
     ['ph-grind', '21-36-37', 'Φρεσκο αλεσμα', 'Κάθε δόση,<br><em>φρέσκια.</em>', 'Αλέθεται τη στιγμή.'],
     ['ph-delivery', '21-34-55', 'Delivery', 'Βαριέσαι;<br><em>Ερχόμαστε.</em>', 'e-food · Wolt · Box'],
     ['ph-shake', '21-36-48', 'Cocktails', 'Ανακατεύουμε<br><em>και κάτι άλλο.</em>', 'Όλα 6€'],
-    ['ph-cocktail-poll', '21-37-01', 'Ψηφισε', 'Πράσινο<br>ή <em>κόκκινο;</em>', 'Κοκτέιλ 6€'],
+    ['ph-cocktail-green', '21-37-01', 'Cocktails', 'Δροσιά<br><em>σε ποτήρι.</em>', 'Όλα 6€'],
     ['ph-cocktail-friday', '21-37-08', 'Παρασκευη', 'Παρασκευή;<br><em>Κοκτέιλ.</em>', 'Zombie · Daiquiri · Pornstar<br>Mojito · Cucumber Basil · Bubble Blessed'],
     ['ph-christmas', '23-09-29', 'Χριστουγεννα', 'Καλά<br><em>Χριστούγεννα.</em>', 'Από το Blessed, σε όλη τη γειτονιά.'],
   ].map(([id, t, kicker, headline, lede]) => ({ id, html: () => photoStory({ img: `Screenshot_2026-09-20_${t}.png`, kicker, headline, lede }) })),
