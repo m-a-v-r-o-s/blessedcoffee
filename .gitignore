@@ -25,3 +25,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Social render intermediates (regenerated on demand by social/cup/shots.mjs and the render scripts)
+social/cup/shots/
+social/.render-*tmp/

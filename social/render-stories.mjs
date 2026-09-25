@@ -13,7 +13,7 @@
 
 import { chromium } from 'playwright-core';
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -46,6 +46,14 @@ const logo = `data:image/webp;base64,${readFileSync(`${ROOT}/public/blessed-logo
 // old content costs zero new art direction.
 const feedCard = (f) => dataUri(`${ROOT}/social/library`, f);
 const asset = (f) => dataUri(`${ROOT}/public`, f);
+const photo = (f) => dataUri(`${ROOT}/social/photos`, f);
+// The 3D cup: posed stills rendered on demand by cup/shots.mjs, plus the cutout sticker.
+const CUP = `${ROOT}/social/cup`;
+const shot = (name) => {
+  if (!existsSync(`${CUP}/shots/${name}.png`)) execFileSync('node', [`${CUP}/shots.mjs`, name], { stdio: 'inherit' });
+  return dataUri(`${CUP}/shots`, `${name}.png`);
+};
+const sticker = dataUri(CUP, 'cup-watermark.png');
 
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Semi+Condensed:wght@300;400;500;600;700&display=swap');
@@ -115,6 +123,20 @@ const CSS = `
   .reformat .bar .site { font-size: 26px; font-weight: 600; letter-spacing: .3em; color: ${BRAND.muted}; }
   .reformat .photo { position: absolute; top: 285px; left: 0; width: 1080px; height: 1350px; }
   .reformat .photo img { width: 100%; height: 100%; object-fit: cover; }
+  /* ─── 3D cup stories ─── */
+  .card.cupground { background: linear-gradient(180deg, #1B1611 0%, #110E0B 50%, #070707 100%); justify-content: flex-end; padding-bottom: 360px; }
+  .card > .shot { position: absolute; z-index: 0; }
+  .card > .fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .card > .fade { position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(180deg, rgba(8,8,8,.1) 0%, rgba(8,8,8,0) 30%, rgba(8,8,8,.85) 58%, rgba(6,6,6,.97) 80%); }
+  .card > .over { position: relative; z-index: 1; }
+  .card > .sticker { position: absolute; z-index: 1;
+    filter: drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 24px 28px rgba(0,0,0,.55)); }
+  .thumbs { display: flex; justify-content: center; gap: 12px; margin-top: 56px; }
+  .thumbs figure { width: 300px; text-align: center; }
+  .thumbs img { width: 300px; display: block; }
+  .thumbs figcaption { margin-top: 10px; font-size: 30px; font-weight: 600; letter-spacing: .12em; color: ${BRAND.gold}; }
+  .thumbs figcaption b { display: block; font-family: 'Playfair Display', serif; font-size: 64px; color: ${BRAND.ink}; font-weight: 600; letter-spacing: 0; }
 `;
 
 const foot = () => `<div class="foot"><span>${BRAND.address}</span><span>${BRAND.site}</span></div>`;
@@ -208,6 +230,104 @@ const STORIES = [
   },
   { id: 'reformat-review-martha', html: () => reformatStory('review-martha.jpg') },
   { id: 'reformat-tagline', html: () => reformatStory('tagline.jpg') },
+  // ─── The 3D cup (social/cup/). Text stays between y=250 and y=1580, clear of IG's chrome. ──
+  {
+    id: 'story-cup-today',
+    html: () => `<div class="card cupground">
+      <img class="shot" src="${shot('hero-low')}" style="width:1000px;left:40px;top:20px">
+      <div class="over">
+        <div class="kicker">Σημερα / Today</div>
+        <h1>Ανοιχτά<br><em>07:00 – 22:00.</em></h1>
+        <div class="lede">Κάθε μέρα. Ρόδου 68.</div>
+      </div>
+      ${foot()}
+    </div>`,
+  },
+  {
+    id: 'story-poll-side',
+    html: () => `<div class="card">
+      <div class="kicker">Ψηφισε / Vote</div>
+      <h1 style="font-size:96px">Από ποια πλευρά<br><em>πίνεις;</em></h1>
+      <div class="thumbs">
+        <figure><img src="${shot('thumb-logo')}"><figcaption><b>A</b>ΤΟ ΣΗΜΑ</figcaption></figure>
+        <figure><img src="${shot('thumb-slogan')}"><figcaption><b>B</b>ΤΟ ΣΥΝΘΗΜΑ</figcaption></figure>
+        <figure><img src="${shot('thumb-partner')}"><figcaption><b>C</b>MRS ROSE</figcaption></figure>
+      </div>
+      ${foot()}
+    </div>`,
+  },
+  {
+    id: 'story-quiz-espresso',
+    html: () => `<div class="card cupground">
+      <img class="shot" src="${shot('front')}" style="width:860px;left:110px;top:90px">
+      <div class="over">
+        <div class="kicker">Quiz</div>
+        <h1>Πόσο κάνει<br>ο <em>espresso;</em></h1>
+        <div class="lede">Η απάντηση στο επόμενο story.</div>
+      </div>
+      ${foot()}
+    </div>`,
+  },
+  {
+    id: 'story-quiz-answer',
+    html: () => `<div class="card cupground">
+      <img class="shot" src="${shot('hero-34')}" style="width:1000px;left:60px;top:150px">
+      <div class="over">
+        <div class="kicker">Η απαντηση / The answer</div>
+        <div class="big-price">1.80<small>€</small></div>
+        <div class="lede">Espresso, κάθε μέρα από τις 07:00.</div>
+      </div>
+      ${foot()}
+    </div>`,
+  },
+  {
+    id: 'story-see-you-7',
+    html: () => `<div class="card cupground">
+      <img class="shot" src="${shot('lid-top')}" style="width:1000px;left:40px;top:250px">
+      <svg class="shot" viewBox="0 0 1000 1000" style="width:1000px;left:40px;top:250px">
+        <g stroke="${BRAND.gold}" stroke-linecap="round">
+          ${Array.from({ length: 12 }, (_, i) => `<line x1="500" y1="92" x2="500" y2="${i % 3 ? 112 : 128}" stroke-width="${i % 3 ? 3 : 6}" transform="rotate(${i * 30} 500 500)"/>`).join('')}
+          <line x1="500" y1="500" x2="500" y2="330" stroke-width="16" transform="rotate(210 500 500)"/>
+          <line x1="500" y1="500" x2="500" y2="190" stroke-width="9"/>
+        </g>
+        <circle cx="500" cy="500" r="18" fill="${BRAND.gold}"/>
+      </svg>
+      <div class="over">
+        <div class="kicker">Αυριο πρωι</div>
+        <h1>Τα λέμε<br><em>στις 07:00.</em></h1>
+      </div>
+      ${foot()}
+    </div>`,
+  },
+  {
+    id: 'story-cup-prices',
+    html: () => `<div class="card cupground" style="padding-bottom:340px">
+      <img class="shot" src="${shot('front')}" style="width:860px;left:110px;top:100px">
+      <div class="over">
+        <div class="kicker">Ζεστος καφες</div>
+        <div class="rows" style="gap:18px;margin-top:30px">
+          <div class="row"><span class="k">Espresso</span><span class="dots"></span><span class="v">1.80€</span></div>
+          <div class="row"><span class="k">Americano</span><span class="dots"></span><span class="v">2€</span></div>
+          <div class="row"><span class="k">Macchiato</span><span class="dots"></span><span class="v">2.10€</span></div>
+          <div class="row"><span class="k">Cappuccino</span><span class="dots"></span><span class="v">2.60€</span></div>
+        </div>
+      </div>
+      ${foot()}
+    </div>`,
+  },
+  {
+    id: 'story-cocktails',
+    html: () => `<div class="card" style="justify-content:flex-end;padding-bottom:360px">
+      <img class="fill" src="${photo('Screenshot_2026-09-20_21-36-56.png')}"><div class="fade"></div>
+      <img class="sticker" src="${sticker}" style="width:230px;right:96px;top:280px;transform:rotate(-8deg)">
+      <div class="over">
+        <div class="kicker" style="color:${BRAND.ink}">Cocktails</div>
+        <div class="big-price" style="font-size:200px">6<small>€</small></div>
+        <div class="lede" style="max-width:none">Zombie · Daiquiri · Pornstar<br>Mojito · Cucumber Basil · Bubble Blessed</div>
+      </div>
+      ${foot()}
+    </div>`,
+  },
 ];
 
 // ─── RENDER ──────────────────────────────────────────────────────────────

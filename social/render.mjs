@@ -8,7 +8,7 @@
 
 import { chromium } from 'playwright-core';
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -47,6 +47,15 @@ const plate = (f) => dataUri(`${ROOT}/social/plates`, f);
 // Real shop photography: the cup, the machine, the storefront. No scrim needed,
 // this IS the product, unlike the AI plates it never needs disguising.
 const photo = (f) => dataUri(`${ROOT}/social/photos`, f);
+// The 3D cup, built from real photos of the real cup (social/cup/). Posed stills are rendered on
+// demand by cup/shots.mjs; the two cutouts are the recurring brand mark (corner stamp, sticker, pattern).
+const CUP = `${ROOT}/social/cup`;
+const shot = (name) => {
+  if (!existsSync(`${CUP}/shots/${name}.png`)) execFileSync('node', [`${CUP}/shots.mjs`, name], { stdio: 'inherit' });
+  return dataUri(`${CUP}/shots`, `${name}.png`);
+};
+const stamp = dataUri(CUP, 'cup-watermark-white.png');
+const sticker = dataUri(CUP, 'cup-watermark.png');
 
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Semi+Condensed:wght@300;400;500;600;700&display=swap');
@@ -129,9 +138,32 @@ const CSS = `
     font-size: 46px; line-height: 1.3; max-width: 21ch;
   }
   .attrib { font-size: 27px; font-weight: 500; color: ${BRAND.muted}; letter-spacing: .03em; }
+  /* ─── 3D cup cards ─── */
+  .card.cupground { background: linear-gradient(180deg, #1B1611 0%, #110E0B 48%, #070707 100%); }
+  .card > .shot { position: absolute; z-index: 0; pointer-events: none; }
+  .card > .fill { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; }
+  .card > .fade { position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(180deg, rgba(8,8,8,0) 30%, rgba(8,8,8,.86) 62%, rgba(6,6,6,.98) 82%); }
+  /* Corner mark: the white cup stamp, same spot on every photo card, so the grid reads as one set. */
+  .card > .corner { position: absolute; top: 70px; right: 72px; width: 58px; opacity: .92; z-index: 2; }
+  /* Sticker: colour cutout with a die-cut white edge and a real drop shadow. */
+  .card > .sticker { position: absolute; z-index: 2;
+    filter: drop-shadow(4px 0 0 #fff) drop-shadow(-4px 0 0 #fff) drop-shadow(0 4px 0 #fff) drop-shadow(0 -4px 0 #fff) drop-shadow(0 22px 26px rgba(0,0,0,.55)); }
+  /* Pattern ground: the white stamp tiled at low opacity, rotated, behind type only. */
+  .card > .pattern { position: absolute; inset: -200px; z-index: 0; opacity: .06; transform: rotate(-12deg);
+    display: flex; flex-wrap: wrap; gap: 40px 38px; }
+  .card > .pattern i { width: 64px; height: 110px; background: var(--s) center / contain no-repeat; }
+  .idx { font-size: 26px; font-weight: 600; letter-spacing: .3em; color: ${BRAND.muted}; }
+  .swipe { font-size: 26px; font-weight: 500; letter-spacing: .3em; color: ${BRAND.gold}; text-transform: uppercase; }
+  .cols { display: flex; justify-content: flex-end; gap: 22px; font-size: 22px; font-weight: 600; letter-spacing: .24em; color: ${BRAND.muted}; }
+  .cols span { width: 130px; text-align: right; }
+  .rows.menu { gap: 10px; }
+  .rows.menu .k { font-size: 34px; }
+  .rows.menu .v { font-size: 36px; width: 130px; text-align: right; }
+  .rows.menu .v + .v { margin-left: -2px; }
 `;
 
-const shell = (inner, bg, real) => `<div class="card">
+const shell = (inner, bg, real, cls = '') => `<div class="card ${cls}">
   ${bg ? `<div class="bg${real ? ' real' : ''}"><img src="${bg}"></div>` : ''}
   ${inner}
   <div class="foot"><span>${BRAND.address}</span><span>${BRAND.site}</span></div>
@@ -618,6 +650,199 @@ const POSTS = [
       en: 'Happy Apokries (Greek Carnival season) from everyone at Blessed.',
     },
   },
+  // ─── The 3D cup (social/cup/), built from real photos of the real cup. ─────────
+  // Product stills on brand grounds, a label carousel, and the cutout as a system mark.
+  {
+    id: 'cup-hero',
+    html: () =>
+      shell(`<img class="shot" src="${shot('hero-low')}" style="width:1170px;left:250px;top:-70px">
+      <img class="mark" src="${logo}">
+      <div class="body tight" style="max-width:480px">
+        <div class="kicker">Take away</div>
+        <h1>Πάρ' τον<br><em>μαζί</em><br>σου.</h1>
+        <div class="rule"></div>
+        <div class="lede" style="max-width:12ch">Κάθε μέρα, 07:00 – 22:00.</div>
+      </div>`, null, false, 'cupground'),
+    caption: {
+      el: 'Πάρ\' τον μαζί σου. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα 07:00 – 22:00.',
+      en: 'Take it with you. Rodou 68, Kato Patisia, every day 07:00 – 22:00.',
+    },
+  },
+  {
+    id: 'cup-lid',
+    html: () =>
+      shell(`<img class="shot" src="${shot('lid-top')}" style="width:1000px;left:40px;top:10px">
+      <svg class="shot" viewBox="0 0 1000 1000" style="width:1000px;left:40px;top:10px">
+        <defs><path id="ring" d="M500,500 m-405,0 a405,405 0 1,1 810,0 a405,405 0 1,1 -810,0"/></defs>
+        <text font-family="Barlow Semi Condensed" font-weight="600" font-size="30" fill="${BRAND.gold}">
+          <textPath href="#ring" textLength="2500" lengthAdjust="spacing">ΡΟΔΟΥ 68 · ΚΑΤΩ ΠΑΤΗΣΙΑ · ΚΑΘΕ ΜΕΡΑ 07:00 – 22:00 · BLESSED.CAFE ·</textPath>
+        </text>
+      </svg>
+      <div class="body tight">
+        <div class="kicker">Απο πανω</div>
+        <h1 class="sm">Κλείσε το καπάκι.<br><em>Φύγαμε.</em></h1>
+      </div>`, null, false, 'cupground'),
+    caption: {
+      el: 'Κλείσε το καπάκι, φύγαμε. Ο καφές σου, έτοιμος για το δρόμο. Ρόδου 68, κάθε μέρα 07:00 – 22:00.',
+      en: 'Snap the lid on and go. Your coffee, ready for the road. Rodou 68, every day 07:00 – 22:00.',
+    },
+  },
+  {
+    id: 'cup-hot-coffee',
+    html: () =>
+      shell(`<img class="shot" src="${shot('front')}" style="width:940px;left:420px;top:40px">
+      <img class="mark" src="${logo}">
+      <div class="body tight" style="max-width:560px">
+        <div class="kicker">Ζεστος καφες</div>
+        <div class="rows" style="gap:14px;margin-top:10px">
+          <div class="row"><span class="k">Espresso</span><span class="dots"></span><span class="v">1.80€</span></div>
+          <div class="row"><span class="k">Americano</span><span class="dots"></span><span class="v">2€</span></div>
+          <div class="row"><span class="k">Macchiato</span><span class="dots"></span><span class="v">2.10€</span></div>
+          <div class="row"><span class="k">Cappuccino</span><span class="dots"></span><span class="v">2.60€</span></div>
+          <div class="row"><span class="k">Capp. Latte</span><span class="dots"></span><span class="v">2.60€</span></div>
+        </div>
+        <div class="rule" style="margin-top:14px"></div>
+        <div class="el">Σε ποτήρι που κρατάει ζεστό τον δρόμο.</div>
+      </div>`, null, false, 'cupground'),
+    caption: {
+      el: 'Espresso 1.80€, americano 2€, macchiato 2.10€, cappuccino 2.60€, cappuccino latte 2.60€. Στη Ρόδου 68, κάθε μέρα από τις 07:00.',
+      en: 'Espresso €1.80, americano €2, macchiato €2.10, cappuccino €2.60, cappuccino latte €2.60. Rodou 68, every day from 7am.',
+    },
+  },
+  // Carousel: cover, one slide per label panel, then where and when. Publish as one post, in order.
+  {
+    id: 'cup-carousel-1',
+    html: () =>
+      shell(`<img class="shot" src="${shot('hero-34')}" style="width:1030px;left:120px;top:10px">
+      <img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Ενα ποτηρι</div>
+        <h1>Τρεις<br><em>πλευρές.</em></h1>
+        <div class="swipe" style="margin-top:14px">Συρε →</div>
+      </div>`, null, false, 'cupground'),
+    caption: {
+      el: 'Ένα ποτήρι, τρεις πλευρές. Σύρε για να το γυρίσεις: το σήμα μας, το σύνθημά μας, ο καφές μας. Ποια είναι η δική σου;',
+      en: 'One cup, three sides. Swipe to turn it: our mark, our motto, our coffee. Which side is yours?',
+    },
+  },
+  {
+    id: 'cup-carousel-2',
+    html: () =>
+      shell(`<img class="fill" src="${shot('logo-close')}"><div class="fade"></div>
+      <div class="body tight">
+        <div class="idx">01 / 03</div>
+        <h1 class="sm">Coffee<br><em>&amp; spirits.</em></h1>
+        <div class="lede">Το σήμα μας, από το 2024.</div>
+      </div>`, null, false, 'cupground'),
+  },
+  {
+    id: 'cup-carousel-3',
+    html: () =>
+      shell(`<img class="fill" src="${shot('slogan-close')}"><div class="fade"></div>
+      <div class="body tight">
+        <div class="idx">02 / 03</div>
+        <h1 class="sm">Γεύση απ' τον<br><em>παράδεισο.</em></h1>
+        <div class="lede">Σε κάθε ποτήρι.</div>
+      </div>`, null, false, 'cupground'),
+  },
+  {
+    id: 'cup-carousel-4',
+    html: () =>
+      shell(`<img class="fill" src="${shot('partner-close')}"><div class="fade"></div>
+      <div class="body tight">
+        <div class="idx">03 / 03</div>
+        <h1 class="sm">Mrs Rose<br><em>Caffè.</em></h1>
+        <div class="lede">Ο συνεργάτης μας στον καφέ.</div>
+      </div>`, null, false, 'cupground'),
+  },
+  {
+    id: 'cup-carousel-5',
+    html: () =>
+      shell(`<img class="shot" src="${shot('front')}" style="width:760px;left:160px;top:-10px">
+      <div class="body tight" style="align-items:center;text-align:center">
+        <div class="kicker">Βρες το εδω</div>
+        <h1 class="sm">Ρόδου 68,<br><em>Κάτω Πατήσια.</em></h1>
+        <div class="rows" style="width:100%;margin-top:14px">
+          <div class="row"><span class="k">ΚΑΘΕ ΜΕΡΑ</span><span class="dots"></span><span class="v">07:00 – 22:00</span></div>
+        </div>
+      </div>`, null, false, 'cupground'),
+  },
+  // ─── The cutout as a system element. ─────────────────────────────────────────
+  {
+    id: 'coffee-menu-pattern',
+    html: () =>
+      shell(`<div class="pattern" style="--s:url(${stamp})">${'<i></i>'.repeat(160)}</div>
+      <img class="mark" src="${logo}">
+      <div class="body tight" style="justify-content:center">
+        <div class="kicker">Ο καφες μας / Our coffee</div>
+        <div class="cols" style="margin-top:18px"><span>MRS ROSE</span><span>DOLCE</span></div>
+        <div class="rows menu">
+          ${[['Freddo Espresso', '2.30€', '2.20€'], ['Freddo Cappuccino', '2.60€', '2.50€'], ['Cappuccino Latte', '2.60€', '2.50€'],
+             ['Cappuccino', '2.60€', '2.50€'], ['Espresso', '1.80€', '1.70€'], ['Macchiato', '2.10€', '2.10€'], ['Frappé', '1.80€', '–'],
+             ['NES', '1.80€', '–'], ['Φίλτρου', '2€', '–'], ['Ελληνικός', '1.80€', '–'], ['Americano', '2€', '–']]
+            .map(([k, a, b]) => `<div class="row"><span class="k">${k}</span><span class="dots"></span><span class="v">${a}</span><span class="v">${b}</span></div>`).join('')}
+        </div>
+      </div>`),
+    caption: {
+      el: 'Όλος ο καφές μας, Mrs Rose και Dolce. Από espresso 1.70€ μέχρι freddo cappuccino 2.60€. Ρόδου 68, κάθε μέρα 07:00 – 22:00.',
+      en: 'Our whole coffee menu, Mrs Rose and Dolce. From espresso at €1.70 to freddo cappuccino at €2.60. Rodou 68, every day 07:00 – 22:00.',
+    },
+  },
+  {
+    id: 'stamp-machine',
+    html: (bg, real) =>
+      shell(`<div class="fade"></div><img class="corner" src="${stamp}">
+      <img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Απο τη μηχανη</div>
+        <h1 class="sm">Κατευθείαν<br><em>στο χέρι σου.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Espresso 1.80€, για εδώ ή για το δρόμο.</div>
+      </div>`, bg, real),
+    bg: photo('Screenshot_2026-09-20_21-35-16.png'),
+    real: true,
+    caption: {
+      el: 'Από τη μηχανή, κατευθείαν στο χέρι σου. Espresso 1.80€, για εδώ ή για το δρόμο.',
+      en: 'Straight from the machine into your hand. Espresso €1.80, for here or to go.',
+    },
+  },
+  {
+    id: 'stamp-bar',
+    html: (bg, real) =>
+      shell(`<img class="sticker" src="${sticker}" style="width:220px;right:90px;top:120px;transform:rotate(9deg)">
+      <img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Φρεσκο αλεσμα</div>
+        <h1 class="sm">Αλέθεται<br><em>τη στιγμή.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Φρέσκος καφές, φτιαγμένος με μεράκι.</div>
+      </div>`, bg, real),
+    // Not 21-35-35: its chalkboard shows a happy-hour offer that isn't on the site.
+    bg: photo('Screenshot_2026-09-20_21-36-37.png'),
+    real: true,
+    caption: {
+      el: 'Αλέθεται τη στιγμή. Φρέσκος καφές, φτιαγμένος με μεράκι, κάθε μέρα από τις 07:00.',
+      en: 'Ground on the spot. Fresh coffee, made with love, every day from 7am.',
+    },
+  },
+  {
+    id: 'stamp-cocktails',
+    html: (bg, real) =>
+      shell(`<img class="corner" src="${stamp}">
+      <img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker" style="color:${BRAND.ink}">Cocktails · 6€</div>
+        <h1 class="sm">Και μετά<br><em>τον καφέ.</em></h1>
+        <div class="rule"></div>
+        <div class="lede" style="max-width:none">Zombie · Daiquiri · Pornstar<br>Mojito · Cucumber Basil · Bubble Blessed</div>
+      </div>`, bg, real),
+    bg: photo('Screenshot_2026-09-20_21-37-01.png'),
+    real: true,
+    caption: {
+      el: 'Και μετά τον καφέ: Zombie, Daiquiri, Pornstar, Mojito, Cucumber Basil, Bubble Blessed. Όλα 6€.',
+      en: 'And after the coffee: Zombie, Daiquiri, Pornstar, Mojito, Cucumber Basil, Bubble Blessed. All €6.',
+    },
+  },
 ];
 
 const TAGS =
@@ -644,7 +869,8 @@ for (const post of posts) {
   await page.setContent(`<style>${CSS}</style>${post.html(post.bg, post.real)}`, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready); // webfonts, or the type renders as fallback
   await page.screenshot({ path: `${TMP}/${post.id}.png` });
-  writeFileSync(
+  // Carousel slides after the first carry no caption: the cover's .txt covers the whole set.
+  if (post.caption) writeFileSync(
     `${OUT}/${post.id}.txt`,
     `${post.caption.el}\n\n${post.caption.en}\n\n${TAGS}\n`
   );
