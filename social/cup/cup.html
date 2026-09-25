@@ -61,7 +61,7 @@ label.anisotropy = 8;
 label.userData.mimeType = 'image/jpeg';
 const body = new THREE.Mesh(
   new THREE.CylinderGeometry(RT, RB, H, 160, 1, true, Math.PI),
-  new THREE.MeshPhysicalMaterial({ map: label, roughness: 0.8, side: THREE.DoubleSide })
+  new THREE.MeshPhysicalMaterial({ map: label, roughness: 0.8 })
 );
 body.name = 'Body';
 body.position.y = H / 2;
@@ -72,11 +72,22 @@ base.name = 'Base';
 base.rotation.x = Math.PI / 2;
 cup.add(base);
 
-// lid: profile traced from the photo silhouette (r, h) in px above the body rim, then scaled to mm
+// top cap under the lid, so the paper tube is never see-through
+const cap = new THREE.Mesh(new THREE.CircleGeometry(RT, 96), base.material);
+cap.name = 'Cap';
+cap.rotation.x = -Math.PI / 2;
+cap.position.y = H - 0.5;
+cup.add(cap);
+
+// lid: profile traced from the photo silhouette (r, h) in px above the body rim, then scaled to mm.
+// The first points are the snap-on skirt: it starts on the paper 5mm below the rim and wraps outside it,
+// so the lid always sits closed on the cup from any camera angle.
 const px = 0.102;
-const prof = [[430, -10], [440, 3], [480, 15], [486, 27], [482, 39], [476, 87], [468, 111], [446, 123], [413, 135],
+const skirt = 5, rAt = (d) => RT - (RT - RB) * d / H;       // paper radius d mm below the rim
+const prof = [[rAt(skirt) / px, -skirt / px], [(rAt(skirt) + 0.9) / px, -skirt / px], [(RT + 0.6) / px, -1 / px],
+  [466, 8], [480, 15], [486, 27], [482, 39], [476, 87], [468, 111], [446, 123], [413, 135],
   [411, 147], [402, 183], [398, 195], [387, 207], [353, 219], [277, 231], [140, 234], [0, 234]];
-const lidMat = new THREE.MeshPhysicalMaterial({ color: 0x08080a, roughness: 0.45, clearcoat: 0.35, clearcoatRoughness: 0.35 });
+const lidMat = new THREE.MeshPhysicalMaterial({ color: 0x08080a, roughness: 0.45, clearcoat: 0.35, clearcoatRoughness: 0.35, side: THREE.DoubleSide });
 const lid = new THREE.Mesh(
   new THREE.LatheGeometry(prof.reverse().map(([r, h]) => new THREE.Vector2(r * px, h * px)), 160),
   lidMat
