@@ -132,6 +132,17 @@ const CSS = `
   .card > .over { position: relative; z-index: 1; }
   .card > .sticker { position: absolute; z-index: 1;
     filter: drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 24px 28px rgba(0,0,0,.55)); }
+  /* Photo story: a real shop photo full-bleed, type low in the safe zone. Stories may reuse
+     the same photo with different lines; feed posts may not. */
+  .card.ph { justify-content: flex-end; padding-bottom: 330px; }
+  .card.ph > .fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .card.ph > .shade { position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(180deg, rgba(8,8,8,.55) 0%, rgba(8,8,8,0) 16%, rgba(8,8,8,0) 40%, rgba(6,6,6,.7) 58%, rgba(6,6,6,.94) 78%); }
+  .card.ph > .mark { position: absolute; top: 250px; left: 0; right: 0; z-index: 1; margin: 0 auto; }
+  .card.ph > .over, .card.ph > .foot { z-index: 1; }
+  .card.ph h1 { font-size: 92px; }
+  .card.ph .lede { color: #E4DCD2; }
+  .card.ph .kicker, .card.ph h1, .card.ph .lede { text-shadow: 0 1px 14px rgba(0,0,0,.7); }
   /* Summer ground: pale ice-blue, dark type. */
   .card.summer { background: #D7E6E8; color: #0A0A0A; }
   .card.summer .mark { filter: none; }
@@ -203,6 +214,18 @@ const priceStory = ({ kicker, price, note }) => `<div class="card">
 //    posts become free Story content with zero new art direction. No logo in
 //    the bars: every feed card already carries its own mark near its top edge,
 //    so a second one in the bar just doubles up.
+// 6. Photo story. Any real shop photo, any honest line: the photo can repeat across stories.
+const photoStory = ({ img, kicker, headline, lede = '' }) => `<div class="card ph">
+  <img class="fill" src="${photo(img)}"><div class="shade"></div>
+  <img class="mark" src="${logo}">
+  <div class="over">
+    <div class="kicker">${kicker}</div>
+    <h1>${headline}</h1>
+    ${lede ? `<div class="lede">${lede}</div>` : ''}
+  </div>
+  ${foot()}
+</div>`;
+
 const reformatStory = (file) => `<div class="reformat">
   <div class="bar top"><span class="site">${BRAND.site}</span></div>
   <div class="photo"><img src="${feedCard(file)}"></div>
@@ -354,6 +377,21 @@ const STORIES = [
       ${foot()}
     </div>`,
   },
+  // ─── Photo stories: the real photos again, new lines. Never 21-35-35 (unlisted happy-hour offer). ──
+  ...[
+    ['ph-morning', '21-34-43', 'Απο τις 07:00', 'Ο πρώτος<br><em>της ημέρας.</em>', 'Κάθε μέρα, Ρόδου 68.'],
+    ['ph-espresso', '21-34-55', 'Espresso', 'Φρέσκο,<br><em>κάθε φορά.</em>', 'Espresso 1.80€'],
+    ['ph-takeaway', '21-35-16', 'Take away', 'Για τον<br><em>δρόμο.</em>', 'Κάθε μέρα 07:00 – 22:00'],
+    ['ph-find-us', '21-35-58', 'Βρες μας', 'Ρόδου 68,<br><em>Κάτω Πατήσια.</em>', '07:00 – 22:00, κάθε μέρα.'],
+    ['ph-break', '21-36-13', 'Διαλειμμα', 'Πέντε λεπτά;<br><em>Πέρνα.</em>', 'Espresso 1.80€ · Cappuccino 2.60€'],
+    ['ph-for-you', '21-36-24', 'Η παραγγελια σου', 'Φτιαγμένη<br><em>για σένα.</em>', 'Με το χέρι, κάθε φορά.'],
+    ['ph-grind', '21-36-37', 'Φρεσκο αλεσμα', 'Κάθε δόση,<br><em>φρέσκια.</em>', 'Αλέθεται τη στιγμή.'],
+    ['ph-delivery', '21-34-55', 'Delivery', 'Βαριέσαι;<br><em>Ερχόμαστε.</em>', 'e-food · Wolt · Box'],
+    ['ph-shake', '21-36-48', 'Cocktails', 'Ανακατεύουμε<br><em>και κάτι άλλο.</em>', 'Όλα 6€'],
+    ['ph-cocktail-poll', '21-37-01', 'Ψηφισε', 'Πράσινο<br>ή <em>κόκκινο;</em>', 'Κοκτέιλ 6€'],
+    ['ph-cocktail-friday', '21-37-08', 'Παρασκευη', 'Παρασκευή;<br><em>Κοκτέιλ.</em>', 'Zombie · Daiquiri · Pornstar<br>Mojito · Cucumber Basil · Bubble Blessed'],
+    ['ph-christmas', '23-09-29', 'Χριστουγεννα', 'Καλά<br><em>Χριστούγεννα.</em>', 'Από το Blessed, σε όλη τη γειτονιά.'],
+  ].map(([id, t, kicker, headline, lede]) => ({ id, html: () => photoStory({ img: `Screenshot_2026-09-20_${t}.png`, kicker, headline, lede }) })),
 ];
 
 // ─── RENDER ──────────────────────────────────────────────────────────────

@@ -625,6 +625,38 @@ const POSTS = [
       en: "We're not just coffee. Cocktails, made right here.",
     },
   },
+  {
+    id: 'photo-cocktail-shake',
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Cocktails</div>
+        <h1>Μετρημένα,<br><em>στο χέρι.</em></h1>
+        <div class="lede">Κοκτέιλ 6€, φτιαγμένα στο μπαρ μας.</div>
+      </div>`, bg, real),
+    bg: photo('Screenshot_2026-09-20_21-36-48.png'),
+    real: true,
+    caption: {
+      el: 'Μετρημένα, στο χέρι. Όλα τα κοκτέιλ μας 6€, φτιαγμένα στο μπαρ μας: Zombie, Daiquiri, Pornstar, Mojito, Cucumber Basil, Bubble Blessed.',
+      en: 'Measured by hand. All our cocktails are €6, made at our bar: Zombie, Daiquiri, Pornstar, Mojito, Cucumber Basil, Bubble Blessed.',
+    },
+  },
+  {
+    id: 'photo-cocktail-red',
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Coffee &amp; spirits</div>
+        <h1>Όχι μόνο<br><em>καφές.</em></h1>
+        <div class="lede">Κοκτέιλ, όλα 6€.</div>
+      </div>`, bg, real),
+    bg: photo('Screenshot_2026-09-20_21-36-56.png'),
+    real: true,
+    caption: {
+      el: `Coffee & spirits, όπως λέει και το σήμα μας. Κοκτέιλ, όλα 6€, Ρόδου 68. ${TAG_US.el}`,
+      en: `Coffee & spirits, like our logo says. Cocktails, all €6, Rodou 68. ${TAG_US.en}`,
+    },
+  },
   // ─── Seasonal occasions: pure goodwill greetings only, no menu/offer/hours claim. ──
   {
     id: 'christmas',
