@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Blessed cup 3D</title>
+<!-- 16oz Blessed cup. Units are mm, measured off IMG_0239 (0.102 mm/px, 90mm top rim).
+     render.mjs drives this page: window.frame(t) poses the cup for time t (0..1 = one loop),
+     window.glb() returns the model as a base64 GLB. Open directly for a live preview. -->
+<style>
+  html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #1a1410; }
+  #bg { position: fixed; inset: -40px; background: url(boxes-backdrop.jpg) center / cover;
+        filter: blur(14px) brightness(.55) saturate(.9); }
+  canvas { position: fixed; inset: 0; filter: drop-shadow(0 40px 50px rgba(0,0,0,.55)); }
+  body.clean #bg { display: none; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+               "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="bg"></div>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+
+const q = new URLSearchParams(location.search);
+if (q.has('clean')) document.body.classList.add('clean');
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.9;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.28;
+
+const camera = new THREE.PerspectiveCamera(24, innerWidth / innerHeight, 100, 1400);
+
+// key light from upper left so the highlight travels across the label as it turns
+const key = new THREE.SpotLight(0xfff1e0, 7e3, 0, 0.5, 0.6, 1.2);
+key.position.set(-260, 260, 380);
+scene.add(key);
+const rim = new THREE.DirectionalLight(0xffe2c0, 0.6);
+rim.position.set(300, 120, -300);
+scene.add(rim);
+
+const cup = new THREE.Group();
+cup.name = 'BlessedCup16oz';
+scene.add(cup);
+
+// paper body: frustum, label wraps the full 360 with the logo facing +z
+const H = 132.8, RT = 45, RB = 31.2;
+const label = await new THREE.TextureLoader().loadAsync('cup-label.jpg');
+label.colorSpace = THREE.SRGBColorSpace;
+label.anisotropy = 8;
+label.userData.mimeType = 'image/jpeg';
+const body = new THREE.Mesh(
+  new THREE.CylinderGeometry(RT, RB, H, 160, 1, true, Math.PI),
+  new THREE.MeshPhysicalMaterial({ map: label, roughness: 0.8, side: THREE.DoubleSide })
+);
+body.name = 'Body';
+body.position.y = H / 2;
+cup.add(body);
+
+const base = new THREE.Mesh(new THREE.CircleGeometry(RB, 96), new THREE.MeshStandardMaterial({ color: 0xefebe4, roughness: 0.7 }));
+base.name = 'Base';
+base.rotation.x = Math.PI / 2;
+cup.add(base);
+
+// lid: profile traced from the photo silhouette (r, h) in px above the body rim, then scaled to mm
+const px = 0.102;
+const prof = [[430, -10], [440, 3], [480, 15], [486, 27], [482, 39], [476, 87], [468, 111], [446, 123], [413, 135],
+  [411, 147], [402, 183], [398, 195], [387, 207], [353, 219], [277, 231], [140, 234], [0, 234]];
+const lidMat = new THREE.MeshPhysicalMaterial({ color: 0x08080a, roughness: 0.45, clearcoat: 0.35, clearcoatRoughness: 0.35 });
+const lid = new THREE.Mesh(
+  new THREE.LatheGeometry(prof.reverse().map(([r, h]) => new THREE.Vector2(r * px, h * px)), 160),
+  lidMat
+);
+lid.name = 'Lid';
+lid.position.y = H;
+cup.add(lid);
+
+// sip spout: raised pad on the left of the logo (as in the photo), about 6mm proud of the dome
+const spout = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 32, 0, Math.PI * 2, 0, Math.PI / 2), lidMat);
+spout.name = 'Spout';
+spout.scale.set(17, 6, 15);
+spout.position.set(-24, H + 234 * px - 0.8, 0);
+cup.add(spout);
+
+camera.position.set(0, 150, 560);
+camera.lookAt(0, 72, 0);
+
+window.frame = (t) => {
+  // one full turn per loop, with a slow breathing tilt so it never reads as a flat product spin
+  cup.rotation.y = t * Math.PI * 2;
+  cup.rotation.z = Math.sin(t * Math.PI * 2) * 0.05;
+  cup.position.y = Math.sin(t * Math.PI * 4) * 3;
+  renderer.render(scene, camera);
+};
+
+window.glb = () => new Promise((res, rej) => {
+  const c = cup.clone();
+  c.rotation.set(0, 0, 0); c.position.set(0, 0, 0);
+  c.scale.setScalar(0.001);            // glTF is metres: 1 unit = 1 m
+  new GLTFExporter().parse(c, (buf) => {
+    let s = ''; const b = new Uint8Array(buf);
+    for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000));
+    res(btoa(s));
+  }, rej, { binary: true });
+});
+
+if (q.has('live')) renderer.setAnimationLoop((ms) => window.frame((ms / 8000) % 1));
+else window.frame(0);
+window.ready = true;
+</script>
+</body>
+</html>
