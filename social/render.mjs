@@ -39,13 +39,8 @@ const dataUri = (path, f) => `data:image/${mime(f)};base64,${readFileSync(`${pat
 
 const logo = `data:image/webp;base64,${readFileSync(`${ROOT}/public/blessed-logo.webp`).toString('base64')}`;
 const asset = (f) => dataUri(`${ROOT}/public`, f);
-// Backdrop plates: anonymous central-Athens street/neighbourhood texture only,
-// no recognisable landmark, no product shots. Mixed sourcing is fine, AI-generated
-// or a real stock photo the user curated, both get the same heavy scrim treatment
-// below since the point is staying anonymous texture, never a documentary shot.
-const plate = (f) => dataUri(`${ROOT}/social/plates`, f);
 // Real shop photography: the cup, the machine, the storefront. No scrim needed,
-// this IS the product, unlike the AI plates it never needs disguising.
+// this IS the product. No AI imagery anywhere in the library (dropped 2026-09-25).
 const photo = (f) => dataUri(`${ROOT}/social/photos`, f);
 // The 3D cup, built from real photos of the real cup (social/cup/). Posed stills are rendered on
 // demand by cup/shots.mjs; the two cutouts are the recurring brand mark (corner stamp, sticker, pattern).
@@ -74,8 +69,7 @@ const CSS = `
     padding: 84px 76px 64px;
     background: linear-gradient(168deg, #151210 0%, ${BRAND.ground} 58%, #060606 100%);
   }
-  /* Backdrop layer: the AI urban plate drops in here, never as the subject.
-     Heavy scrim + grain is what keeps it from reading as a stock photo. */
+  /* Backdrop layer for real photos (always with .real below). */
   .bg { position: absolute; inset: 0; z-index: 0; }
   .bg img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.55) contrast(1.05); }
   .bg::after {
@@ -83,7 +77,7 @@ const CSS = `
     background: linear-gradient(180deg, rgba(8,8,8,.72) 0%, rgba(8,8,8,.88) 55%, rgba(6,6,6,.96) 100%);
   }
   /* Real shop photos get a light bottom-only fade for caption legibility, not
-     the heavy full-frame scrim the AI plates need. No grayscale/contrast either. */
+     a heavy full-frame scrim. No grayscale/contrast either. */
   .bg.real img { filter: none; }
   .bg.real::after {
     background: linear-gradient(180deg, rgba(8,8,8,.05) 0%, rgba(8,8,8,.2) 60%, rgba(6,6,6,.9) 100%);
@@ -322,11 +316,6 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Ελληνικός 1.80€ · Φίλτρου 2€ · NES 1.80€ · Americano 2€</div>
       </div>`, bg, real),
-    bg: plate('athens-kiosk-day.png'),
-    // Light scrim despite being a plate, not a real venue photo: these newer bright/
-    // colorful plates lose the whole point of "brighter, more positive" under the
-    // old heavy dark scrim, which was tuned for the original moody set.
-    real: true,
     caption: {
       el: 'Ελληνικός, φίλτρου, νες, americano. Οι κλασικοί, στην τιμή που τους αξίζει.',
       en: 'Greek coffee, filter, NES, americano. The classics, at the price they deserve.',
@@ -342,7 +331,6 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Φλογέρα Φιλαδέλφεια 2.80€<br>Κρουασάν 2.50€</div>
       </div>`, bg),
-    bg: plate('athens-balconies.webp'),
     caption: {
       el: 'Μπουγάτσα κρέμα 2.80€. Φλογέρα Φιλαδέλφεια 2.80€. Φρέσκα, κάθε πρωί.',
       en: 'Cream bougatsa €2.80. Philadelphia flogera €2.80. Fresh, every morning.',
@@ -400,13 +388,12 @@ const POSTS = [
         </div>
         <div class="el">Και μετά τον καφέ.</div>
       </div>`, bg),
-    bg: plate('athens-wires-dusk.webp'),
     caption: {
       el: 'Μπύρα υπάρχει και στο Blessed. Amstel, Heineken, Corona, Alfa.',
       en: "Yes, we've got beer too. Amstel, Heineken, Corona, Alfa.",
     },
   },
-  // ─── Neighbourhood atmosphere: AI or curated-stock backdrop plates, low opacity, minimal type. ──
+  // ─── Neighbourhood atmosphere. Plain until the photographer's shots replace them. ──
   {
     id: 'atmosphere-neighbourhood',
     html: (bg, real) =>
@@ -417,8 +404,6 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Η γειτονιά μας, πριν ανοίξουμε.</div>
       </div>`, bg, real),
-    bg: plate('athens-street-bougainvillea.png'),
-    real: true,
     caption: {
       el: 'Η γειτονιά μας, πριν ανοίξουμε. Κάτω Πατήσια.',
       en: 'Our neighbourhood, before we open. Kato Patisia.',
@@ -434,8 +419,6 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Ανοιχτά κάθε μέρα από τις 07:00.</div>
       </div>`, bg, real),
-    bg: plate('athens-square-morning-light.png'),
-    real: true,
     caption: {
       el: 'Από νωρίς, είμαστε εδώ. Ανοιχτά κάθε μέρα από τις 07:00.',
       en: "We're here early. Open every day from 7am.",
@@ -563,7 +546,6 @@ const POSTS = [
     },
   },
   // ─── Seasonal occasions: pure goodwill greetings only, no menu/offer/hours claim. ──
-  // Prompts for their AI backdrops live in social/seasonal-plate-prompts.md.
   {
     id: 'christmas',
     html: (bg, real) =>
@@ -592,8 +574,6 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Ευχές από όλους εμάς στο Blessed.</div>
       </div>`, bg, real),
-    bg: plate('athens-newyear-lights.png'),
-    real: true,
     caption: {
       el: 'Καλή χρονιά από όλους εμάς στο Blessed. Ό,τι καλύτερο για σένα και τους δικούς σου.',
       en: 'Happy New Year from everyone at Blessed. All the best to you and yours.',
@@ -609,8 +589,6 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Καλή Ανάσταση, γειτονιά.</div>
       </div>`, bg, real),
-    bg: plate('athens-bougainvillea-bloom.png'),
-    real: true,
     caption: {
       el: 'Καλό Πάσχα και καλή Ανάσταση, από όλους εμάς στο Blessed.',
       en: 'Happy Easter from everyone at Blessed.',
@@ -626,8 +604,6 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Από το Blessed, σε όλη τη γειτονιά.</div>
       </div>`, bg, real),
-    bg: plate('athens-street-summer-view.png'),
-    real: true,
     caption: {
       el: 'Καλό καλοκαίρι από όλους εμάς στο Blessed, σε όλη τη γειτονιά.',
       en: 'Happy summer from everyone at Blessed, to the whole neighbourhood.',
@@ -643,8 +619,6 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Με κέφι, στη γειτονιά μας.</div>
       </div>`, bg, real),
-    bg: plate('athens-apokries-streamers.png'),
-    real: true,
     caption: {
       el: 'Καλές Απόκριες από όλους εμάς στο Blessed.',
       en: 'Happy Apokries (Greek Carnival season) from everyone at Blessed.',
