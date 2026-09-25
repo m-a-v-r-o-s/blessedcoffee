@@ -1,0 +1,35 @@
+name: Instagram token refresh
+
+# The Instagram token lasts 60 days and each refresh returns a new one,
+# which is written back into the IG_ACCESS_TOKEN secret. Weekly keeps
+# it far from expiry and always past Meta's 24h minimum token age.
+# IG_TOKEN_REFRESH_PAT: fine-grained PAT, this repo only, Secrets read/write.
+
+on:
+  schedule:
+    - cron: '0 3 * * 0'
+  workflow_dispatch: {}
+
+permissions: {}
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refresh and store token
+        shell: bash
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.IG_TOKEN_REFRESH_PAT }}
+        run: |
+          resp=$(curl -s --get https://graph.instagram.com/refresh_access_token \
+            --data-urlencode grant_type=ig_refresh_token \
+            --data-urlencode "access_token=$IG_ACCESS_TOKEN")
+          new=$(jq -r '.access_token // empty' <<<"$resp")
+          if [ -z "$new" ]; then
+            echo "Refresh failed: $resp"
+            exit 1
+          fi
+          echo "::add-mask::$new"
+          gh secret set IG_ACCESS_TOKEN --repo "$GITHUB_REPOSITORY" --body "$new"
+          echo "Token refreshed, expires in $(jq -r .expires_in <<<"$resp") seconds."
