@@ -77,7 +77,7 @@ address, hours, phone, 3 delivery platforms, Instagram — so it gets the longes
 
 ## Share copy (draft)
 Blessed Coffee & Spirits — Rodou 68, Kato Patisia. Specialty coffee by day, cocktails after dark.
-Open daily from 06:00.
+Open daily from 07:00.
 
 ## Audio direction
 - Role: cinematic support, restrained
@@ -157,7 +157,7 @@ Transition mood: dramatic wipe to black → Scene 5 (beat-locked: cut at 17.47s)
 ### Scene 5 — Outro / CTA — 6.13s (17.47–23.40s, incl. tail)
 Full black (site's real header/footer color). Real logo (`blessed-logo.webp`) scales in larger,
 centered, ~17.5–18.3s. A gold hairline draws under it. Then, as one settled card: real address
-("RODOU 68 · KATO PATISIA · ATHENS 104 45"), real hours ("MON–SAT 06:00–22:00 · SUN 07:00–22:00"),
+("RODOU 68 · KATO PATISIA · ATHENS 104 45"), real hours ("EVERY DAY · 07:00–22:00"),
 real phone ("211 218 1815") fade in together ~18.3–19.3s and hold. Real delivery-platform logos
 (e-food, Wolt, Box, exactly as shown on the real site) fade in as a row under the label "OR ORDER
 VIA" (the site's own real copy) ~19.6–20.4s and hold. Real Instagram handle "@blessedcoffee2024"

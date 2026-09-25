@@ -27,7 +27,7 @@ only per-scene layout changes between them.
   - "A taste of heaven in every cup."
   - "Γεύση απ' τον Παράδεισο σε κάθε ποτήρι."
   - "RODOU 68 · KATO PATISIA · ATHENS 104 45"
-  - "MON–SAT 06:00–22:00 · SUN 07:00–22:00"
+  - "EVERY DAY · 07:00–22:00"
   - "211 218 1815"
   - "OR ORDER VIA" (adapted from the real `orderVia` string "Or Order Via")
   - "@blessedcoffee2024"
