@@ -1,0 +1,37 @@
+{
+  "greetings": [
+    { "id": "new-year", "date": "01-01" },
+    { "id": "apokries", "date": "easter-49" },
+    { "id": "easter", "date": "easter" },
+    { "id": "summer", "date": "06-01" },
+    { "id": "christmas", "date": "12-25" }
+  ],
+  "seasons": {
+    "summer": { "months": [6, 7, 8], "feed": ["summer-freddo", "summer-freddo-cappuccino"], "stories": ["summer-freddo"] },
+    "winter": { "months": [12, 1, 2], "feed": ["winter-espresso", "winter-cappuccino"], "stories": ["winter-hot"] },
+    "december": { "months": [12], "feed": [], "stories": ["ph-christmas"] }
+  },
+  "stories": [
+    "open-hours",
+    "ph-morning",
+    "story-cup-prices",
+    "ph-shake",
+    "reformat-review-martha",
+    "ph-espresso",
+    "order-delivery",
+    "ph-cocktail-green",
+    "story-cup-today",
+    "ph-break",
+    "espresso-price",
+    "story-cocktails",
+    "ph-takeaway",
+    "sunday-open",
+    "ph-grind",
+    "ph-cocktail-friday",
+    "reformat-tagline",
+    "ph-for-you",
+    "ph-delivery",
+    "story-see-you-7",
+    "ph-find-us"
+  ]
+}
