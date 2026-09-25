@@ -132,6 +132,11 @@ const CSS = `
   .card > .over { position: relative; z-index: 1; }
   .card > .sticker { position: absolute; z-index: 1;
     filter: drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 24px 28px rgba(0,0,0,.55)); }
+  /* Summer ground: pale ice-blue, dark type. */
+  .card.summer { background: #D7E6E8; color: #0A0A0A; }
+  .card.summer .mark { filter: none; }
+  .card.summer .kicker, .card.summer h1 em { color: #8A6414; }
+  .card.summer .lede, .card.summer .foot { color: #4F5F63; border-color: #B5C8CB; }
   .thumbs { display: flex; justify-content: center; gap: 12px; margin-top: 56px; }
   .thumbs figure { width: 300px; text-align: center; }
   .thumbs img { width: 300px; display: block; }
@@ -328,13 +333,13 @@ const STORIES = [
       ${foot()}
     </div>`,
   },
-  // ─── Χειμώνας: winter coffee stories, same espresso-brown ground as the feed series. ──
+  // ─── Καλοκαίρι / Χειμώνας: seasonal coffee stories, same grounds as the feed series. ──
   {
-    id: 'winter-poll',
-    html: () => `<div class="card" style="background:linear-gradient(180deg,#33231A 0%,#22170F 100%)">
+    id: 'summer-freddo',
+    html: () => `<div class="card summer">
       <img class="mark" src="${logo}">
-      <div class="kicker">Χειμωνας · Ψηφισε</div>
-      <h1>Ζεστός<br>ή <em>freddo;</em></h1>
+      <div class="kicker">Καλοκαιρι</div>
+      <h1>Καύσωνας;<br><em>Freddo.</em></h1>
       <div class="lede">Freddo espresso 2.30€<br>Freddo cappuccino 2.60€</div>
       ${foot()}
     </div>`,

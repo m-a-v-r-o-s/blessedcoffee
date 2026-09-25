@@ -163,7 +163,11 @@ const CSS = `
   .card.s-winter { background: linear-gradient(180deg, #33231A 0%, #22170F 100%); --m: #B8A596; --line: #4A382C; }
   /* Photographer shot behind a series card: dark at the top for the headline, at the bottom for the rows. */
   .card.s > .fade.both { background: linear-gradient(180deg, rgba(8,8,8,.9) 0%, rgba(8,8,8,.6) 30%, rgba(8,8,8,.25) 50%, rgba(6,6,6,.94) 86%); }
-  .s-gold .mark, .s-cream .mark { filter: none; }
+  .card.s-summer { background: #D7E6E8; --i: #0A0A0A; --m: #4F5F63; --e: #8A6414; --line: #B5C8CB; }
+  .s-gold .mark, .s-cream .mark, .s-summer .mark { filter: none; }
+  /* Any ground with a photo behind it goes light-on-dark, whatever its own colours are. */
+  .card.s.photo { --i: ${BRAND.ink}; --m: #D8CFC6; --e: ${BRAND.gold}; --line: rgba(255,255,255,.2); }
+  .card.s.photo .mark { filter: invert(1); }
   .s .mark { width: 120px; }
   .stop { display: flex; justify-content: space-between; align-items: center; }
   .tag { font-size: 28px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; }
@@ -192,7 +196,7 @@ const shoot = (id) => existsSync(`${ROOT}/social/photos/shoot/${id}.jpg`) ? data
 const series = ({ ground, tag, say, cls = '', sub = '', extra = '', img = null }) =>
   shell(`${img ? `<img class="fill" src="${img}"><div class="fade both"></div>` : ''}<div class="stop"><img class="mark" src="${logo}"><span class="tag">${tag}</span></div>
   <div class="say ${cls}">${say}</div>
-  <div class="tail">${extra}${sub ? `<div class="sub">${sub}</div>` : ''}</div>`, null, false, `s s-${ground}" lang="el`);
+  <div class="tail">${extra}${sub ? `<div class="sub">${sub}</div>` : ''}</div>`, null, false, `s s-${ground}${img ? ' photo' : ''}" lang="el`);
 
 // Seeds customer photos of the cup (the "cup in the neighbourhood" repost series).
 const TAG_US = {
@@ -265,33 +269,34 @@ const POSTS = [
       en: `Running late? We're here until 10pm. For the second one, or the third. ${TAG_US.en}`,
     },
   },
-  // ─── Χειμώνας: winter coffee, espresso-brown ground. All prices from MENU. Each card takes its photographer shot
-  //     automatically once social/photos/shoot/<id>.jpg exists (see social/shot-list-winter.md). ──
+  // ─── Καλοκαίρι: summer coffee, ice-blue ground. Χειμώνας: winter coffee, espresso-brown ground.
+  //     All prices from MENU. Each card takes its photographer shot automatically once
+  //     social/photos/shoot/<id>.jpg exists (see social/shot-list-seasonal.md). ──
   {
-    id: 'winter-freddo',
-    html: () => series({ ground: 'winter', tag: 'Χειμώνας · №01', img: shoot('winter-freddo'),
-      say: 'Χειμώνας;<br><em>Freddo.</em>',
+    id: 'summer-freddo',
+    html: () => series({ ground: 'summer', tag: 'Καλοκαίρι · №01', img: shoot('summer-freddo'),
+      say: 'Καύσωνας;<br><em>Freddo.</em>',
       extra: rows([['Freddo espresso', '2.30€'], ['Freddo cappuccino', '2.60€']]),
-      sub: 'Ναι, και τον Ιανουάριο.' }),
+      sub: 'Με πολύ πάγο, από τις 07:00.' }),
     caption: {
-      el: `Χειμώνας; Freddo. Freddo espresso 2.30€, freddo cappuccino 2.60€, και τον Ιανουάριο. Ρόδου 68, κάθε μέρα από τις 07:00. ${TAG_US.el}`,
-      en: `Winter? Freddo. Freddo espresso €2.30, freddo cappuccino €2.60, January included. Rodou 68, every day from 7am. ${TAG_US.en}`,
+      el: `Καύσωνας; Freddo. Freddo espresso 2.30€, freddo cappuccino 2.60€, με πολύ πάγο. Ρόδου 68, κάθε μέρα από τις 07:00. ${TAG_US.el}`,
+      en: `Heatwave? Freddo. Freddo espresso €2.30, freddo cappuccino €2.60, plenty of ice. Rodou 68, every day from 7am. ${TAG_US.en}`,
     },
   },
   {
-    id: 'winter-freddo-cappuccino',
-    html: () => series({ ground: 'winter', tag: 'Χειμώνας · №02', img: shoot('winter-freddo-cappuccino'),
-      say: 'Κρύος καφές,<br>ζεστό <em>μπουφάν.</em>',
+    id: 'summer-freddo-cappuccino',
+    html: () => series({ ground: 'summer', tag: 'Καλοκαίρι · №02', img: shoot('summer-freddo-cappuccino'),
+      say: 'Πάγος κάτω,<br><em>αφρός πάνω.</em>',
       extra: rows([['Freddo cappuccino', '2.60€']]),
-      sub: 'Ο freddo δεν έχει εποχή.' }),
+      sub: 'Ο καφές του καλοκαιριού.' }),
     caption: {
-      el: `Κρύος καφές, ζεστό μπουφάν. Freddo cappuccino 2.60€, γιατί ο freddo δεν έχει εποχή. ${TAG_US.el}`,
-      en: `Cold coffee, warm jacket. Freddo cappuccino €2.60, because freddo has no season. ${TAG_US.en}`,
+      el: `Πάγος κάτω, αφρός πάνω. Freddo cappuccino 2.60€, ο καφές του καλοκαιριού. ${TAG_US.el}`,
+      en: `Ice below, foam on top. Freddo cappuccino €2.60, the coffee of the summer. ${TAG_US.en}`,
     },
   },
   {
     id: 'winter-espresso',
-    html: () => series({ ground: 'winter', tag: 'Χειμώνας · №03', img: shoot('winter-espresso'),
+    html: () => series({ ground: 'winter', tag: 'Χειμώνας · №01', img: shoot('winter-espresso'),
       say: 'Κρύο έξω.<br><em>Espresso</em><br>μέσα.',
       extra: rows([['Espresso', '1.80€']]),
       sub: 'Ζεστός, από τις 07:00.' }),
@@ -302,7 +307,7 @@ const POSTS = [
   },
   {
     id: 'winter-cappuccino',
-    html: () => series({ ground: 'winter', tag: 'Χειμώνας · №04', img: shoot('winter-cappuccino'),
+    html: () => series({ ground: 'winter', tag: 'Χειμώνας · №02', img: shoot('winter-cappuccino'),
       say: 'Cappuccino.<br><em>Για τα κρύα<br>πρωινά.</em>',
       extra: rows([['Cappuccino', '2.60€']]),
       sub: 'Πάρ\' τον μαζί σου, ζεσταίνει και τα χέρια.' }),
