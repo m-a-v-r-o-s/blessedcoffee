@@ -631,14 +631,14 @@ const POSTS = [
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">Cocktails</div>
-        <h1>Μετρημένα,<br><em>στο χέρι.</em></h1>
-        <div class="lede">Κοκτέιλ 6€, φτιαγμένα στο μπαρ μας.</div>
+        <h1>Ίδιο μπαρ,<br><em>άλλο ποτό.</em></h1>
+        <div class="lede">Εκεί που φτιάχνουμε τον καφέ σου. Κοκτέιλ 6€.</div>
       </div>`, bg, real),
     bg: photo('Screenshot_2026-09-20_21-36-48.png'),
     real: true,
     caption: {
-      el: 'Μετρημένα, στο χέρι. Όλα τα κοκτέιλ μας 6€, φτιαγμένα στο μπαρ μας: Zombie, Daiquiri, Pornstar, Mojito, Cucumber Basil, Bubble Blessed.',
-      en: 'Measured by hand. All our cocktails are €6, made at our bar: Zombie, Daiquiri, Pornstar, Mojito, Cucumber Basil, Bubble Blessed.',
+      el: 'Ίδιο μπαρ, άλλο ποτό. Εκεί που φτιάχνουμε τον καφέ σου, φτιάχνουμε και τα κοκτέιλ, όλα 6€: Zombie, Daiquiri, Pornstar, Mojito, Cucumber Basil, Bubble Blessed.',
+      en: 'Same bar, different drink. Where we make your coffee, we make the cocktails too, all €6: Zombie, Daiquiri, Pornstar, Mojito, Cucumber Basil, Bubble Blessed.',
     },
   },
   {
