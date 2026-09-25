@@ -160,6 +160,9 @@ const CSS = `
   .card.s { --i: ${BRAND.ink}; --m: ${BRAND.muted}; --e: ${BRAND.gold}; --line: #2A2422; color: var(--i); padding-top: 72px; }
   .card.s-gold { background: ${BRAND.gold}; --i: #0A0A0A; --m: rgba(10,10,10,.66); --e: #0A0A0A; --line: rgba(10,10,10,.28); }
   .card.s-cream { background: #F3EDE4; --i: #0A0A0A; --m: #6B5A4C; --e: #8A6414; --line: #D9CFC2; }
+  .card.s-winter { background: linear-gradient(180deg, #33231A 0%, #22170F 100%); --m: #B8A596; --line: #4A382C; }
+  /* Photographer shot behind a series card: dark at the top for the headline, at the bottom for the rows. */
+  .card.s > .fade.both { background: linear-gradient(180deg, rgba(8,8,8,.9) 0%, rgba(8,8,8,.6) 30%, rgba(8,8,8,.25) 50%, rgba(6,6,6,.94) 86%); }
   .s-gold .mark, .s-cream .mark { filter: none; }
   .s .mark { width: 120px; }
   .stop { display: flex; justify-content: space-between; align-items: center; }
@@ -184,8 +187,10 @@ const shell = (inner, bg, real, cls = '') => `<div class="card ${cls}">
 // Series card. ground: gold (07:00), cream (Είπατε, reviews), black (Στο μενού, Ζητείται).
 const rows = (items) => `<div class="rows">${items.map(([k, v]) =>
   `<div class="row"><span class="k">${k}</span><span class="dots"></span><span class="v">${v}</span></div>`).join('')}</div>`;
-const series = ({ ground, tag, say, cls = '', sub = '', extra = '' }) =>
-  shell(`<div class="stop"><img class="mark" src="${logo}"><span class="tag">${tag}</span></div>
+// Photographer shots land in social/photos/shoot/<id>.jpg; until then the card renders text-only.
+const shoot = (id) => existsSync(`${ROOT}/social/photos/shoot/${id}.jpg`) ? dataUri(`${ROOT}/social/photos/shoot`, `${id}.jpg`) : null;
+const series = ({ ground, tag, say, cls = '', sub = '', extra = '', img = null }) =>
+  shell(`${img ? `<img class="fill" src="${img}"><div class="fade both"></div>` : ''}<div class="stop"><img class="mark" src="${logo}"><span class="tag">${tag}</span></div>
   <div class="say ${cls}">${say}</div>
   <div class="tail">${extra}${sub ? `<div class="sub">${sub}</div>` : ''}</div>`, null, false, `s s-${ground}" lang="el`);
 
@@ -258,6 +263,52 @@ const POSTS = [
     caption: {
       el: `Άργησες; Είμαστε εδώ ως τις 22:00. Για τον δεύτερο, ή τον τρίτο. ${TAG_US.el}`,
       en: `Running late? We're here until 10pm. For the second one, or the third. ${TAG_US.en}`,
+    },
+  },
+  // ─── Χειμώνας: winter coffee, espresso-brown ground. All prices from MENU. Each card takes its photographer shot
+  //     automatically once social/photos/shoot/<id>.jpg exists (see social/shot-list-winter.md). ──
+  {
+    id: 'winter-freddo',
+    html: () => series({ ground: 'winter', tag: 'Χειμώνας · №01', img: shoot('winter-freddo'),
+      say: 'Χειμώνας;<br><em>Freddo.</em>',
+      extra: rows([['Freddo espresso', '2.30€'], ['Freddo cappuccino', '2.60€']]),
+      sub: 'Ναι, και τον Ιανουάριο.' }),
+    caption: {
+      el: `Χειμώνας; Freddo. Freddo espresso 2.30€, freddo cappuccino 2.60€, και τον Ιανουάριο. Ρόδου 68, κάθε μέρα από τις 07:00. ${TAG_US.el}`,
+      en: `Winter? Freddo. Freddo espresso €2.30, freddo cappuccino €2.60, January included. Rodou 68, every day from 7am. ${TAG_US.en}`,
+    },
+  },
+  {
+    id: 'winter-freddo-cappuccino',
+    html: () => series({ ground: 'winter', tag: 'Χειμώνας · №02', img: shoot('winter-freddo-cappuccino'),
+      say: 'Κρύος καφές,<br>ζεστό <em>μπουφάν.</em>',
+      extra: rows([['Freddo cappuccino', '2.60€']]),
+      sub: 'Ο freddo δεν έχει εποχή.' }),
+    caption: {
+      el: `Κρύος καφές, ζεστό μπουφάν. Freddo cappuccino 2.60€, γιατί ο freddo δεν έχει εποχή. ${TAG_US.el}`,
+      en: `Cold coffee, warm jacket. Freddo cappuccino €2.60, because freddo has no season. ${TAG_US.en}`,
+    },
+  },
+  {
+    id: 'winter-espresso',
+    html: () => series({ ground: 'winter', tag: 'Χειμώνας · №03', img: shoot('winter-espresso'),
+      say: 'Κρύο έξω.<br><em>Espresso</em><br>μέσα.',
+      extra: rows([['Espresso', '1.80€']]),
+      sub: 'Ζεστός, από τις 07:00.' }),
+    caption: {
+      el: `Κρύο έξω, espresso μέσα. Espresso 1.80€, κάθε μέρα από τις 07:00, Ρόδου 68. ${TAG_US.el}`,
+      en: `Cold outside, espresso inside. Espresso €1.80, every day from 7am, Rodou 68. ${TAG_US.en}`,
+    },
+  },
+  {
+    id: 'winter-cappuccino',
+    html: () => series({ ground: 'winter', tag: 'Χειμώνας · №04', img: shoot('winter-cappuccino'),
+      say: 'Cappuccino.<br><em>Για τα κρύα<br>πρωινά.</em>',
+      extra: rows([['Cappuccino', '2.60€']]),
+      sub: 'Πάρ\' τον μαζί σου, ζεσταίνει και τα χέρια.' }),
+    caption: {
+      el: `Cappuccino 2.60€, για τα κρύα πρωινά. Πάρ' τον μαζί σου, ζεσταίνει και τα χέρια. Από τις 07:00. ${TAG_US.el}`,
+      en: `Cappuccino €2.60, for the cold mornings. Take it with you, it warms your hands too. From 7am. ${TAG_US.en}`,
     },
   },
   // ─── Στο μενού: the promos, black ground. Priced straight from MENU in src/App.jsx. ──

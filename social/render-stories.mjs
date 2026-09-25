@@ -328,6 +328,27 @@ const STORIES = [
       ${foot()}
     </div>`,
   },
+  // ─── Χειμώνας: winter coffee stories, same espresso-brown ground as the feed series. ──
+  {
+    id: 'winter-poll',
+    html: () => `<div class="card" style="background:linear-gradient(180deg,#33231A 0%,#22170F 100%)">
+      <img class="mark" src="${logo}">
+      <div class="kicker">Χειμωνας · Ψηφισε</div>
+      <h1>Ζεστός<br>ή <em>freddo;</em></h1>
+      <div class="lede">Freddo espresso 2.30€<br>Freddo cappuccino 2.60€</div>
+      ${foot()}
+    </div>`,
+  },
+  {
+    id: 'winter-hot',
+    html: () => `<div class="card" style="background:linear-gradient(180deg,#33231A 0%,#22170F 100%)">
+      <img class="mark" src="${logo}">
+      <div class="kicker">Χειμωνας</div>
+      <h1>Κρύο έξω.<br><em>Ζεστός</em> μέσα.</h1>
+      <div class="lede">Espresso 1.80€<br>Cappuccino 2.60€</div>
+      ${foot()}
+    </div>`,
+  },
 ];
 
 // ─── RENDER ──────────────────────────────────────────────────────────────
