@@ -155,6 +155,24 @@ const CSS = `
   .rows.menu .k { font-size: 34px; }
   .rows.menu .v { font-size: 36px; width: 130px; text-align: right; }
   .rows.menu .v + .v { margin-left: -2px; }
+  /* ─── Series cards (2026-09-26, Blank Street playbook): one flat ground per series so the grid
+     reads as recurring shows, big conversational type, the fact as the punchline. ─── */
+  .card.s { --i: ${BRAND.ink}; --m: ${BRAND.muted}; --e: ${BRAND.gold}; --line: #2A2422; color: var(--i); padding-top: 72px; }
+  .card.s-gold { background: ${BRAND.gold}; --i: #0A0A0A; --m: rgba(10,10,10,.66); --e: #0A0A0A; --line: rgba(10,10,10,.28); }
+  .card.s-cream { background: #F3EDE4; --i: #0A0A0A; --m: #6B5A4C; --e: #8A6414; --line: #D9CFC2; }
+  .s-gold .mark, .s-cream .mark { filter: none; }
+  .s .mark { width: 120px; }
+  .stop { display: flex; justify-content: space-between; align-items: center; }
+  .tag { font-size: 28px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; }
+  .say { font-family: 'Playfair Display', serif; font-weight: 600; font-size: 150px; line-height: .98; letter-spacing: -.02em; margin-top: 96px; }
+  .say.sm { font-size: 118px; }
+  .say.q { font-size: 96px; line-height: 1.1; font-style: italic; font-weight: 400; }
+  .say em { color: var(--e); }
+  .tail { margin-top: auto; padding-bottom: 30px; display: flex; flex-direction: column; gap: 22px; }
+  .sub { font-size: 40px; font-weight: 400; line-height: 1.3; color: var(--m); }
+  .s .row .v { color: var(--e); }
+  .s .row .dots { border-color: var(--line); }
+  .s .foot { color: var(--m); border-color: var(--line); }
 `;
 
 const shell = (inner, bg, real, cls = '') => `<div class="card ${cls}">
@@ -163,84 +181,126 @@ const shell = (inner, bg, real, cls = '') => `<div class="card ${cls}">
   <div class="foot"><span>${BRAND.address}</span><span>${BRAND.site}</span></div>
 </div>`;
 
+// Series card. ground: gold (07:00), cream (Είπατε, reviews), black (Στο μενού, Ζητείται).
+const rows = (items) => `<div class="rows">${items.map(([k, v]) =>
+  `<div class="row"><span class="k">${k}</span><span class="dots"></span><span class="v">${v}</span></div>`).join('')}</div>`;
+const series = ({ ground, tag, say, cls = '', sub = '', extra = '' }) =>
+  shell(`<div class="stop"><img class="mark" src="${logo}"><span class="tag">${tag}</span></div>
+  <div class="say ${cls}">${say}</div>
+  <div class="tail">${extra}${sub ? `<div class="sub">${sub}</div>` : ''}</div>`, null, false, `s s-${ground}" lang="el`);
+
+// Seeds customer photos of the cup (the "cup in the neighbourhood" repost series).
+const TAG_US = {
+  el: 'Τράβα το ποτήρι σου και κάνε tag @blessedcoffee2024.',
+  en: 'Snap your cup and tag @blessedcoffee2024.',
+};
+
 // ─── POSTS ───────────────────────────────────────────────────────────────────
 // caption.el / caption.en are published together: the cafe serves both languages
 // and the existing feed already mixes them.
 const POSTS = [
+  // ─── 07:00: the morning-routine series, gold ground. Facts: hours + MENU only. ──
   {
-    id: 'hours',
-    html: () =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body center" style="align-items:stretch">
-        <div class="kicker" style="text-align:center">Ωραριο / Hours</div>
-        <div class="rows">
-          <div class="row"><span class="k">ΚΑΘΕ ΜΕΡΑ</span><span class="dots"></span><span class="v">07:00 – 22:00</span></div>
-        </div>
-        <div class="el">Κάθε μέρα, από νωρίς. / Open early, every day.</div>
-      </div>`),
+    id: 'early',
+    html: () => series({ ground: 'gold', tag: '07:00 · №01',
+      say: 'Πρώτα<br>ο καφές.<br><em>Μετά όλα<br>τα άλλα.</em>',
+      sub: 'Ανοιχτά κάθε μέρα από τις 07:00.' }),
     caption: {
-      el: 'Είμαστε εδώ από τις 7 το πρωί, κάθε μέρα.',
-      en: "We open at 7am, every day.",
+      el: `Πρώτα ο καφές, μετά όλα τα άλλα. Ανοιχτά κάθε μέρα από τις 07:00, Ρόδου 68. ${TAG_US.el}`,
+      en: `Coffee first, everything else after. Open every day from 7am, Rodou 68. ${TAG_US.en}`,
     },
   },
   {
-    id: 'early',
-    html: () =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body tight">
-        <div class="kicker">Ανοιχτα απο τις 07:00</div>
-        <h1>The first<br><em>coffee</em><br>of the day.</h1>
-        <div class="rule"></div>
-        <div class="lede">Ο καφές σου σε περιμένει πριν από όλους.</div>
-      </div>`),
+    id: '0700-alarm',
+    html: () => series({ ground: 'gold', tag: '07:00 · №02',
+      say: 'Ξυπνητήρι:<br>06:45.<br><em>Blessed:<br>07:00.</em>',
+      sub: 'Κάθε μέρα. Ρόδου 68, Κάτω Πατήσια.' }),
     caption: {
-      el: 'Πριν τη βάρδια, πριν το γραφείο, πριν ξυπνήσει η γειτονιά. Από τις 07:00.',
-      en: 'Before the shift, before the office, before the neighbourhood wakes up. Open from 7am.',
+      el: `Ξυπνητήρι 06:45, Blessed 07:00. Κάθε μέρα, Ρόδου 68. ${TAG_US.el}`,
+      en: `Alarm at 6:45, Blessed at 7:00. Every day, Rodou 68. ${TAG_US.en}`,
+    },
+  },
+  {
+    id: '0700-first',
+    html: () => series({ ground: 'gold', tag: '07:00 · №03',
+      say: 'Μη μου<br>μιλάς πριν<br>τον <em>πρώτο.</em>',
+      sub: 'Εμείς καταλαβαίνουμε. Από τις 07:00.' }),
+    caption: {
+      el: `Μη μου μιλάς πριν τον πρώτο καφέ. Εμείς καταλαβαίνουμε, από τις 07:00. ${TAG_US.el}`,
+      en: `Don't talk to me before the first coffee. We get it, from 7am. ${TAG_US.en}`,
+    },
+  },
+  {
+    id: '0700-breakfast',
+    html: () => series({ ground: 'gold', tag: '07:00 · №04',
+      say: 'Μπουγάτσα<br>και freddo.<br><em>Πρωινό.</em>',
+      extra: rows([['Μπουγάτσα κρέμα', '2.80€'], ['Freddo espresso', '2.30€']]) }),
+    caption: {
+      el: `Μπουγάτσα κρέμα 2.80€ και freddo espresso 2.30€. Το πρωινό, λυμένο. Από τις 07:00. ${TAG_US.el}`,
+      en: `Cream bougatsa €2.80 and a freddo espresso €2.30. Breakfast, sorted. From 7am. ${TAG_US.en}`,
+    },
+  },
+  {
+    id: '0700-sunday',
+    html: () => series({ ground: 'gold', tag: '07:00 · №05',
+      say: 'Κυριακή;<br><em>Ανοιχτά.</em>',
+      sub: 'Κάθε μέρα 07:00 – 22:00. Ναι, κάθε μέρα.' }),
+    caption: {
+      el: `Κυριακή; Ανοιχτά. Κάθε μέρα 07:00 – 22:00, Ρόδου 68. ${TAG_US.el}`,
+      en: `Sunday? Open. Every day 07:00 – 22:00, Rodou 68. ${TAG_US.en}`,
+    },
+  },
+  {
+    id: '0700-late',
+    html: () => series({ ground: 'gold', tag: '07:00 · №06',
+      say: 'Άργησες;<br>Είμαστε εδώ<br>ως τις <em>22:00.</em>',
+      sub: 'Για τον δεύτερο. Ή τον τρίτο.' }),
+    caption: {
+      el: `Άργησες; Είμαστε εδώ ως τις 22:00. Για τον δεύτερο, ή τον τρίτο. ${TAG_US.el}`,
+      en: `Running late? We're here until 10pm. For the second one, or the third. ${TAG_US.en}`,
+    },
+  },
+  // ─── Στο μενού: the promos, black ground. Priced straight from MENU in src/App.jsx. ──
+  {
+    id: 'hours',
+    html: () => series({ ground: 'black', tag: 'Στο μενού · Ωράριο',
+      say: '07:00 –<br>22:00.<br><em>Κάθε μέρα.</em>',
+      sub: 'Ναι, και Κυριακή.' }),
+    caption: {
+      el: 'Είμαστε εδώ από τις 7 το πρωί ως τις 10 το βράδυ, κάθε μέρα. Και Κυριακή.',
+      en: 'We open at 7am and close at 10pm, every day. Sundays too.',
     },
   },
   {
     id: 'espresso-price',
-    html: () =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body tight">
-        <div class="kicker">Espresso</div>
-        <div class="big-price">1.80<small>€</small></div>
-        <div class="rule"></div>
-        <div class="lede">Freddo espresso 2.30€<br>Freddo cappuccino 2.60€</div>
-      </div>`),
+    html: () => series({ ground: 'black', tag: 'Στο μενού · Espresso',
+      say: 'Espresso.<br><em>1.80€.</em>',
+      extra: rows([['Freddo espresso', '2.30€'], ['Freddo cappuccino', '2.60€']]),
+      sub: 'Αυτό. Δεν έχουμε κάτι άλλο να πούμε.' }),
     caption: {
-      el: 'Espresso 1.80€. Freddo espresso 2.30€. Στα Κάτω Πατήσια, κάθε μέρα από τις 07:00.',
-      en: 'Espresso €1.80. Freddo espresso €2.30. Kato Patisia, every day from 7am.',
+      el: 'Espresso 1.80€. Freddo espresso 2.30€. Freddo cappuccino 2.60€. Στα Κάτω Πατήσια, κάθε μέρα από τις 07:00.',
+      en: 'Espresso €1.80. Freddo espresso €2.30. Freddo cappuccino €2.60. Kato Patisia, every day from 7am.',
     },
   },
   {
     id: 'delivery',
-    html: () =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body">
-        <div class="kicker">Delivery</div>
-        <h1 class="sm">Φέρνουμε<br>τον καφέ<br><em>σε σένα.</em></h1>
-        <div class="partners">
+    html: () => series({ ground: 'black', tag: 'Στο μενού · Delivery',
+      say: 'Βαριέσαι<br>να κατέβεις;<br><em>Ερχόμαστε.</em>',
+      extra: `<div class="partners">
           <span><img src="${asset('efood-logo.webp')}"></span>
           <span><img src="${asset('wolt-logo.webp')}"></span>
           <span><img src="${asset('box-logo.png')}"></span>
-        </div>
-      </div>`),
+        </div>` }),
     caption: {
-      el: 'e-food, Wolt και Box. Ο καφές και η πίτα σου, στην πόρτα σου.',
-      en: 'Now on e-food, Wolt and Box. Coffee and pastries delivered across Kato Patisia.',
+      el: 'Βαριέσαι να κατέβεις; Ερχόμαστε εμείς. e-food, Wolt και Box: ο καφές και η πίτα σου, στην πόρτα σου.',
+      en: "Can't be bothered to come down? We'll come to you. e-food, Wolt and Box: coffee and pastries to your door.",
     },
   },
   {
     id: 'hiring',
-    html: () =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body tight">
-        <div class="kicker">Ζητειται / We are hiring</div>
-        <h1>Barista<br><em>wanted.</em></h1>
-        <div class="rule"></div>
-        <div class="lede">Με πάθος για τον specialty καφέ. Πλήρης ή μερική απασχόληση.</div>
-      </div>`),
+    html: () => series({ ground: 'black', tag: 'Ζητείται',
+      say: 'Ψάχνουμε<br><em>barista.</em>',
+      sub: 'Με πάθος για τον specialty καφέ. Πλήρης ή μερική απασχόληση.' }),
     caption: {
       el: 'Ψάχνουμε barista με πάθος για τον specialty καφέ. Πλήρης ή μερική απασχόληση. Στείλε μας μήνυμα ή πέρασε από το μαγαζί.',
       en: 'We are looking for a barista with specialty coffee experience. Full or part-time. DM us or drop by.',
@@ -259,32 +319,23 @@ const POSTS = [
       en: 'A taste of heaven in every cup. Rodou 68, Kato Patisia.',
     },
   },
-  // ─── Real Google reviews, quoted as-is. Strongest kind of proof: not our words. ──
+  // ─── Είπατε: real Google reviews (src/App.jsx reviews), cream ground. Card quotes are
+  //     verbatim excerpts with accents restored; the caption carries the full text. ──
   {
     id: 'review-martha',
-    html: () =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body tight">
-        <div class="kicker">★★★★★ Google Review</div>
-        <div class="quote">"Nice coffee and something for cravings, it's a must, with fast and polite service."</div>
-        <div class="rule"></div>
-        <div class="attrib">Martha Grigoriou</div>
-      </div>`),
+    html: () => series({ ground: 'cream', tag: 'Είπατε · ★★★★★', cls: 'q',
+      say: '«Ωραίος καφές και κάτι για τη λιγούρα, είναι <em>ό,τι πρέπει.</em>»',
+      sub: 'Martha Grigoriou, Google Maps' }),
     caption: {
-      el: 'Πέντε αστέρια από πραγματικούς πελάτες. "Ωραίος καφές και κάτι για τη λιγούρα, είναι ό,τι πρέπει, με γρήγορη και ευγενική εξυπηρέτηση." Έγραψε η Martha Grigoriou στο Google Maps.',
-      en: 'Five stars, real customer. "Nice coffee and something for cravings, it\'s a must, with fast and polite service." From Martha Grigoriou, via Google Maps.',
+      el: '"Ωραίος καφές και κάτι για τη λιγούρα, είναι ό,τι πρέπει, όταν συνοδεύεται από γρήγορη και ευγενική εξυπηρέτηση!" Έγραψε η Martha Grigoriou στο Google Maps.',
+      en: '"Nice coffee and something for cravings, it\'s a must, with fast and polite service." From Martha Grigoriou, via Google Maps.',
     },
   },
   {
     id: 'review-ninaki',
-    html: () =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body tight">
-        <div class="kicker">★★★★★ Google Review</div>
-        <div class="quote">"The guys are amazing: helpful, clean, and the coffee is awesome in quality and technique."</div>
-        <div class="rule"></div>
-        <div class="attrib">Ninaki Euangelou</div>
-      </div>`),
+    html: () => series({ ground: 'cream', tag: 'Είπατε · ★★★★★', cls: 'q',
+      say: '«Ο καφές φοβερός, και από ποιότητα <em>και από τεχνική!</em>»',
+      sub: 'Ninaki Euangelou, Google Maps' }),
     caption: {
       el: '"Τα παιδιά είναι καταπληκτικά, πολύ ομαδικά σε όλες τις βάρδιες, εξυπηρετικότατα κ αμεσότατα! Καθαρά, περιποιημένα, νόστιμα, ο καφές φοβερός και από ποιότητα και από τεχνική!" Έγραψε η Ninaki Euangelou στο Google Maps.',
       en: '"The guys are amazing, very helpful and direct, clean, and the coffee is awesome in quality and technique!" From Ninaki Euangelou, via Google Maps.',
@@ -292,30 +343,40 @@ const POSTS = [
   },
   {
     id: 'review-icecube',
-    html: () =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body tight">
-        <div class="kicker">★★★★★ Google Review</div>
-        <div class="quote">"The only shop I've seen on delivery that sends you a glass of ice for your energy drink."</div>
-        <div class="rule"></div>
-        <div class="attrib">Blackoni Chris</div>
-      </div>`),
+    html: () => series({ ground: 'cream', tag: 'Είπατε · ★★★★★', cls: 'q',
+      say: '«Το μοναδικό μαγαζί που είδα στο ντελίβερι να σου στέλνουν <em>ποτηράκι με πάγο</em> για το energy drink.»',
+      sub: 'Blackoni Chris, Google Maps' }),
     caption: {
       el: '"Το μοναδικό μαγαζί που είδα στο ντελίβερι να σου στέλνουν ποτηράκι με πάγο για το energy drink." Έγραψε ο Blackoni Chris στο Google Maps.',
       en: '"The only shop I\'ve seen on delivery that sends you a glass of ice for your energy drink." From Blackoni Chris, via Google Maps.',
     },
   },
-  // ─── Menu, priced straight from MENU in src/App.jsx. ────────────────────────
+  {
+    id: 'review-mourati',
+    html: () => series({ ground: 'cream', tag: 'Είπατε · ★★★★★', cls: 'q',
+      say: '«Απ\' τους καλύτερους καφέδες <em>που έχω δοκιμάσει.</em>»',
+      sub: 'Mourati, Google Maps' }),
+    caption: {
+      el: '"Απ\' τους καλύτερους καφέδες που έχω δοκιμάσει, ευγενέστατο προσωπικό και πολύ εξυπηρετικό, ευέλικτος χώρος μέσα και έξω." Από Mourati, στο Google Maps.',
+      en: '"One of the best coffees I\'ve tried, very polite and helpful staff, space both inside and out." From Mourati, via Google Maps.',
+    },
+  },
+  {
+    id: 'review-korleone',
+    html: () => series({ ground: 'cream', tag: 'Είπατε · ★★★★★', cls: 'q',
+      say: '«Είχα καιρό να απολαύσω <em>έτσι καφέ!</em>»',
+      sub: 'Κορλεόνε Γλύνος, Google Maps' }),
+    caption: {
+      el: '"Συγχαρητήρια, εξαιρετικός καφές παιδιά, μπράβο σας, είχα καιρό να απολαύσω έτσι καφέ! Έτυχε να παραγγείλω μέσω πλατφόρμας και έμεινα πολύ ικανοποιημένος." Έγραψε ο Κορλεόνε Γλύνος στο Google Maps.',
+      en: '"Congratulations, excellent coffee, well done, it\'s been a while since I enjoyed a coffee like this! I ordered through a delivery app and was very satisfied." From Korleone Glynos, via Google Maps.',
+    },
+  },
+  // ─── More Στο μενού. ─────────────────────────────────────────────────────────
   {
     id: 'old-school',
-    html: (bg, real) =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body tight">
-        <div class="kicker">Για τους παραδοσιακους</div>
-        <h1>Greek.<br>Filter.<br><em>NES.</em></h1>
-        <div class="rule"></div>
-        <div class="lede">Ελληνικός 1.80€ · Φίλτρου 2€ · NES 1.80€ · Americano 2€</div>
-      </div>`, bg, real),
+    html: () => series({ ground: 'black', tag: 'Στο μενού · Οι κλασικοί', cls: 'sm',
+      say: 'Ελληνικός.<br>Φίλτρου. Νες.<br><em>Εδώ είναι.</em>',
+      extra: rows([['Ελληνικός', '1.80€'], ['Φίλτρου', '2€'], ['NES', '1.80€'], ['Americano', '2€']]) }),
     caption: {
       el: 'Ελληνικός, φίλτρου, νες, americano. Οι κλασικοί, στην τιμή που τους αξίζει.',
       en: 'Greek coffee, filter, NES, americano. The classics, at the price they deserve.',
@@ -323,33 +384,20 @@ const POSTS = [
   },
   {
     id: 'bougatsa',
-    html: (bg) =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body tight">
-        <div class="kicker">Μπουγατσα Κρεμα</div>
-        <div class="big-price">2.80<small>€</small></div>
-        <div class="rule"></div>
-        <div class="lede">Φλογέρα Φιλαδέλφεια 2.80€<br>Κρουασάν 2.50€</div>
-      </div>`, bg),
+    html: () => series({ ground: 'black', tag: 'Στο μενού · Πρωί',
+      say: 'Μπουγάτσα<br><em>κρέμα.</em>',
+      extra: rows([['Μπουγάτσα κρέμα', '2.80€'], ['Φλογέρα Φιλαδέλφεια', '2.80€'], ['Κρουασάν', '2.50€']]),
+      sub: 'Φρέσκα, κάθε πρωί.' }),
     caption: {
-      el: 'Μπουγάτσα κρέμα 2.80€. Φλογέρα Φιλαδέλφεια 2.80€. Φρέσκα, κάθε πρωί.',
-      en: 'Cream bougatsa €2.80. Philadelphia flogera €2.80. Fresh, every morning.',
+      el: 'Μπουγάτσα κρέμα 2.80€. Φλογέρα Φιλαδέλφεια 2.80€. Κρουασάν 2.50€. Φρέσκα, κάθε πρωί.',
+      en: 'Cream bougatsa €2.80. Philadelphia flogera €2.80. Croissant €2.50. Fresh, every morning.',
     },
   },
   {
     id: 'sweet-lineup',
-    html: () =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body center" style="align-items:stretch">
-        <div class="kicker" style="text-align:center">Γλυκο;</div>
-        <div class="rows">
-          <div class="row"><span class="k">Cheesecake</span><span class="dots"></span><span class="v">2.90€</span></div>
-          <div class="row"><span class="k">Sweet Dubai</span><span class="dots"></span><span class="v">3.20€</span></div>
-          <div class="row"><span class="k">Black Forest</span><span class="dots"></span><span class="v">3.20€</span></div>
-          <div class="row"><span class="k">Προφιτερόλ</span><span class="dots"></span><span class="v">2.90€</span></div>
-        </div>
-        <div class="el">Τέσσερις επιλογές, μια αδυναμία.</div>
-      </div>`),
+    html: () => series({ ground: 'black', tag: 'Στο μενού · Γλυκά',
+      say: 'Γλυκό;<br><em>Ναι.</em>',
+      extra: rows([['Cheesecake', '2.90€'], ['Sweet Dubai', '3.20€'], ['Black Forest', '3.20€'], ['Προφιτερόλ', '2.90€']]) }),
     caption: {
       el: 'Cheesecake, Sweet Dubai, Black Forest, προφιτερόλ. Τέσσερις επιλογές, μια αδυναμία.',
       en: 'Cheesecake, Sweet Dubai, Black Forest, profiterole. Four options, one weakness.',
@@ -357,18 +405,9 @@ const POSTS = [
   },
   {
     id: 'savory-pastries',
-    html: () =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body center" style="align-items:stretch">
-        <div class="kicker" style="text-align:center">Αλμυρο;</div>
-        <div class="rows">
-          <div class="row"><span class="k">Τυρόπιτα Κουρού</span><span class="dots"></span><span class="v">2.50€</span></div>
-          <div class="row"><span class="k">Ζαμπονοτυρόπιτα</span><span class="dots"></span><span class="v">2.80€</span></div>
-          <div class="row"><span class="k">Λουκανικόπιτα</span><span class="dots"></span><span class="v">2.50€</span></div>
-          <div class="row"><span class="k">Σπανακόπιτα με Τυρί</span><span class="dots"></span><span class="v">2.50€</span></div>
-        </div>
-        <div class="el">Φρέσκες, κάθε μέρα.</div>
-      </div>`),
+    html: () => series({ ground: 'black', tag: 'Στο μενού · Αλμυρά',
+      say: 'Αλμυρό;<br><em>Επίσης ναι.</em>',
+      extra: rows([['Τυρόπιτα Κουρού', '2.50€'], ['Ζαμπονοτυρόπιτα', '2.80€'], ['Λουκανικόπιτα', '2.50€'], ['Σπανακόπιτα με Τυρί', '2.50€']]) }),
     caption: {
       el: 'Τυρόπιτα κουρού, ζαμπονοτυρόπιτα, λουκανικόπιτα, σπανακόπιτα με τυρί. Φρέσκες, κάθε μέρα.',
       en: 'Kourou cheese pie, ham and cheese pie, sausage pie, spinach and cheese pie. Fresh, every day.',
@@ -376,18 +415,9 @@ const POSTS = [
   },
   {
     id: 'beer',
-    html: (bg) =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body center" style="align-items:stretch">
-        <div class="kicker" style="text-align:center">Μπυρα / Beer</div>
-        <div class="rows">
-          <div class="row"><span class="k">Amstel</span><span class="dots"></span><span class="v">4€</span></div>
-          <div class="row"><span class="k">Heineken</span><span class="dots"></span><span class="v">4€</span></div>
-          <div class="row"><span class="k">Corona</span><span class="dots"></span><span class="v">4€</span></div>
-          <div class="row"><span class="k">Alfa</span><span class="dots"></span><span class="v">4€</span></div>
-        </div>
-        <div class="el">Και μετά τον καφέ.</div>
-      </div>`, bg),
+    html: () => series({ ground: 'black', tag: 'Στο μενού · Μπύρα',
+      say: 'Και μπύρα.<br><em>Γιατί όχι;</em>',
+      extra: rows([['Amstel', '4€'], ['Heineken', '4€'], ['Corona', '4€'], ['Alfa', '4€']]) }),
     caption: {
       el: 'Μπύρα υπάρχει και στο Blessed. Amstel, Heineken, Corona, Alfa.',
       en: "Yes, we've got beer too. Amstel, Heineken, Corona, Alfa.",
@@ -427,15 +457,9 @@ const POSTS = [
   // ─── Hiring, second role. ─────────────────────────────────────────────────────
   {
     id: 'hiring-driver',
-    html: (bg) =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body tight">
-        <div class="kicker">Ζητειται / We are hiring</div>
-        <h1>Delivery<br><em>driver.</em></h1>
-        <div class="rule"></div>
-        <div class="lede">Για πρωινές και βραδινές βάρδιες. Ευέλικτο ωράριο.</div>
-      </div>`),
-    // Intentionally plain, like the other hiring post: no bg needed here.
+    html: () => series({ ground: 'black', tag: 'Ζητείται',
+      say: 'Ψάχνουμε<br><em>διανομέα.</em>',
+      sub: 'Για πρωινές και βραδινές βάρδιες. Ευέλικτο ωράριο.' }),
     caption: {
       el: 'Ψάχνουμε υπεύθυνο διανομέα για πρωινές και βραδινές βάρδιες, με ευέλικτο ωράριο. Στείλε μας μήνυμα ή πέρασε από το μαγαζί.',
       en: 'Looking for a reliable delivery driver, morning and evening shifts, flexible hours. DM us or drop by.',
@@ -638,8 +662,8 @@ const POSTS = [
         <div class="lede" style="max-width:12ch">Κάθε μέρα, 07:00 – 22:00.</div>
       </div>`, null, false, 'cupground'),
     caption: {
-      el: 'Πάρ\' τον μαζί σου. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα 07:00 – 22:00.',
-      en: 'Take it with you. Rodou 68, Kato Patisia, every day 07:00 – 22:00.',
+      el: `Πάρ' τον μαζί σου. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα 07:00 – 22:00. ${TAG_US.el}`,
+      en: `Take it with you. Rodou 68, Kato Patisia, every day 07:00 – 22:00. ${TAG_US.en}`,
     },
   },
   {
@@ -657,8 +681,8 @@ const POSTS = [
         <h1 class="sm">Κλείσε το καπάκι.<br><em>Φύγαμε.</em></h1>
       </div>`, null, false, 'cupground'),
     caption: {
-      el: 'Κλείσε το καπάκι, φύγαμε. Ο καφές σου, έτοιμος για το δρόμο. Ρόδου 68, κάθε μέρα 07:00 – 22:00.',
-      en: 'Snap the lid on and go. Your coffee, ready for the road. Rodou 68, every day 07:00 – 22:00.',
+      el: `Κλείσε το καπάκι, φύγαμε. Ο καφές σου, έτοιμος για το δρόμο. Ρόδου 68, κάθε μέρα 07:00 – 22:00. ${TAG_US.el}`,
+      en: `Snap the lid on and go. Your coffee, ready for the road. Rodou 68, every day 07:00 – 22:00. ${TAG_US.en}`,
     },
   },
   {
