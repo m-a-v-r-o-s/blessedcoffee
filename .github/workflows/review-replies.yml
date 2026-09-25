@@ -1,0 +1,54 @@
+name: Google review replies
+
+on:
+  schedule:
+    # Every 15 min. reply.mjs only answers reviews at least 13 min old, so
+    # replies land roughly 13-30 min after a review (GitHub cron can lag).
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Print drafts without posting'
+        type: boolean
+        default: false
+      max_age_days:
+        description: 'Answer unanswered reviews up to this many days old'
+        default: '14'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: review-replies
+
+jobs:
+  reply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci --omit=dev
+
+      - name: Reply to new reviews
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+          MAX_AGE_DAYS: ${{ inputs.max_age_days || '14' }}
+        run: node reviews/reply.mjs
+
+      - name: Commit skipped reviews
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reviews/skipped.json
+          git diff --staged --quiet || git commit -m "Record review skipped by auto-reply"
+          git push
