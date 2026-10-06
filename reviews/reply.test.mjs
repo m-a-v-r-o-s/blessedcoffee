@@ -53,7 +53,7 @@ try {
 
   assert.deepEqual(posted, { new: 'Ευχαριστούμε πολύ!' }, 'only the 20-min-old unanswered review gets a reply');
   assert.equal(prompts.length, 2, 'Claude called for "new" and "angry" only');
-  assert.equal(prompts[0].model, 'claude-haiku-4-5-20251001');
+  assert.equal(prompts[0].model, 'claude-sonnet-5-5');
   assert.match(prompts[0].messages[0].content, /^<review>\nReviewer: Person new\nStars: 5\/5/);
   const skipped = JSON.parse(readFileSync(SKIPPED, 'utf8'));
   assert.match(skipped.angry, /phone-like number/, 'unsafe draft recorded, not posted');
