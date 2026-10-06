@@ -90,12 +90,9 @@ const client = new Anthropic();
 
 async function draft(review) {
   const name = review.reviewer?.isAnonymous ? '' : review.reviewer?.displayName || '';
-  const response = await client.beta.messages.create({
-    model: 'claude-opus-5',
-    max_tokens: 4000,
-    betas: ['server-side-fallback-2026-07-01'],
-    fallbacks: 'default',
-    output_config: { effort: 'low' },
+  const response = await client.messages.create({
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 500,
     system: SYSTEM,
     messages: [{
       role: 'user',

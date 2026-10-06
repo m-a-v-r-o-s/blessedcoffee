@@ -34,7 +34,7 @@ globalThis.fetch = async (url, init = {}) => {
     posted[url.split('/reviews/')[1].split('/')[0]] = JSON.parse(init.body).comment;
     return json({});
   }
-  if (url === 'https://api.anthropic.com/v1/messages?beta=true') {
+  if (url === 'https://api.anthropic.com/v1/messages') {
     const body = JSON.parse(init.body);
     prompts.push(body);
     const text = body.messages[0].content.includes('Stars: 1/5') ? 'Call us on 210 123 4567' : 'Ευχαριστούμε πολύ!';
@@ -53,8 +53,7 @@ try {
 
   assert.deepEqual(posted, { new: 'Ευχαριστούμε πολύ!' }, 'only the 20-min-old unanswered review gets a reply');
   assert.equal(prompts.length, 2, 'Claude called for "new" and "angry" only');
-  assert.equal(prompts[0].model, 'claude-opus-5');
-  assert.equal(prompts[0].fallbacks, 'default');
+  assert.equal(prompts[0].model, 'claude-haiku-4-5-20251001');
   assert.match(prompts[0].messages[0].content, /^<review>\nReviewer: Person new\nStars: 5\/5/);
   const skipped = JSON.parse(readFileSync(SKIPPED, 'utf8'));
   assert.match(skipped.angry, /phone-like number/, 'unsafe draft recorded, not posted');
