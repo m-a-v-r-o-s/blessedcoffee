@@ -116,6 +116,9 @@ export function check(text) {
   if (/\S@\S/.test(text)) return 'email';
   if (/\d[\d\s-]{6,}\d/.test(text)) return 'phone-like number';
   if (/<\/?review>/i.test(text)) return 'echoed tags';
+  // Never promise freebies: the bot has no authority to. Accents stripped so κέρασμα matches κερασμα.
+  const plain = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  if (/κερν|κερασ|δωρεαν|δωρο|προσφορ|προσφερ|εκπτωσ|τιμητικ|χαρισουμε|χαρισω|κουπον|\bfree\b(?! to)|\btreat\b|discount|offer|complimentar|on the house|on us\b|voucher|\bgift|coupon/.test(plain)) return 'promise or freebie';
   return null;
 }
 

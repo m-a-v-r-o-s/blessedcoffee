@@ -65,6 +65,10 @@ try {
   assert.equal(check('mail a@b.gr'), 'link');
   assert.equal(check('mail me@blessed'), 'email');
   assert.equal(check(''), 'empty');
+  for (const t of ['Να περνάς να σε κερνάμε έναν καφέ ή ένα ποτό, όποτε θες.', 'Θα σου προσφέρουμε ένα κέρασμα!', 'Έχεις δωρεάν καφέ στην επόμενη', 'Coffee is on us next time', 'We will treat you', 'a free drink', '10% έκπτωση']) {
+    assert.equal(check(t), 'promise or freebie', t);
+  }
+  assert.equal(check('Feel free to come back, we were sorry you were treated that way.'), null);
   console.log('reply.mjs: all checks passed');
 } finally {
   writeFileSync(SKIPPED, original);
