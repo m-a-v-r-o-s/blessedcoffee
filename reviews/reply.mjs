@@ -20,7 +20,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import Anthropic from '@anthropic-ai/sdk';
 
 const DELAY_MIN = 13;
-const MAX_PER_RUN = 5; // caps Claude spend if something loops
+const MAX_PER_RUN = Number(process.env.MAX_PER_RUN || 5); // caps Claude spend if something loops; raised for a manual backlog run
 const MAX_AGE_DAYS = Number(process.env.MAX_AGE_DAYS || 14);
 const LOCATION_MATCH = /blessed/i;
 const SKIPPED = new URL('./skipped.json', import.meta.url);
@@ -131,13 +131,20 @@ export async function main(now = Date.now()) {
   const skipped = JSON.parse(readFileSync(SKIPPED, 'utf8'));
   const token = await googleToken();
   const location = await findLocation(token);
-  const { reviews = [] } = await google(token, `https://mybusiness.googleapis.com/v4/${location}/reviews?pageSize=50`);
+  const url = `https://mybusiness.googleapis.com/v4/${location}/reviews?pageSize=50`;
+  let { reviews = [], nextPageToken } = await google(token, url);
+  // Only the cron's 14-day window fits in one page; a backlog run (MAX_AGE_DAYS > 14) reads every page.
+  while (nextPageToken && MAX_AGE_DAYS > 14) {
+    const page = await google(token, `${url}&pageToken=${encodeURIComponent(nextPageToken)}`);
+    reviews = reviews.concat(page.reviews || []);
+    nextPageToken = page.nextPageToken;
+  }
 
   const pending = reviews.filter((r) => {
     const age = now - Date.parse(r.createTime);
     return !r.reviewReply && !skipped[r.reviewId] && age >= DELAY_MIN * 60e3 && age <= MAX_AGE_DAYS * 864e5;
   }).slice(0, MAX_PER_RUN);
-  console.log(`${reviews.length} recent reviews, ${pending.length} to answer now.`);
+  console.log(`${reviews.length} reviews read, ${pending.length} to answer now.`);
 
   for (const review of pending) {
     const label = `${review.reviewer?.displayName} (${review.starRating})`;
