@@ -95,7 +95,7 @@ async function draft(review) {
   const name = review.reviewer?.isAnonymous ? '' : review.reviewer?.displayName || '';
   const response = await client.messages.create({
     model: 'claude-sonnet-5-5',
-    max_tokens: 500,
+    max_tokens: 4000,
     system: SYSTEM,
     messages: [{
       role: 'user',
