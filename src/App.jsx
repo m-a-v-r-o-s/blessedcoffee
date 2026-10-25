@@ -335,8 +335,12 @@ const css = `
       background: #fff;
       transition: width 0.25s;
     }
-    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
-    .nav-link:hover, .nav-link.active { color: #fff; }
+    .nav-link.active::after { width: 100%; }
+    .nav-link.active { color: #fff; }
+    @media (hover: hover) and (pointer: fine) {
+      .nav-link:hover::after { width: 100%; }
+      .nav-link:hover { color: #fff; }
+    }
 
     .btn-gold {
       background: ${warmPalette.gold};
@@ -353,7 +357,7 @@ const css = `
       text-decoration: none;
       display: inline-block;
     }
-    .btn-gold:hover { background: ${warmPalette.brown}; transform: translateY(-2px); }
+    @media (hover: hover) and (pointer: fine) { .btn-gold:hover { background: ${warmPalette.brown}; transform: translateY(-2px); } }
 
     .btn-outline {
       background: transparent;
@@ -370,7 +374,7 @@ const css = `
       text-decoration: none;
       display: inline-block;
     }
-    .btn-outline:hover { background: ${warmPalette.darkBrown}; color: #fff; }
+    @media (hover: hover) and (pointer: fine) { .btn-outline:hover { background: ${warmPalette.darkBrown}; color: #fff; } }
 
     .section-title {
       font-family: 'Playfair Display', serif;
@@ -394,11 +398,13 @@ const css = `
       border-radius: 3px;
       text-decoration: none;
     }
-    .platform-btn:hover {
-      background: rgba(255,255,255,0.14);
-      border-color: ${warmPalette.gold};
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    @media (hover: hover) and (pointer: fine) {
+      .platform-btn:hover {
+        background: rgba(255,255,255,0.14);
+        border-color: ${warmPalette.gold};
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      }
     }
     .menu-cta-btn {
       display: flex;
@@ -418,10 +424,41 @@ const css = `
       transition: all 0.22s ease;
       border-radius: 3px;
     }
-    .menu-cta-btn:hover {
-      background: ${warmPalette.brown};
-      transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+    @media (hover: hover) and (pointer: fine) {
+      .menu-cta-btn:hover {
+        background: ${warmPalette.brown};
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+      }
+    }
+
+    /* Touch-down press state on every tappable (instant on press, eased on release).
+       !important on transition beats the inline transition some buttons carry. */
+    button:not(:disabled), .platform-btn, .btn-gold, .btn-outline, .menu-cta-btn, .mobile-menu a {
+      transition: transform var(--press-ms) var(--ease-out), color 0.2s, background-color 0.2s, border-color 0.2s, box-shadow 0.22s !important;
+    }
+    button:not(:disabled):active, .platform-btn:active, .btn-gold:active, .btn-outline:active, .menu-cta-btn:active, .mobile-menu a:active {
+      transform: scale(var(--press-scale));
+    }
+
+    /* Mobile dropdown: grid rows 0fr to 1fr, one interruptible CSS transition (reverses from the live value) */
+    .mobile-menu {
+      display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden;
+      background: #111; border-top: 1px solid #222;
+      padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px);
+      transition: grid-template-rows var(--spring-smooth-ms) var(--spring-smooth), opacity 0.25s var(--ease-out), visibility 0s linear var(--spring-smooth-ms);
+    }
+    .mobile-menu.open {
+      grid-template-rows: 1fr; opacity: 1; visibility: visible;
+      transition: grid-template-rows var(--spring-smooth-ms) var(--spring-smooth), opacity 0.25s var(--ease-out), visibility 0s;
+    }
+    .mobile-menu > div { overflow: hidden; min-height: 0; padding-bottom: 0; }
+    .mobile-menu.open > div { padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+    .mobile-menu > div { transition: padding-bottom var(--spring-smooth-ms) var(--spring-smooth); }
+    .site-header { padding-top: env(safe-area-inset-top, 0px); }
+    .header-inner { padding-left: max(24px, env(safe-area-inset-left, 0px)) !important; padding-right: max(24px, env(safe-area-inset-right, 0px)) !important; }
+    @media (prefers-reduced-motion: reduce) {
+      .mobile-menu, .mobile-menu.open, .mobile-menu > div { transition: opacity 0.2s ease, visibility 0s !important; }
     }
 
     .review-card {
@@ -461,7 +498,7 @@ const css = `
       padding: 28px 32px;
       transition: box-shadow 0.2s;
     }
-    .job-card:hover { box-shadow: 0 8px 32px rgba(61,43,31,0.1); }
+    @media (hover: hover) and (pointer: fine) { .job-card:hover { box-shadow: 0 8px 32px rgba(61,43,31,0.1); } }
 
     .tag {
       display: inline-block;
@@ -549,7 +586,7 @@ const css = `
     }
 
     .header-logo { transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); transform-origin: center; }
-    .header-logo:hover { transform: scale(1.07); }
+    @media (hover: hover) and (pointer: fine) { .header-logo:hover { transform: scale(1.07); } }
 
     .hero-sub { white-space: nowrap; font-size: clamp(20px, 4.5vw, 58px); transform: translateY(-1.5em); }
     .hero-heaven { font-size: 1.75em; }
@@ -621,8 +658,8 @@ const handleNavClick = (item) => {
 };
 
 const Header = () => (
-  <header style={{ background: "#000", position: "sticky", top: 0, zIndex: 100, borderBottom: "1px solid #222" }}>
-    <div style={{ maxWidth: 1300, margin: "0 auto", padding: "0 24px", height: 70, display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
+  <header className="site-header" style={{ background: "#000", position: "sticky", top: 0, zIndex: 100, borderBottom: "1px solid #222" }}>
+    <div className="header-inner" style={{ maxWidth: 1300, margin: "0 auto", padding: "0 24px", height: 70, display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
 
       {/* LEFT: desktop nav OR mobile hamburger */}
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -644,6 +681,7 @@ const Header = () => (
           onClick={() => setMobileMenuOpen(o => !o)}
           style={{ background: "none", border: "none", cursor: "pointer", padding: 6, display: "none" }}
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? (
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round">
@@ -711,9 +749,10 @@ const Header = () => (
       </div>
     </div>
 
-    {/* MOBILE DROPDOWN */}
-    {mobileMenuOpen && (
-      <div style={{ background: "#111", borderTop: "1px solid #222", padding: "8px 0 16px" }}>
+    {/* MOBILE DROPDOWN: always mounted so open/close can be interrupted mid-flight; inert while closed */}
+    <div className={`mobile-menu${mobileMenuOpen ? " open" : ""}`} inert={!mobileMenuOpen}>
+      <div>
+        <div style={{ padding: "8px 0 0" }}>
         {NAV_ITEMS.map(item => (
           <button key={item.id}
             onClick={() => handleNavClick(item)}
@@ -732,8 +771,9 @@ const Header = () => (
         >
           {t.callBtn} · 211 218 1815
         </a>
+        </div>
       </div>
-    )}
+    </div>
   </header>
 );
 
@@ -784,7 +824,7 @@ const Header = () => (
   const HomePage = () => (
     <div>
       {/* HERO */}
-      <section className="texture-bg" style={{ minHeight: "88vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "80px 24px", position: "relative", overflow: "hidden", background: "#000", borderBottom: `4px solid ${warmPalette.gold}` }}>
+      <section className="texture-bg" style={{ minHeight: "88svh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "80px 24px", position: "relative", overflow: "hidden", background: "#000", borderBottom: `4px solid ${warmPalette.gold}` }}>
 
         {/* Desktop side photos (hidden on mobile, where the video is full bg) */}
         <div className="hero-side hero-side-left" />
@@ -1336,7 +1376,7 @@ const MenuPage = () => {
             <form onSubmit={handleApply} noValidate style={{ display: "flex", flexDirection: "column", gap: 18, maxWidth: 480, margin: "0 auto" }}>
               <div>
                 <label htmlFor="apply-name" style={{ display: "block", fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: warmPalette.brown, marginBottom: 6 }}>{t.applyName}</label>
-                <input id="apply-name" className="form-input" type="text" value={form.name}
+                <input id="apply-name" className="form-input" type="text" autoComplete="name" autoCapitalize="words" enterKeyHint="next" value={form.name}
                   onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                   aria-invalid={!!formErrors.name} aria-describedby={formErrors.name ? "apply-name-err" : undefined}
                 />
@@ -1345,7 +1385,7 @@ const MenuPage = () => {
 
               <div>
                 <label htmlFor="apply-phone" style={{ display: "block", fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: warmPalette.brown, marginBottom: 6 }}>{t.applyPhone}</label>
-                <input id="apply-phone" className="form-input" type="tel" value={form.phone}
+                <input id="apply-phone" className="form-input" type="tel" inputMode="tel" autoComplete="tel" enterKeyHint="done" value={form.phone}
                   onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
                   aria-invalid={!!formErrors.phone} aria-describedby={formErrors.phone ? "apply-phone-err" : undefined}
                 />
@@ -1386,7 +1426,7 @@ const MenuPage = () => {
   return (
     <div>
       <style>{css}</style>
-      <Header />
+      {Header()}
       <main>
         {page === "home" && <HomePage />}
         {page === "menu" && <MenuPage />}
@@ -1399,8 +1439,8 @@ const MenuPage = () => {
         <div style={{
           position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1000,
           background: "#000", borderTop: `3px solid ${warmPalette.gold}`,
-          padding: "18px 24px", boxShadow: "0 -6px 24px rgba(0,0,0,0.35)",
-          maxHeight: "90vh", overflowY: "auto"
+          padding: "18px max(24px, env(safe-area-inset-right, 0px)) calc(18px + env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px))", boxShadow: "0 -6px 24px rgba(0,0,0,0.35)",
+          maxHeight: "90dvh", overflowY: "auto"
         }}>
           <div style={{ maxWidth: 1100, margin: "0 auto" }}>
             <p style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: "0.35em", textTransform: "uppercase", color: warmPalette.gold, margin: "0 0 10px" }}>
