@@ -171,22 +171,34 @@ const Testimonials = React.memo(function Testimonials({ t }) {
         </div>
 
         {/* Navigation dots */}
-        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 40 }}>
+        {/* Each button is a 24px-tall hit area at least 24px wide (WCAG 2.2 target size); the visible dot sits inside */}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 32 }}>
           {t.reviews.map((_, i) => (
             <button
               key={i}
               onClick={() => setIdx(i)}
+              aria-label={`${t.reviewDot} ${i + 1}`}
+              aria-current={i === idx ? "true" : undefined}
               style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                minWidth: 24,
+                height: 24,
+                padding: "0 4px",
+                border: "none",
+                background: "none",
+                cursor: "pointer"
+              }}
+            >
+              <span style={{
                 width: i === idx ? 28 : 8,
                 height: 8,
                 borderRadius: 4,
-                border: "none",
-                cursor: "pointer",
                 background: i === idx ? "#C9972A" : "#E8DDD0",
-                transition: "all 0.3s ease",
-                padding: 0
-              }}
-            />
+                transition: "width var(--spring-snappy-ms) var(--spring-snappy), background-color 0.3s ease"
+              }} />
+            </button>
           ))}
         </div>
 
