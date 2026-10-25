@@ -21,6 +21,13 @@ try {
   }
 } catch { /* localStorage unavailable */ }
 
+// Inline onMouseEnter/Leave handlers would stick after a tap on touch screens (emulated hover).
+// React hears them via mouseover/out, so swallow those unless the primary input truly hovers.
+const hoverOk = matchMedia('(hover: hover) and (pointer: fine)')
+for (const ev of ['mouseover', 'mouseout']) {
+  document.addEventListener(ev, (e) => { if (!hoverOk.matches) e.stopPropagation() }, true)
+}
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
