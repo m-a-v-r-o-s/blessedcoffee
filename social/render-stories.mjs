@@ -215,8 +215,8 @@ const priceStory = ({ kicker, price, note }) => `<div class="card">
 //    the bars: every feed card already carries its own mark near its top edge,
 //    so a second one in the bar just doubles up.
 // 6. Photo story. Any real shop photo, any honest line: the photo can repeat across stories.
-const photoStory = ({ img, kicker, headline, lede = '' }) => `<div class="card ph">
-  <img class="fill" src="${photo(img)}"><div class="shade"></div>
+const photoStory = ({ img, kicker, headline, lede = '', pos = 'center' }) => `<div class="card ph">
+  <img class="fill" src="${photo(img)}" style="object-position:${pos}"><div class="shade"></div>
   <img class="mark" src="${logo}">
   <div class="over">
     <div class="kicker">${kicker}</div>
@@ -392,6 +392,41 @@ const STORIES = [
     ['ph-cocktail-friday', '21-37-08', 'Παρασκευη', 'Παρασκευή;<br><em>Κοκτέιλ.</em>', 'Zombie · Daiquiri · Pornstar<br>Mojito · Cucumber Basil · Bubble Blessed'],
     ['ph-christmas', '23-09-29', 'Χριστουγεννα', 'Καλά<br><em>Χριστούγεννα.</em>', 'Από το Blessed, σε όλη τη γειτονιά.'],
   ].map(([id, t, kicker, headline, lede]) => ({ id, html: () => photoStory({ img: `Screenshot_2026-09-20_${t}.png`, kicker, headline, lede }) })),
+  // ─── Photographer shoot, 2026-10-26 (social/photos/shoot/). ──
+  ...[
+    ['ps-open', 'storefront-day', 'Καλημερα', 'Ανοίξαμε.<br><em>07:00.</em>', 'Ρόδου 68, Κάτω Πατήσια.'],
+    ['ps-closing', 'shutter-christ', '22:00', 'Καληνύχτα.<br><em>Αύριο 07:00.</em>', ''],
+    ['ps-faith', 'shutter-faith-wide', 'Στο ρολο μας', 'Faith<br><em>over fear.</em>', ''],
+    ['ps-sign', 'sign-round', 'Est. 2024', 'Coffee<br><em>&amp; spirits.</em>', 'Ρόδου 68'],
+    ['ps-heaven', 'cup-black', 'Take away', 'A taste<br>of <em>heaven.</em>', 'In every cup.'],
+    ['ps-waiting', 'cup-counter-2', 'Σημερα', 'Ο πρώτος<br><em>σε περιμένει.</em>', 'Από τις 07:00'],
+    ['ps-pair', 'cup-pair', 'Για δυο', 'Φέρε<br><em>παρέα.</em>', 'Κάνε tag τον φίλο σου.'],
+    ['ps-foam', 'foam-macro', 'Cappuccino', 'Αφρός.<br><em>2.60€.</em>', ''],
+    ['ps-latte', 'milk-steam', 'Cappuccino latte', 'Ζεστό<br><em>γάλα.</em>', '2.60€'],
+    ['ps-splash', 'espresso-splash', 'Espresso', 'Φρέσκος.<br><em>1.80€.</em>', ''],
+    ['ps-crema', 'crema-double-2', 'Espresso', 'Χρυσή<br><em>κρέμα.</em>', ''],
+    ['ps-drop', 'last-drop', 'Espresso', 'Μέχρι την<br><em>τελευταία.</em>', ''],
+    ['ps-beans', 'beans-macro', 'Καλημερα', 'Μυρίζει<br><em>καφές.</em>', ''],
+    ['ps-hopper', 'beans-hopper', 'Φρεσκο αλεσμα', 'Γεμάτος<br><em>μύλος.</em>', 'Αλέθεται τη στιγμή.'],
+    ['ps-mrs-rose', 'mrs-rose-tins', 'Ο καφες μας', 'Mrs Rose<br><em>Caffè.</em>', 'Espresso 1.80€'],
+    ['ps-dolce', 'dolce-bags', 'Η αλλη επιλογη', 'Ή μήπως<br><em>Dolce;</em>', 'Espresso 1.70€'],
+    ['ps-guide', 'coffee-guide', 'Ερωτηση', 'Ποιος καφές<br><em>είσαι;</em>', 'Στείλε μας DM.'],
+    ['ps-croissant', 'vitrine-croissant', 'Πρωινο', 'Κρουασάν.<br><em>2.50€.</em>', 'Φρέσκα, κάθε πρωί.'],
+    ['ps-pies', 'vitrine-pies', 'Η βιτρινα', 'Τυρόπιτα<br><em>1.90€.</em>', 'Σπανακόπιτα 1.60€'],
+    ['ps-craving', 'pastry-sesame', 'Λιγουρα', 'Πείνασες;<br><em>Πέρνα.</em>', 'Ρόδου 68'],
+    ['ps-sesame', 'bread-sesame', 'Η βιτρινα', 'Κάτι<br><em>τραγανό;</em>', ''],
+    ['ps-snack', 'snack-cup', 'Πρωινο', 'Καφές<br><em>και κάτι.</em>', 'Από τις 07:00'],
+    ['ps-window', 'vitrine-window', 'Περνας;', 'Ρίξε<br><em>μια ματιά.</em>', 'Ρόδου 68'],
+    ['ps-shift', 'staff-machine', 'Πισω απο τον παγκο', 'Η βάρδια<br><em>ξεκίνησε.</em>', 'Από τις 07:00'],
+    ['ps-smile', 'staff-smile', 'Καλημερα', 'Με<br><em>χαμόγελο.</em>', ''],
+    ['ps-apron', 'staff-apron', 'Coffee &amp; spirits', 'Έτοιμοι<br><em>για σένα.</em>', ''],
+    ['ps-phone', 'staff-jacket', 'Τηλεφωνο', '211 218<br><em>1815.</em>', 'Ρόδου 68'],
+    ['ps-inside', 'interior', 'Μεσα', 'Κάτσε<br><em>λίγο.</em>', '07:00 – 22:00'],
+    ['ps-grateful', 'wall-grateful', 'Blessed · Grateful · Thankful', 'Καλημέρα<br><em>από εμάς.</em>', '', '68% 50%'],
+    ['ps-street', 'cup-street', 'Κανε tag', 'Το ποτήρι σου<br><em>στη γειτονιά.</em>', '@blessedcoffee2024'],
+    ['ps-delivery', 'cup-counter', 'Delivery', 'Βαριέσαι;<br><em>Ερχόμαστε.</em>', 'e-food · Wolt · Box'],
+    ['ps-winter-steam', 'espresso-steam', 'Κρυο εξω', 'Ζεστός<br><em>espresso.</em>', '1.80€'],
+  ].map(([id, img, kicker, headline, lede, pos]) => ({ id, html: () => photoStory({ img: `shoot/${img}.jpg`, kicker, headline, lede, pos }) })),
 ];
 
 // ─── RENDER ──────────────────────────────────────────────────────────────

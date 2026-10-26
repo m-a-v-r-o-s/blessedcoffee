@@ -38,10 +38,10 @@ assert.equal(pick('feed', '2027-01-04', cfg(s3.next)).id, read('queue.json')[1])
 assert.equal(pick('feed', '2027-12-02', cfg(s3.next)).id, 'winter-espresso');
 
 // Stories: rotation plus in-season extras, cursor wraps.
-const { stories } = read('schedule.json');
+const { stories, seasons: { winter } } = read('schedule.json');
 assert.equal(pick('story', '2026-10-01', cfg()).id, stories[0]);
 assert.equal(pick('story', '2026-10-01', cfg({ storyCursor: stories.length })).id, stories[0]);
-assert.equal(pick('story', '2026-12-10', cfg({ storyCursor: stories.length + 1 })).id, 'ph-christmas');
+assert.equal(pick('story', '2026-12-10', cfg({ storyCursor: stories.length + winter.stories.length })).id, 'ph-christmas');
 
 // Every scheduled id resolves to a real file.
 const has = (id) => ['library', 'library-reels'].some((d) => existsSync(new URL(`./${d}/${id}.${d === 'library' ? 'jpg' : 'mp4'}`, import.meta.url)))

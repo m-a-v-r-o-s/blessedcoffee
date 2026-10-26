@@ -54,8 +54,23 @@ const CSS = `
   .foot { position: absolute; left: 84px; right: 84px; bottom: 250px; display: flex; justify-content: space-between;
     padding-top: 22px; border-top: 1px solid #2A2422; font-size: 24px; font-weight: 500; letter-spacing: .2em; color: #6E645C; }
   .fade { opacity: 0; }
+  /* Photo reels: photographer shots crossfading under a slow push-in, dark where the type sits. */
+  .sh { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+  .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,8,8,.5) 0%, rgba(8,8,8,0) 18%,
+    rgba(8,8,8,0) 45%, rgba(6,6,6,.75) 64%, rgba(6,6,6,.95) 84%); }
+  .stack { position: relative; height: 110px; margin-top: 26px; }
+  .stack h1 { position: absolute; left: 0; right: 0; bottom: 0; margin: 0; }
 `;
 const foot = `<div class="foot"><span>${BRAND.address}</span><span>${BRAND.site}</span></div>`;
+
+// Photo reels (no cup): [img, from s, to s, zoom from, zoom to, pan px] per shot; each fades in over the one before.
+const shots = (list) => list.map(([img, a, b, z0 = 1.03, z1 = 1.14, px = 0]) =>
+  `<img class="sh" src="/photos/shoot/${img}.jpg" data-a="${a}" data-b="${b}" data-z0="${z0}" data-z1="${z1}" data-px="${px}">`).join('') +
+  '<div class="shade"></div>';
+// A fixed kicker, headlines that swap in one spot ([html, from, to]), and an optional closing lede [html, from].
+const lines = (kicker, list, lede) => `<img class="mark" src="${logo}"><div class="txt"><div class="kicker">${kicker}</div>
+  <div class="stack">${list.map(([h, a, b], i) => `<h1 class="t fade" id="t${i}" data-a="${a}" data-b="${b}">${h}</h1>`).join('')}</div>
+  ${lede ? `<div class="lede t fade" id="tl" data-a="${lede[1]}" data-b="99">${lede[0]}</div>` : ''}</div>${foot}`;
 
 // ─── REELS ───────────────────────────────────────────────────────────────────
 // frame(s, $) runs inside the page. $: pose(o) (the cup scene), q(sel), seg(s,a,b) -> 0..1,
@@ -234,6 +249,92 @@ const REELS = [
       en: 'We bring the coffee to you: e-food, Wolt and Box. Every day 07:00 – 22:00.',
     },
   },
+  // ─── Photo reels from the 2026-10-26 shoot. Like stories, they may reuse a shot that backs a feed post. ──
+  {
+    id: 'reel-bean-to-cup',
+    photo: true,
+    seconds: 12,
+    back: shots([['beans-macro', 0, 2], ['grinder-pour', 2, 4], ['espresso-splash', 4, 6], ['crema-double', 6, 8], ['milk-close', 8, 10], ['staff-cup', 10, 13]]),
+    front: lines('Απο τον κοκκο', [['Ο <em>κόκκος.</em>', 0.3, 2], ['Το <em>άλεσμα.</em>', 2.1, 4], ['Η <em>εκχύλιση.</em>', 4.1, 6], ['Η <em>κρέμα.</em>', 6.1, 8],
+      ['Το <em>γάλα.</em>', 8.1, 10], ['Το <em>ποτήρι σου.</em>', 10.1, 99]], ['Ρόδου 68 · από τις 07:00', 10.6]),
+    frame: (s, $) => $.photos(s),
+    caption: {
+      el: 'Από τον κόκκο στο ποτήρι σου, σε 12 δευτερόλεπτα. Στην πραγματικότητα θέλει λίγο παραπάνω. Ρόδου 68, από τις 07:00.',
+      en: 'From the bean to your cup in 12 seconds. In real life it takes a little longer. Rodou 68, from 7am.',
+    },
+  },
+  {
+    id: 'reel-shop',
+    photo: true,
+    seconds: 10,
+    back: shots([['storefront-leaves', 0, 2.5, 1.18, 1.05], ['storefront-day', 2.5, 5], ['sign-round', 5, 7.5], ['interior', 7.5, 11]]),
+    front: lines('Ροδου 68', [['Κάτω <em>Πατήσια.</em>', 0.4, 4.9], ['Coffee <em>&amp; spirits.</em>', 5.1, 7.4], ['Κάτσε <em>λίγο.</em>', 7.6, 99]],
+      ['Κάθε μέρα 07:00 – 22:00', 8.2]),
+    frame: (s, $) => $.photos(s),
+    caption: {
+      el: 'Ρόδου 68, Κάτω Πατήσια. Coffee & spirits, κάθε μέρα 07:00 – 22:00. Κάτσε λίγο.',
+      en: 'Rodou 68, Kato Patisia. Coffee & spirits, every day 07:00 – 22:00. Stay a while.',
+    },
+  },
+  {
+    id: 'reel-vitrine',
+    photo: true,
+    seconds: 10,
+    back: shots([['vitrine-tall', 0, 2], ['pastry-sesame', 2, 4], ['vitrine-croissant', 4, 6], ['pie-macro', 6, 8], ['snack-cup', 8, 11]]),
+    front: lines('Η βιτρινα', [['Κάτι για <em>λιγούρα;</em>', 0.4, 3.9], ['Κρουασάν <em>2.50€.</em>', 4.1, 5.9], ['Τραγανό <em>απ\' έξω.</em>', 6.1, 7.9], ['Καφές <em>και κάτι.</em>', 8.1, 99]],
+      ['Από τις 07:00, Ρόδου 68', 8.6]),
+    frame: (s, $) => $.photos(s),
+    caption: {
+      el: 'Κάτι για τη λιγούρα; Κρουασάν 2.50€, μπουγάτσα κρέμα 2.80€, τυρόπιτα 1.90€. Η βιτρίνα γεμίζει από τις 07:00.',
+      en: 'Something for the craving? Croissant €2.50, cream bougatsa €2.80, cheese pie €1.90. The counter fills up from 7am.',
+    },
+  },
+  {
+    id: 'reel-day',
+    photo: true,
+    seconds: 12,
+    back: shots([['storefront-day', 0, 2], ['staff-machine', 2, 4], ['cup-counter', 4, 6], ['vitrine-window', 6, 8], ['staff-back', 8, 10], ['shutter-faith', 10, 13]]),
+    front: `<img class="mark" src="${logo}"><div class="txt">
+      <div class="kicker">Καθε μερα / Every day</div>
+      <h1 id="clock" style="font-size:190px;margin-top:10px;font-variant-numeric:tabular-nums">07:00</h1>
+      <div class="lede fade" id="l">Από τις 07:00 έως τις 22:00.</div>
+    </div>${foot}`,
+    frame: (s, $) => {
+      $.photos(s);
+      const m = 7 * 60 + Math.round(15 * 60 * $.io($.seg(s, 0.5, 10.5)) / 5) * 5;
+      $.q('#clock').textContent = `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+      $.show('#l', $.seg(s, 10.6, 11.2), 20);
+    },
+    caption: {
+      el: 'Μια μέρα στο Blessed, από τις 07:00 ως τις 22:00. Κάθε μέρα, και Κυριακή. Ρόδου 68.',
+      en: 'A day at Blessed, from 07:00 to 22:00. Every day, Sundays too. Rodou 68.',
+    },
+  },
+  {
+    id: 'reel-faith',
+    photo: true,
+    seconds: 7,
+    back: shots([['shutter-faith', 0, 8, 1.0, 1.2]]),
+    front: lines('Στο ρολο μας', [['Faith <em>over fear.</em>', 1.2, 99]], ['Ρόδου 68, Κάτω Πατήσια', 2.6]),
+    frame: (s, $) => $.photos(s),
+    caption: {
+      el: 'Faith over fear. Το γράφει το ρολό μας, και το εννοούμε. Ρόδου 68.',
+      en: "Faith over fear. It's written on our shutter, and we mean it. Rodou 68.",
+    },
+  },
+  {
+    id: 'reel-team',
+    photo: true,
+    seconds: 10,
+    back: shots([['staff-profile', 0, 2.5], ['staff-wide', 2.5, 5], ['milk-steam', 5, 7.5], ['apron-cup', 7.5, 11]]),
+    front: lines('Πισω απο τον παγκο', [['Η <em>βάρδια.</em>', 0.4, 4.9], ['Με <em>το χέρι.</em>', 5.1, 7.4], ['Για <em>σένα.</em>', 7.6, 99]],
+      ['Κάθε μέρα 07:00 – 22:00', 8.2]),
+    frame: (s, $) => $.photos(s),
+    caption: {
+      el: 'Πίσω από τον πάγκο, κάθε μέρα 07:00 – 22:00. Ο καφές σου, με το χέρι. Ρόδου 68.',
+      en: 'Behind the counter, every day 07:00 – 22:00. Your coffee, made by hand. Rodou 68.',
+    },
+  },
 ];
 
 // ─── RENDER ──────────────────────────────────────────────────────────────────
@@ -250,6 +351,17 @@ const HELPERS = `
       if (t < 2.5 / d) return n * (t -= 2.25 / d) * t + 0.9375; return n * (t -= 2.625 / d) * t + 0.984375; },
     show: (sel, v, dy = 0) => { const e = document.querySelector(sel); e.style.opacity = v; e.style.transform = 'translateY(' + (1 - v) * dy + 'px)'; },
     pose: (o) => document.getElementById('cup').contentWindow.pose(o),
+    photos: (s) => {
+      document.querySelectorAll('.sh').forEach((e) => {
+        const a = +e.dataset.a, b = +e.dataset.b, k = $.seg(s, a - 0.4, b + 0.4);
+        e.style.opacity = s > b + 0.4 ? 0 : $.seg(s, a - 0.4, a) || (a === 0 ? 1 : 0);
+        e.style.transform = 'scale(' + $.lerp(+e.dataset.z0, +e.dataset.z1, k) + ') translateX(' + $.lerp(0, +e.dataset.px, k) + 'px)';
+      });
+      document.querySelectorAll('.t').forEach((e) => {
+        const a = +e.dataset.a, b = +e.dataset.b;
+        $.show('#' + e.id, Math.min($.out($.seg(s, a, a + 0.5)), 1 - $.seg(s, b - 0.3, b)), 30);
+      });
+    },
     PANEL: ${JSON.stringify(PANEL)}, LID: ${JSON.stringify(LID)}, LABEL: ${JSON.stringify(LABEL)},
   };`;
 
@@ -274,9 +386,10 @@ async function render(reel) {
   await page.goto(`http://127.0.0.1:${PORT}/cup/serve.mjs`); // any same-origin URL, so the iframe's pose() is reachable
   await page.setContent(`<!doctype html><meta charset="utf-8"><style>${CSS}</style>
     <div id="ground"></div><div id="back" class="layer">${reel.back || ''}</div>
-    <iframe id="cup" src="/cup/cup.html?clean"></iframe><div id="front" class="layer">${reel.front || ''}</div>
+    ${reel.photo ? '' : '<iframe id="cup" src="/cup/cup.html?clean"></iframe>'}<div id="front" class="layer">${reel.front || ''}</div>
     <script>${HELPERS}; window.F = ${reel.frame.toString()};</script>`, { waitUntil: 'domcontentloaded', timeout: 180000 });
-  await page.waitForFunction(() => document.getElementById('cup').contentWindow.ready, null, { timeout: 180000 });
+  if (reel.photo) await page.waitForFunction(() => [...document.images].every((i) => i.complete && i.naturalWidth), null, { timeout: 60000 });
+  else await page.waitForFunction(() => document.getElementById('cup').contentWindow.ready, null, { timeout: 180000 });
   await page.evaluate(() => document.fonts.ready);
   const n = reel.seconds * FPS;
   const frames = peek ? [0, 0.15, 0.35, 0.55, 0.75, 0.97].map((f) => Math.round(f * n)) : [...Array(n).keys()];
