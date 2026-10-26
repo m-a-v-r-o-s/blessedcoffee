@@ -184,6 +184,13 @@ const CSS = `
   .card > .fade.pro { background: linear-gradient(180deg, rgba(8,8,8,.45) 0%, rgba(8,8,8,0) 16%, rgba(8,8,8,0) 42%, rgba(8,8,8,.62) 62%, rgba(6,6,6,.95) 84%); }
   .pro .kicker, .pro h1, .pro .lede { text-shadow: 0 1px 14px rgba(0,0,0,.6); }
   .pro .lede { color: #E4DCD2; }
+  /* Photo-only post: the shot, the mark top left, the footer, nothing else. Short (landscape) ones tighten up. */
+  .card > .fade.bare { background: linear-gradient(180deg, rgba(8,8,8,.42) 0%, rgba(8,8,8,0) 20%, rgba(8,8,8,0) 72%, rgba(6,6,6,.82) 100%); }
+  .card.bare .foot { color: #D8CFC6; border-top-color: rgba(255,255,255,.18); }
+  .card.bare.short { padding: 44px 48px 30px; }
+  .card.bare.short > .fade.bare { background: linear-gradient(180deg, rgba(8,8,8,.42) 0%, rgba(8,8,8,0) 30%); }
+  .card.bare.short .mark { width: 110px; }
+  .card.bare.short .foot { padding-top: 16px; font-size: 21px; }
   /* Landscape shots don't survive a 4:5 crop: they sit as a full-width plate under the mark instead. */
   .card > .plate { position: absolute; left: 0; top: 0; width: 100%; height: 760px; object-fit: cover; z-index: 0; }
   .card > .plate + .fade { background: linear-gradient(180deg, rgba(8,8,8,.4) 0%, rgba(8,8,8,0) 18%, rgba(8,8,8,0) 42%, ${BRAND.ground} 57%); }
@@ -797,6 +804,7 @@ const POSTS = [
           <textPath href="#ring" textLength="2500" lengthAdjust="spacing">ΡΟΔΟΥ 68 · ΚΑΤΩ ΠΑΤΗΣΙΑ · ΚΑΘΕ ΜΕΡΑ 07:00 – 22:00 · BLESSED.CAFE ·</textPath>
         </text>
       </svg>
+      <img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">Απο πανω</div>
         <h1 class="sm">Κλείσε το καπάκι.<br><em>Φύγαμε.</em></h1>
@@ -848,6 +856,7 @@ const POSTS = [
     id: 'cup-carousel-2',
     html: () =>
       shell(`<img class="fill" src="${shot('logo-close')}"><div class="fade"></div>
+      <img class="mark" src="${logo}">
       <div class="body tight">
         <div class="idx">01 / 03</div>
         <h1 class="sm">Coffee<br><em>&amp; spirits.</em></h1>
@@ -858,6 +867,7 @@ const POSTS = [
     id: 'cup-carousel-3',
     html: () =>
       shell(`<img class="fill" src="${shot('slogan-close')}"><div class="fade"></div>
+      <img class="mark" src="${logo}">
       <div class="body tight">
         <div class="idx">02 / 03</div>
         <h1 class="sm">Γεύση απ' τον<br><em>παράδεισο.</em></h1>
@@ -868,6 +878,7 @@ const POSTS = [
     id: 'cup-carousel-4',
     html: () =>
       shell(`<img class="fill" src="${shot('partner-close')}"><div class="fade"></div>
+      <img class="mark" src="${logo}">
       <div class="body tight">
         <div class="idx">03 / 03</div>
         <h1 class="sm">Mrs Rose<br><em>Caffè.</em></h1>
@@ -878,6 +889,7 @@ const POSTS = [
     id: 'cup-carousel-5',
     html: () =>
       shell(`<img class="shot" src="${shot('front')}" style="width:760px;left:160px;top:-10px">
+      <img class="mark" src="${logo}">
       <div class="body tight" style="align-items:center;text-align:center">
         <div class="kicker">Βρες το εδω</div>
         <h1 class="sm">Ρόδου 68,<br><em>Κάτω Πατήσια.</em></h1>
@@ -1277,6 +1289,35 @@ if (!posts.length) {
 mkdirSync(OUT, { recursive: true });
 mkdirSync(TMP, { recursive: true });
 
+// Bare posts: the shot itself under the mark and footer. IG takes 4:5 up to 1.91:1, so portrait shots
+// are trimmed to 4:5 and landscape ones keep their shape (signage never gets cut). Carousel slides
+// (fixed) are always 4:5. keep: the top share of the shot to keep, to drop a sign the photographer's
+// frame cuts at the bottom. Cropped at 2x here, then carded in the browser like every other post.
+const bare = posts.filter((p) => p.bare);
+const bareH = bare.length ? JSON.parse(execFileSync('python3', ['-c', `
+import sys, json
+from PIL import Image, ImageOps
+sizes = {}
+for arg in sys.argv[1:]:
+    src, out, fixed, keep = arg.split('|')
+    im = ImageOps.exif_transpose(Image.open(src)).convert('RGB')
+    im = im.crop((0, 0, im.size[0], round(im.size[1] * float(keep))))
+    w, h = im.size
+    lo, hi = 0.8, (0.8 if fixed == '1' else 1.91)
+    r = min(max(w / h, lo), hi)
+    if w / h > r: cw = round(h * r); im = im.crop(((w - cw) // 2, 0, (w - cw) // 2 + cw, h))
+    elif w / h < r: ch = round(w / r); im = im.crop((0, (h - ch) // 2, w, (h - ch) // 2 + ch))
+    h = round(${W} * im.size[1] / im.size[0])
+    im.resize((${W * SCALE}, h * ${SCALE}), Image.LANCZOS).save(out, 'JPEG', quality=95)
+    sizes[out.split('/')[-1][5:-4]] = h
+print(json.dumps(sizes))
+`, ...bare.map((p) => `${ROOT}/social/photos/shoot/${p.bare}.jpg|${TMP}/bare-${p.id}.jpg|${p.fixed ? 1 : 0}|${p.keep || 1}`)]).toString()) : {};
+// Landscape (short) shots get a dark band under the photo for the footer, so it never sits on signage.
+const BAND = 96;
+const cardH = (h) => (h < 1000 ? h + BAND : h);
+const bareCard = (id, h) => `<style>body { height: ${cardH(h)}px; }</style>` + shell(`<img class="fill" src="${dataUri(TMP, `bare-${id}.jpg`)}" style="height:${h}px">
+  <div class="fade bare" style="height:${h}px"></div><img class="mark" src="${logo}"><div class="body"></div>`, null, false, `bare${h < 1000 ? ' short' : ''}`);
+
 const browser = await chromium.launch({ headless: true, executablePath: CHROME });
 const page = await browser.newPage({
   viewport: { width: W, height: H },
@@ -1284,12 +1325,13 @@ const page = await browser.newPage({
 });
 
 for (const post of posts) {
-  if (post.caption) writeFileSync(`${OUT}/${post.id}.txt`, `${post.caption.el}\n\n${post.caption.en}\n\n${TAGS}\n`);
-  if (post.bare) continue; // photo only, cropped below
-  await page.setContent(`<style>${CSS}</style>${post.html(post.bg, post.real)}`, { waitUntil: 'load' });
+  const h = post.bare ? cardH(bareH[post.id]) : H;
+  await page.setViewportSize({ width: W, height: h });
+  await page.setContent(`<style>${CSS}</style>${post.bare ? bareCard(post.id, bareH[post.id]) : post.html(post.bg, post.real)}`, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready); // webfonts, or the type renders as fallback
   await page.screenshot({ path: `${TMP}/${post.id}.png` });
   // Carousel slides after the first carry no caption: the cover's .txt covers the whole set.
+  if (post.caption) writeFileSync(`${OUT}/${post.id}.txt`, `${post.caption.el}\n\n${post.caption.en}\n\n${TAGS}\n`);
   console.log(`rendered ${post.id}`);
 }
 
@@ -1303,34 +1345,14 @@ import sys, glob, os
 from PIL import Image
 for src in glob.glob(sys.argv[1] + '/*.png'):
     out = os.path.join(sys.argv[2], os.path.splitext(os.path.basename(src))[0] + '.jpg')
-    im = Image.open(src).convert('RGB').resize((${W}, ${H}), Image.LANCZOS)
+    im = Image.open(src).convert('RGB')
+    im = im.resize((${W}, round(${W} * im.size[1] / im.size[0])), Image.LANCZOS)
     im.save(out, 'JPEG', quality=92, optimize=True, progressive=True)
     print('  ->', os.path.basename(out), im.size)
 `,
   TMP,
   OUT,
 ], { stdio: 'inherit' });
-
-// Bare posts: the shot itself, 1080 wide. IG takes 4:5 up to 1.91:1, so portrait shots are trimmed to
-// 4:5 and landscape ones keep their shape (signage never gets cut). Carousel slides (fixed) are always 4:5.
-// keep: the top share of the shot to keep, to drop a sign the photographer's frame cuts at the bottom.
-const bare = posts.filter((p) => p.bare);
-if (bare.length) execFileSync('python3', ['-c', `
-import sys
-from PIL import Image, ImageOps
-for arg in sys.argv[1:]:
-    src, out, fixed, keep = arg.split('|')
-    im = ImageOps.exif_transpose(Image.open(src)).convert('RGB')
-    im = im.crop((0, 0, im.size[0], round(im.size[1] * float(keep))))
-    w, h = im.size
-    lo, hi = 0.8, (0.8 if fixed == '1' else 1.91)
-    r = min(max(w / h, lo), hi)
-    if w / h > r: cw = round(h * r); im = im.crop(((w - cw) // 2, 0, (w - cw) // 2 + cw, h))
-    elif w / h < r: ch = round(w / r); im = im.crop((0, (h - ch) // 2, w, (h - ch) // 2 + ch))
-    im = im.resize((${W}, round(${W} * im.size[1] / im.size[0])), Image.LANCZOS)
-    im.save(out, 'JPEG', quality=92, optimize=True, progressive=True)
-    print('  ->', out.split('/')[-1], im.size)
-`, ...bare.map((p) => `${ROOT}/social/photos/shoot/${p.bare}.jpg|${OUT}/${p.id}.jpg|${p.fixed ? 1 : 0}|${p.keep || 1}`)], { stdio: 'inherit' });
 
 rmSync(TMP, { recursive: true, force: true });
 console.log(`\n${posts.length} post(s) in social/library/`);
