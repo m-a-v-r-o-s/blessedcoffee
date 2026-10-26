@@ -7,7 +7,7 @@ import mrsRose from '../assets/mrsrose.webp';
 
 const { lang } = Astro.props;
 const t = T[lang];
-const label = await getImage({ src: labelSrc, width: 2048, format: 'webp', quality: 82 });
+const label = await getImage({ src: labelSrc, width: 2048, format: 'webp', quality: 92 });
 ---
 <section class="cup band" aria-labelledby="cup-title">
   <div class="wrap grid">
@@ -36,7 +36,7 @@ const label = await getImage({ src: labelSrc, width: 2048, format: 'webp', quali
     io.disconnect();
     try {
       const { mount } = await import('../scripts/cup.js');
-      await mount(canvas, stage.dataset.label, []);
+      await mount(canvas, stage.dataset.label);
       stage.classList.add('live');
     } catch { /* no WebGL: keep the still */ }
   }, { rootMargin: '400px' });
@@ -49,8 +49,8 @@ const label = await getImage({ src: labelSrc, width: 2048, format: 'webp', quali
   @media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
   .stage { position: relative; width: min(420px, 78vw); aspect-ratio: 620 / 820; margin-inline: auto; }
   .stage :global(.poster), canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .stage :global(.poster) { object-fit: contain; transition: opacity 0.4s; filter: drop-shadow(0 40px 40px rgb(0 0 0 / 0.5)); }
-  canvas { opacity: 0; transition: opacity 0.4s; touch-action: pan-y; cursor: grab; filter: drop-shadow(0 40px 40px rgb(0 0 0 / 0.5)); }
+  .stage :global(.poster) { object-fit: contain; transition: opacity 0.4s; }
+  canvas { opacity: 0; transition: opacity 0.4s; touch-action: pan-y; cursor: grab; }
   canvas:active { cursor: grabbing; }
   .live canvas { opacity: 1; }
   .live :global(.poster) { opacity: 0; }
