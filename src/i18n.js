@@ -92,6 +92,7 @@ export const T = {
     privacy: 'Πολιτική απορρήτου',
     terms: 'Όροι χρήσης',
     siteBy: 'Σχεδιασμός και κατασκευή',
+    photoBy: 'Φωτογραφία',
     rights: 'Με επιφύλαξη παντός δικαιώματος.',
     skip: 'Μετάβαση στο περιεχόμενο',
     meta: {
@@ -191,6 +192,7 @@ export const T = {
     privacy: 'Privacy policy',
     terms: 'Terms of service',
     siteBy: 'Design and build',
+    photoBy: 'Photography',
     rights: 'All rights reserved.',
     skip: 'Skip to content',
     meta: {
