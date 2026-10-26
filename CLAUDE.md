@@ -17,7 +17,7 @@ from there. Kamatero gaps are `TODO`s in that file.
 - [x] Open Graph with a real 1200x630 image
 - [x] Above-the-fold CTA and sticky mobile order bar
 - [x] Privacy policy and terms (`public/*.html`, cover both shops)
-- [x] No cookie banner needed: self-hosted fonts, Google map loads only on click, no analytics
+- [x] Cookie banner (Accept all / Reject all / Preferences, footer "Cookie settings"); only governs the Google map, fonts are self-hosted, no analytics
 - [x] Contact info per shop
 - [x] Health check: `/health` (Caddy)
 - [x] Lighthouse mobile, local: home perf 96, a11y 100, CLS 0, LCP 2.5s; menu/shop pages 100 perf

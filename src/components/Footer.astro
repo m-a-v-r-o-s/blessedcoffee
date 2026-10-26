@@ -27,7 +27,7 @@ const t = T[lang];
     </div>
     <div class="legal">
       <p>© 2026 Blessed Coffee & Spirits. {t.footerTag} {t.rights}</p>
-      <p><a href="/privacy-policy.html">{t.privacy}</a> · <a href="/terms-of-service.html">{t.terms}</a></p>
+      <p><a href="/privacy-policy.html">{t.privacy}</a> · <a href="/terms-of-service.html">{t.terms}</a> · <button type="button" class="cookie-link" data-cookie-settings>{t.cookies.footerLink}</button></p>
       <p>{t.siteBy}: <a href="https://www.akosds.com" target="_blank" rel="noopener">Akos Digital Services</a></p>
     </div>
   </div>
@@ -44,5 +44,7 @@ const t = T[lang];
   .cols a, .legal a { text-decoration: none; display: inline-block; padding-block: 4px; }
   @media (hover: hover) and (pointer: fine) { .cols a:hover, .legal a:hover { color: var(--amber); } }
   .legal { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line-ink); display: grid; gap: 6px; font-size: 14px; color: var(--on-ink-muted); }
-  .legal a { text-decoration: underline; text-underline-offset: 3px; }
+  .legal a, .cookie-link { text-decoration: underline; text-underline-offset: 3px; }
+  .cookie-link { border: 0; background: none; padding: 4px 0; font: inherit; color: inherit; cursor: pointer; }
+  @media (hover: hover) and (pointer: fine) { .cookie-link:hover { color: var(--amber); } }
 </style>

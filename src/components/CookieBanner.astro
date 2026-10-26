@@ -1,0 +1,57 @@
+---
+import { T } from '../i18n.js';
+const { lang } = Astro.props;
+const c = T[lang].cookies;
+---
+<!-- Hidden until consent.js finds no stored choice. Only governs the Google map (the site sets no
+     cookies of its own); strictly necessary storage is always on. -->
+<section id="cookies" class="cookies" aria-labelledby="cookies-title" hidden>
+  <h2 id="cookies-title" class="eyebrow">{c.title}</h2>
+  <div class="view" data-view="banner">
+    <p>{c.text}</p>
+    <div class="row">
+      <button type="button" class="btn btn-solid" data-consent="accepted">{c.accept}</button>
+      <button type="button" class="btn btn-solid" data-consent="rejected">{c.reject}</button>
+      <button type="button" class="link" data-open-prefs>{c.manage}</button>
+    </div>
+  </div>
+  <div class="view" data-view="prefs" hidden>
+    <label class="opt">
+      <input type="checkbox" checked disabled />
+      <span><strong>{c.necessary}</strong> <em>{c.alwaysOn}</em><br />{c.necessaryDesc}</span>
+    </label>
+    <label class="opt">
+      <input type="checkbox" id="consent-maps" />
+      <span><strong>{c.maps}</strong><br />{c.mapsDesc}</span>
+    </label>
+    <div class="row">
+      <button type="button" class="btn" data-save-prefs>{c.save}</button>
+      <button type="button" class="btn btn-solid" data-consent="accepted">{c.accept}</button>
+    </div>
+  </div>
+</section>
+
+<script>import '../scripts/consent.js';</script>
+
+<style>
+  .cookies {
+    position: fixed; z-index: 45; left: max(12px, env(safe-area-inset-left, 0px)); right: max(12px, env(safe-area-inset-right, 0px));
+    bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+    max-height: calc(100dvh - 180px); overflow: auto; overscroll-behavior: contain;
+    display: grid; gap: 12px; padding: 20px; border-radius: 20px;
+    background: var(--ink-2); color: var(--on-ink); border: 1px solid var(--line-ink); box-shadow: 0 20px 60px rgb(0 0 0 / 0.5);
+    font-size: 15px;
+  }
+  .cookies[hidden] { display: none; }
+  @media (min-width: 900px) { .cookies { left: 24px; right: auto; bottom: 24px; width: 460px; } }
+  .view { display: grid; gap: 14px; }
+  .view[hidden] { display: none; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .row .btn { flex: 1 1 140px; padding: 0 14px; white-space: nowrap; }
+  .link { min-height: 44px; padding: 0 6px; border: 0; background: none; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; color: var(--on-ink-muted); font-weight: 600; }
+  .opt { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; cursor: pointer; color: var(--on-ink-muted); }
+  .opt strong { color: var(--on-ink); }
+  .opt em { font: 500 12px var(--mono); font-style: normal; color: var(--amber); margin-left: 6px; }
+  .opt input { width: 22px; height: 22px; margin: 2px 0 0; accent-color: var(--amber); }
+  .opt input:disabled { cursor: not-allowed; }
+</style>

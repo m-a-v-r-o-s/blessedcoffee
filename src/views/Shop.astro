@@ -96,19 +96,23 @@ const set = SETS[id];
 </Base>
 
 <script>
-  // Two-click map: Google only loads after the visitor asks for it, so the site needs no cookie banner.
-  for (const box of document.querySelectorAll<HTMLElement>('.map')) {
-    box.querySelector('button')!.addEventListener('click', () => {
-      const f = document.createElement('iframe');
-      f.src = box.dataset.embed!;
-      f.title = box.dataset.title!;
-      f.loading = 'lazy';
-      f.referrerPolicy = 'no-referrer-when-downgrade';
-      f.allowFullscreen = true;
-      box.replaceChildren(f);
-      box.classList.add('on');
-    }, { once: true });
-  }
+  // The Google map loads on its own only with cookie consent; otherwise on a click ("two-click").
+  import { getConsent } from '../scripts/consent.js';
+  const load = (box: HTMLElement) => {
+    if (box.classList.contains('on')) return;
+    const f = document.createElement('iframe');
+    f.src = box.dataset.embed!;
+    f.title = box.dataset.title!;
+    f.loading = 'lazy';
+    f.referrerPolicy = 'no-referrer-when-downgrade';
+    f.allowFullscreen = true;
+    box.replaceChildren(f);
+    box.classList.add('on');
+  };
+  const boxes = [...document.querySelectorAll<HTMLElement>('.map')];
+  for (const box of boxes) box.querySelector('button')!.addEventListener('click', () => load(box), { once: true });
+  if (getConsent() === 'accepted') boxes.forEach(load);
+  document.addEventListener('bc:consent', (e) => { if ((e as CustomEvent).detail === 'accepted') boxes.forEach(load); });
 </script>
 
 <style>

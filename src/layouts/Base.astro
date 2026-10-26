@@ -10,6 +10,7 @@ import { SITE } from '../data/site.js';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import OrderSheet from '../components/OrderSheet.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 import logo from '../assets/blessed-logo.webp';
 import ogSrc from '../../social/photos/shoot/shutter-christ.jpg';
 // Preloaded so the big display headline doesn't reflow (CLS) when its font arrives.
@@ -65,6 +66,7 @@ const touch = await getImage({ src: logo, width: 180, height: 180, format: 'png'
   <main id="main"><slot /></main>
   <Footer lang={lang} />
   <OrderSheet lang={lang} />
+  <CookieBanner lang={lang} />
   <script>import '../scripts/shop.js';</script>
   <style>
     .skip { position: absolute; left: 12px; top: -60px; z-index: 200; padding: 12px 16px; background: var(--on-ink); color: var(--ink); border-radius: 8px; font-weight: 700; }
