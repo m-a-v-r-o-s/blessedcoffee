@@ -54,6 +54,8 @@ const shot = (name) => {
   return dataUri(`${CUP}/shots`, `${name}.png`);
 };
 const sticker = dataUri(CUP, 'cup-watermark.png');
+// A shoot photo as the room around the 3D cup (no signage shots, so nothing branded gets cut).
+const backdrop = (img) => `<img class="backdrop" src="${photo(`shoot/${img}.jpg`)}"><div class="backshade"></div>`;
 
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Semi+Condensed:wght@300;400;500;600;700&display=swap');
@@ -130,6 +132,13 @@ const CSS = `
   .card > .fade { position: absolute; inset: 0; z-index: 0;
     background: linear-gradient(180deg, rgba(8,8,8,.1) 0%, rgba(8,8,8,0) 30%, rgba(8,8,8,.85) 58%, rgba(6,6,6,.97) 80%); }
   .card > .over { position: relative; z-index: 1; }
+  /* Shop photo behind a 3D cup: blurred and darkened so the cup reads, dark at the bottom for type. */
+  .card > .backdrop { position: absolute; left: -40px; top: -40px; width: calc(100% + 80px); height: calc(100% + 80px);
+    object-fit: cover; filter: blur(14px) brightness(.48) saturate(.95); z-index: 0; }
+  .card > .backshade { position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(180deg, rgba(8,8,8,.4) 0%, rgba(8,8,8,.08) 25%, rgba(8,8,8,.15) 50%, rgba(6,6,6,.85) 72%, rgba(6,6,6,.96) 100%); }
+  .card > .mark, .card > h1, .card > .kicker, .card > .thumbs { position: relative; z-index: 1; }
+  .card > .foot { z-index: 1; }
   .card > .sticker { position: absolute; z-index: 1;
     filter: drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 24px 28px rgba(0,0,0,.55)); }
   /* Photo story: a real shop photo full-bleed, type low in the safe zone. Stories may reuse
@@ -266,6 +275,7 @@ const STORIES = [
   {
     id: 'story-cup-today',
     html: () => `<div class="card cupground">
+      ${backdrop('interior')}
       <img class="shot" src="${shot('hero-low')}" style="width:1000px;left:40px;top:20px">
       <div class="over">
         <div class="kicker">Σημερα / Today</div>
@@ -278,6 +288,7 @@ const STORIES = [
   {
     id: 'story-poll-side',
     html: () => `<div class="card">
+      ${backdrop('slat-wall')}
       <div class="kicker">Ψηφισε / Vote</div>
       <h1 style="font-size:96px">Από ποια πλευρά<br><em>πίνεις;</em></h1>
       <div class="thumbs">
@@ -291,6 +302,7 @@ const STORIES = [
   {
     id: 'story-quiz-espresso',
     html: () => `<div class="card cupground">
+      ${backdrop('crema-double-2')}
       <img class="shot" src="${shot('front')}" style="width:860px;left:110px;top:90px">
       <div class="over">
         <div class="kicker">Quiz</div>
@@ -303,6 +315,7 @@ const STORIES = [
   {
     id: 'story-quiz-answer',
     html: () => `<div class="card cupground">
+      ${backdrop('espresso-splash')}
       <img class="shot" src="${shot('hero-34')}" style="width:1000px;left:60px;top:150px">
       <div class="over">
         <div class="kicker">Η απαντηση / The answer</div>
@@ -315,6 +328,7 @@ const STORIES = [
   {
     id: 'story-see-you-7',
     html: () => `<div class="card cupground">
+      ${backdrop('beans-macro')}
       <img class="shot" src="${shot('lid-top')}" style="width:1000px;left:40px;top:250px">
       <svg class="shot" viewBox="0 0 1000 1000" style="width:1000px;left:40px;top:250px">
         <g stroke="${BRAND.gold}" stroke-linecap="round">
@@ -334,6 +348,7 @@ const STORIES = [
   {
     id: 'story-cup-prices',
     html: () => `<div class="card cupground" style="padding-bottom:340px">
+      ${backdrop('drip-close')}
       <img class="shot" src="${shot('front')}" style="width:860px;left:110px;top:100px">
       <div class="over">
         <div class="kicker">Ζεστος καφες</div>
@@ -393,13 +408,13 @@ const STORIES = [
     ['ph-delivery', '21-34-55', 'Delivery', 'Βαριέσαι;<br><em>Ερχόμαστε.</em>', 'e-food · Wolt · Box'],
     ['ph-shake', '21-36-48', 'Cocktails', 'Ανακατεύουμε<br><em>και κάτι άλλο.</em>', 'Όλα 6€'],
     ['ph-cocktail-green', '21-37-01', 'Cocktails', 'Δροσιά<br><em>σε ποτήρι.</em>', 'Όλα 6€'],
-    ['ph-cocktail-friday', '21-37-08', 'Παρασκευη', 'Παρασκευή;<br><em>Κοκτέιλ.</em>', 'Zombie · Daiquiri · Pornstar<br>Mojito · Cucumber Basil · Bubble Blessed'],
+    ['ph-cocktail-friday', '21-37-08', 'Το βραδυ', 'Βράδυ;<br><em>Κοκτέιλ.</em>', 'Zombie · Daiquiri · Pornstar<br>Mojito · Cucumber Basil · Bubble Blessed'],
     ['ph-christmas', '23-09-29', 'Χριστουγεννα', 'Καλά<br><em>Χριστούγεννα.</em>', 'Από το Blessed, σε όλη τη γειτονιά.'],
   ].map(([id, t, kicker, headline, lede]) => ({ id, html: () => photoStory({ img: `Screenshot_2026-09-20_${t}.png`, kicker, headline, lede }) })),
   // ─── Photographer shoot, 2026-10-26 (social/photos/shoot/). ──
   ...[
     ['ps-open', 'storefront-day', 'Καλημερα', 'Ανοίξαμε.<br><em>07:00.</em>', 'Ρόδου 68, Κάτω Πατήσια.', 'plate:2'],
-    ['ps-closing', 'shutter-christ-2', '22:00', 'Καληνύχτα.<br><em>Αύριο 07:00.</em>', '', 'plate:1.97'],
+    ['ps-closing', 'shutter-christ-2', 'Ρολο κατω στις 22:00', 'Μέχρι τότε,<br><em>πέρνα.</em>', '', 'plate:1.97'],
     ['ps-faith', 'shutter-faith', 'Faith over fear', 'Άγχος;<br><em>Καφές.</em>', '', 'plate'],
     ['ps-heaven', 'cup-black', 'Take away', 'Πάρε λίγο<br><em>παράδεισο.</em>', 'Μαζί σου.'],
     ['ps-waiting', 'cup-counter-2', 'Σημερα', 'Ο πρώτος<br><em>σε περιμένει.</em>', 'Από τις 07:00'],

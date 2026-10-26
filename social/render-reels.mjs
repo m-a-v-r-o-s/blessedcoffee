@@ -39,7 +39,11 @@ const CSS = `
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { width: ${W}px; height: ${H}px; overflow: hidden; background: ${BRAND.ground}; color: ${BRAND.ink};
     font-family: 'Barlow Semi Condensed', sans-serif; -webkit-font-smoothing: antialiased; }
-  #ground { position: absolute; inset: 0; background: linear-gradient(180deg, #1B1611 0%, #110E0B 50%, #070707 100%); }
+  #ground { position: absolute; inset: 0; background: linear-gradient(180deg, #1B1611 0%, #110E0B 50%, #070707 100%); overflow: hidden; }
+  /* Cup reels: a shoot photo as the room around the cup, blurred and darkened, dark at the bottom for type. */
+  #ground img { position: absolute; left: -40px; top: -40px; width: calc(100% + 80px); height: calc(100% + 80px); object-fit: cover;
+    filter: blur(14px) brightness(.48) saturate(.95); }
+  #ground i { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,8,8,.4) 0%, rgba(8,8,8,.08) 25%, rgba(8,8,8,.15) 50%, rgba(6,6,6,.85) 72%, rgba(6,6,6,.96) 100%); }
   #cup { position: absolute; inset: 0; width: ${W}px; height: ${H}px; border: 0; background: transparent; }
   .layer { position: absolute; inset: 0; }
   #back { z-index: 1; } #cup { z-index: 2; } #front { z-index: 3; }
@@ -81,6 +85,7 @@ const lines = (kicker, list, lede) => `<img class="mark" src="${logo}"><div clas
 const REELS = [
   {
     id: 'reel-reveal',
+    bg: 'interior',
     seconds: 8,
     front: `<div class="txt">
       <div class="kicker fade" id="k">Est. 2024 · Κατω Πατησια</div>
@@ -99,6 +104,7 @@ const REELS = [
   },
   {
     id: 'reel-panels',
+    bg: 'slat-wall',
     seconds: 12, // seamless: 3 x 4s, hold 2.4s on each panel, 1.6s turn to the next
     front: `<div class="txt">
       <div id="p0" class="fade"><div class="kicker">01 / 03 · Το σημα</div><h1>Coffee<br><em>&amp; spirits.</em></h1></div>
@@ -122,6 +128,7 @@ const REELS = [
   },
   {
     id: 'reel-flyover',
+    bg: 'beans-pile',
     seconds: 8,
     front: `<div class="txt">
       <div class="kicker fade" id="k">Βρες μας</div>
@@ -143,6 +150,7 @@ const REELS = [
   },
   {
     id: 'reel-drop',
+    bg: 'crema-double-2',
     seconds: 6,
     back: `<div id="shadow" style="position:absolute;left:340px;width:400px;height:60px;border-radius:50%;
       background:radial-gradient(closest-side, rgba(0,0,0,.85), rgba(0,0,0,0));"></div>`,
@@ -166,6 +174,7 @@ const REELS = [
   },
   {
     id: 'reel-slogan',
+    bg: 'interior-wide',
     seconds: 10, // seamless: the type ring makes exactly one turn
     back: `<div id="rb"></div>`,
     front: `<div id="rf"></div><div class="txt">
@@ -202,6 +211,7 @@ const REELS = [
   },
   {
     id: 'reel-hours',
+    bg: 'slat-wall',
     seconds: 10,
     front: `<div class="txt">
       <div class="kicker">Καθε μερα / Every day</div>
@@ -387,11 +397,11 @@ async function render(reel) {
   const page = await browser.newPage({ viewport: { width: W, height: H } });
   await page.goto(`http://127.0.0.1:${PORT}/cup/serve.mjs`); // any same-origin URL, so the iframe's pose() is reachable
   await page.setContent(`<!doctype html><meta charset="utf-8"><style>${CSS}</style>
-    <div id="ground"></div><div id="back" class="layer">${reel.back || ''}</div>
+    <div id="ground">${reel.bg ? `<img src="/photos/shoot/${reel.bg}.jpg"><i></i>` : ''}</div><div id="back" class="layer">${reel.back || ''}</div>
     ${reel.photo ? '' : '<iframe id="cup" src="/cup/cup.html?clean"></iframe>'}<div id="front" class="layer">${reel.front || ''}</div>
     <script>${HELPERS}; window.F = ${reel.frame.toString()};</script>`, { waitUntil: 'domcontentloaded', timeout: 180000 });
-  if (reel.photo) await page.waitForFunction(() => [...document.images].every((i) => i.complete && i.naturalWidth), null, { timeout: 60000 });
-  else await page.waitForFunction(() => document.getElementById('cup').contentWindow.ready, null, { timeout: 180000 });
+  await page.waitForFunction(() => [...document.images].every((i) => i.complete && i.naturalWidth), null, { timeout: 60000 });
+  if (!reel.photo) await page.waitForFunction(() => document.getElementById('cup').contentWindow.ready, null, { timeout: 180000 });
   await page.evaluate(() => document.fonts.ready);
   const n = reel.seconds * FPS;
   const frames = peek ? [0, 0.15, 0.35, 0.55, 0.75, 0.97].map((f) => Math.round(f * n)) : [...Array(n).keys()];

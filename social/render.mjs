@@ -50,6 +50,8 @@ const shot = (name) => {
   return dataUri(`${CUP}/shots`, `${name}.png`);
 };
 const stamp = dataUri(CUP, 'cup-watermark-white.png');
+// A shoot photo as the room around the 3D cup (no signage shots, so nothing branded gets cut).
+const backdrop = (img) => `<img class="backdrop" src="${dataUri(`${ROOT}/social/photos/shoot`, `${img}.jpg`)}"><div class="backshade"></div>`;
 const sticker = dataUri(CUP, 'cup-watermark.png');
 
 const CSS = `
@@ -138,6 +140,11 @@ const CSS = `
   .card > .fill { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; }
   .card > .fade { position: absolute; inset: 0; z-index: 0;
     background: linear-gradient(180deg, rgba(8,8,8,0) 30%, rgba(8,8,8,.86) 62%, rgba(6,6,6,.98) 82%); }
+  /* Shop photo behind a 3D cup: blurred and darkened so the cup reads, dark at the bottom for type. */
+  .card > .backdrop { position: absolute; left: -40px; top: -40px; width: calc(100% + 80px); height: calc(100% + 80px);
+    object-fit: cover; filter: blur(12px) brightness(.5) saturate(.95); z-index: 0; }
+  .card > .backshade { position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(180deg, rgba(8,8,8,.35) 0%, rgba(8,8,8,.08) 35%, rgba(8,8,8,.72) 70%, rgba(6,6,6,.95) 100%); }
   /* Corner mark: the white cup stamp, same spot on every photo card, so the grid reads as one set. */
   .card > .corner { position: absolute; top: 70px; right: 72px; width: 58px; opacity: .92; z-index: 2; }
   /* Sticker: colour cutout with a die-cut white edge and a real drop shadow. */
@@ -187,10 +194,9 @@ const CSS = `
   /* Photo-only post: the shot, the mark top left, the footer, nothing else. Short (landscape) ones tighten up. */
   .card > .fade.bare { background: linear-gradient(180deg, rgba(8,8,8,.42) 0%, rgba(8,8,8,0) 20%, rgba(8,8,8,0) 72%, rgba(6,6,6,.82) 100%); }
   .card.bare .foot { color: #D8CFC6; border-top-color: rgba(255,255,255,.18); }
-  .card.bare.short { padding: 44px 48px 30px; }
-  .card.bare.short > .fade.bare { background: linear-gradient(180deg, rgba(8,8,8,.42) 0%, rgba(8,8,8,0) 30%); }
-  .card.bare.short .mark { width: 110px; }
-  .card.bare.short .foot { padding-top: 16px; font-size: 21px; }
+  .card > .blurfill { filter: blur(34px) brightness(.42) saturate(.9); transform: scale(1.15); }
+  /* Inset from the edges: the IG profile grid trims each tile to 3:4, which would clip edge-to-edge signage. */
+  .card > .mid { position: absolute; left: 5%; width: 90%; z-index: 0; border-radius: 6px; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
   /* Landscape shots don't survive a 4:5 crop: they sit as a full-width plate under the mark instead. */
   .card > .plate { position: absolute; left: 0; top: 0; width: 100%; height: 760px; object-fit: cover; z-index: 0; }
   .card > .plate + .fade { background: linear-gradient(180deg, rgba(8,8,8,.4) 0%, rgba(8,8,8,0) 18%, rgba(8,8,8,0) 42%, ${BRAND.ground} 57%); }
@@ -761,16 +767,8 @@ const POSTS = [
   },
   {
     id: 'apokries',
-    html: (bg, real) =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body tight">
-        <div class="kicker">Αποκριες</div>
-        <h1 class="sm">Καλές<br><em>Απόκριες.</em></h1>
-        <div class="rule"></div>
-        <div class="lede">Με κέφι, στη γειτονιά μας.</div>
-      </div>`, bg, real),
-    bg: shoot('shutter-faith-wide'),
-    real: true,
+    // The storefront, whole, as a full-width plate (not the Faith over fear shutter).
+    html: () => pro({ img: 'storefront-glass', plate: true, kicker: 'Αποκριες', h1: 'Καλές<br><em>Απόκριες.</em>', lede: 'Με κέφι, στη γειτονιά μας.', sm: true }),
     caption: {
       el: 'Καλές Απόκριες από όλους εμάς στο Blessed.',
       en: 'Happy Apokries (Greek Carnival season) from everyone at Blessed.',
@@ -781,7 +779,7 @@ const POSTS = [
   {
     id: 'cup-hero',
     html: () =>
-      shell(`<img class="shot" src="${shot('hero-low')}" style="width:1170px;left:250px;top:-70px">
+      shell(`${backdrop('interior')}<img class="shot" src="${shot('hero-low')}" style="width:1170px;left:250px;top:-70px">
       <img class="mark" src="${logo}">
       <div class="body tight" style="max-width:480px">
         <div class="kicker">Take away</div>
@@ -797,7 +795,7 @@ const POSTS = [
   {
     id: 'cup-lid',
     html: () =>
-      shell(`<img class="shot" src="${shot('lid-top')}" style="width:1000px;left:40px;top:10px">
+      shell(`${backdrop('beans-pile')}<img class="shot" src="${shot('lid-top')}" style="width:1000px;left:40px;top:10px">
       <svg class="shot" viewBox="0 0 1000 1000" style="width:1000px;left:40px;top:10px">
         <defs><path id="ring" d="M500,500 m-405,0 a405,405 0 1,1 810,0 a405,405 0 1,1 -810,0"/></defs>
         <text font-family="Barlow Semi Condensed" font-weight="600" font-size="30" fill="${BRAND.gold}">
@@ -817,7 +815,7 @@ const POSTS = [
   {
     id: 'cup-hot-coffee',
     html: () =>
-      shell(`<img class="shot" src="${shot('front')}" style="width:940px;left:420px;top:40px">
+      shell(`${backdrop('crema-double-2')}<img class="shot" src="${shot('front')}" style="width:940px;left:420px;top:40px">
       <img class="mark" src="${logo}">
       <div class="body tight" style="max-width:560px">
         <div class="kicker">Ζεστος καφες</div>
@@ -840,7 +838,7 @@ const POSTS = [
   {
     id: 'cup-carousel-1',
     html: () =>
-      shell(`<img class="shot" src="${shot('hero-34')}" style="width:1030px;left:120px;top:10px">
+      shell(`${backdrop('slat-wall')}<img class="shot" src="${shot('hero-34')}" style="width:1030px;left:120px;top:10px">
       <img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">Ενα ποτηρι</div>
@@ -888,7 +886,7 @@ const POSTS = [
   {
     id: 'cup-carousel-5',
     html: () =>
-      shell(`<img class="shot" src="${shot('front')}" style="width:760px;left:160px;top:-10px">
+      shell(`${backdrop('interior-wide')}<img class="shot" src="${shot('front')}" style="width:760px;left:160px;top:-10px">
       <img class="mark" src="${logo}">
       <div class="body tight" style="align-items:center;text-align:center">
         <div class="kicker">Βρες το εδω</div>
@@ -1305,11 +1303,14 @@ for arg in sys.argv[1:]:
     sizes[out.split('/')[-1][5:-4]] = h
 print(json.dumps(sizes))
 `, ...bare.map((p) => `${ROOT}/social/photos/shoot/${p.bare}.jpg|${TMP}/bare-${p.id}.jpg|${p.fixed ? 1 : 0}|${p.keep || 1}`)]).toString()) : {};
-// Landscape (short) shots get a dark band under the photo for the footer, so it never sits on signage.
-const BAND = 96;
-const cardH = (h) => (h < 1000 ? h + BAND : h);
-const bareCard = (id, h) => `<style>body { height: ${cardH(h)}px; }</style>` + shell(`<img class="fill" src="${dataUri(TMP, `bare-${id}.jpg`)}" style="height:${h}px">
-  <div class="fade bare" style="height:${h}px"></div><img class="mark" src="${logo}"><div class="body"></div>`, null, false, `bare${h < 1000 ? ' short' : ''}`);
+// Every feed post is 4:5 (IG crops and shrinks landscape). A landscape shot sits full width, uncropped,
+// across the middle, on a blurred dark copy of itself, so signage stays whole.
+const bareCard = (id, h) => {
+  const src = dataUri(TMP, `bare-${id}.jpg`);
+  return h >= H ? shell(`<img class="fill" src="${src}"><div class="fade bare"></div><img class="mark" src="${logo}"><div class="body"></div>`, null, false, 'bare')
+    : shell(`<img class="fill blurfill" src="${src}"><img class="mid" src="${src}" style="top:${Math.round((H - h * 0.9) / 2)}px">
+      <div class="fade bare"></div><img class="mark" src="${logo}"><div class="body"></div>`, null, false, 'bare');
+};
 
 const browser = await chromium.launch({ headless: true, executablePath: CHROME });
 const page = await browser.newPage({
@@ -1318,8 +1319,7 @@ const page = await browser.newPage({
 });
 
 for (const post of posts) {
-  const h = post.bare ? cardH(bareH[post.id]) : H;
-  await page.setViewportSize({ width: W, height: h });
+  await page.setViewportSize({ width: W, height: H });
   await page.setContent(`<style>${CSS}</style>${post.bare ? bareCard(post.id, bareH[post.id]) : post.html(post.bg, post.real)}`, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready); // webfonts, or the type renders as fallback
   await page.screenshot({ path: `${TMP}/${post.id}.png` });
