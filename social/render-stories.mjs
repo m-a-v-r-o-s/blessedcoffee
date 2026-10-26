@@ -425,7 +425,6 @@ const STORIES = [
     ['ps-apron', 'apron-cup', 'Σε λιγο', 'Έρχεται<br><em>ο δικός σου.</em>', ''],
     ['ps-phone', 'staff-jacket', 'Τηλεφωνο', 'Θα μας<br><em>αναγνωρίσεις.</em>', '211 218 1815'],
     ['ps-inside', 'interior', 'Μεσα', 'Κάτσε<br><em>λίγο.</em>', '07:00 – 22:00'],
-    ['ps-grateful', 'wall-grateful', 'Blessed · Grateful · Thankful', 'Καλημέρα<br><em>από εμάς.</em>', '', '68% 50%'],
     ['ps-street', 'cup-street-left', 'Κανε tag', 'Το ποτήρι σου<br><em>στη γειτονιά.</em>', '@blessedcoffee2024'],
     ['ps-delivery', 'cup-counter', 'Delivery', 'Βαριέσαι;<br><em>Ερχόμαστε.</em>', 'e-food · Wolt · Box'],
     ['ps-winter-steam', 'espresso-steam', 'Espresso · 1.80€', 'Κρύο;<br><em>Όχι εδώ.</em>', ''],

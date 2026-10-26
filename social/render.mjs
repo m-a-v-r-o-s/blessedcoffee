@@ -1015,13 +1015,6 @@ const POSTS = [
     },
   },
   {
-    id: 'shop-grateful', bare: 'wall-grateful',
-    caption: {
-      el: 'Blessed, grateful, thankful. Έτσι λέμε καλημέρα, κάθε μέρα από τις 07:00.',
-      en: 'Blessed, grateful, thankful. That is how we say good morning, every day from 7am.',
-    },
-  },
-  {
     id: 'shop-coffee-guide',
     html: () => pro({ img: 'coffee-guide', kicker: 'Τεστ', h1: 'Πες μου τι πίνεις,<br><em>να σου πω ποιος είσαι.</em>', sm: true }),
     caption: {
