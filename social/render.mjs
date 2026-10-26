@@ -1193,11 +1193,10 @@ const POSTS = [
     },
   },
   {
-    id: 'vitrine-window',
-    html: () => pro({ img: 'vitrine-window', kicker: 'Περνας;', h1: 'Πέρνα.<br>Πάρε.<br><em>Φύγε.</em>' }),
+    id: 'vitrine-window', bare: 'vitrine-window',
     caption: {
-      el: 'Πέρνα, πάρε, φύγε. Ρόδου 68, από τις 07:00.',
-      en: 'Stop, grab, go. Rodou 68, from 7am.',
+      el: 'Ρίξε μια ματιά στη βιτρίνα και έλα να διαλέξεις. Σε περιμένουμε, Ρόδου 68, από τις 07:00.',
+      en: 'Take a look at the counter and come pick something. We will be here, Rodou 68, from 7am.',
     },
   },
   {
