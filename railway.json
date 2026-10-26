@@ -8,7 +8,7 @@
       "/social/photos/shoot/**",
       "/package.json",
       "/package-lock.json",
-      "/astro.config.js",
+      "/astro.config.mjs",
       "/Caddyfile",
       "/railway.json"
     ]
