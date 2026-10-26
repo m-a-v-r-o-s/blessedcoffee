@@ -506,7 +506,7 @@ const POSTS = [
   },
   // ─── Neighbourhood atmosphere: photographer shots (2026-10-26). ──
   {
-    id: 'atmosphere-neighbourhood',
+    id: 'atmosphere-neighbourhood', bare: 'corner-wide',
     html: (bg, real) =>
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
@@ -515,15 +515,13 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Η γωνία μας, Ρόδου 68.</div>
       </div>`, bg, real),
-    bg: shoot('corner-wide'),
-    real: true,
     caption: {
       el: 'Η γωνία μας στα Κάτω Πατήσια. Ρόδου 68, κάθε μέρα 07:00 – 22:00.',
       en: 'Our corner of Kato Patisia. Rodou 68, every day 07:00 – 22:00.',
     },
   },
   {
-    id: 'atmosphere-early',
+    id: 'atmosphere-early', bare: 'storefront-leaves',
     html: (bg, real) =>
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
@@ -532,8 +530,6 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Ανοιχτά κάθε μέρα από τις 07:00.</div>
       </div>`, bg, real),
-    bg: shoot('storefront-leaves-2'),
-    real: true,
     caption: {
       el: 'Από νωρίς, είμαστε εδώ. Ανοιχτά κάθε μέρα από τις 07:00.',
       en: "We're here early. Open every day from 7am.",
@@ -749,7 +745,7 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Από το Blessed, σε όλη τη γειτονιά.</div>
       </div>`, bg, real),
-    bg: shoot('storefront-sign'),
+    bg: shoot('cup-counter-2'),
     real: true,
     caption: {
       el: 'Καλό καλοκαίρι από όλους εμάς στο Blessed, σε όλη τη γειτονιά.',
@@ -966,82 +962,70 @@ const POSTS = [
       en: 'And after the coffee: Zombie, Daiquiri, Pornstar, Mojito, Cucumber Basil, Bubble Blessed. All €6.',
     },
   },
-  // ─── Photographer shoot, 2026-10-26 (social/photos/shoot/). One shot per feed post; carousels
-  //     take the near-duplicate frames. Facts: hours, MENU prices, the phone on the site. ──────────
+  // ─── Photographer shoot, 2026-10-26 (social/photos/shoot/). One shot per feed post. Strong shots
+  //     go out bare (bare: no card, no type, the line lives in the caption); type only where it works:
+  //     prices, questions, CTAs, quotes. Logos and signage are never cropped: landscape shots keep
+  //     their shape. Facts: hours, MENU prices, the phone on the site. ──────────────────────────────
   // Το μαγαζί
   {
-    id: 'shop-storefront',
-    html: () => pro({ img: 'storefront-day', kicker: 'Ροδου 68', h1: 'Δεν θα μας<br><em>χάσεις.</em>', lede: 'Κάθε μέρα 07:00 – 22:00.' }),
+    id: 'shop-storefront', bare: 'storefront-day', keep: 0.62, // trims the round sign the frame cuts
     caption: {
-      el: `Τα γράμματα φαίνονται από την άκρη του δρόμου. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα 07:00 – 22:00.`,
-      en: `You can read the letters from the end of the street. Rodou 68, Kato Patisia, every day 07:00 – 22:00.`,
+      el: 'Εδώ ξεκινάει η μέρα. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα από τις 07:00.',
+      en: 'This is where the day starts. Rodou 68, Kato Patisia, every day from 7am.',
     },
   },
   {
-    id: 'shop-sign',
-    html: () => pro({ img: 'sign-round', kicker: 'Est. 2024', h1: 'Το σήμα<br><em>μας.</em>', lede: 'Ενωμένα χέρια, από το 2024.' }),
+    id: 'shop-sign', bare: 'sign-round',
     caption: {
-      el: 'Τα ενωμένα χέρια στην πρόσοψη, το σήμα μας από το 2024. Ρόδου 68, Κάτω Πατήσια.',
-      en: 'The praying hands on the front, our mark since 2024. Rodou 68, Kato Patisia.',
+      el: 'Στη γειτονιά από το 2024. Ευχαριστούμε που μας κάνατε στέκι. Ρόδου 68.',
+      en: 'In the neighbourhood since 2024. Thank you for making us your spot. Rodou 68.',
     },
   },
   {
-    id: 'shop-spirits',
-    html: () => pro({ img: 'sign-spirits', plate: true, kicker: 'Coffee &amp; spirits', h1: 'Πρώτα καφές.<br><em>Μετά spirits.</em>', lede: 'Κοκτέιλ, όλα 6€.' }),
+    id: 'shop-faith', bare: 'shutter-faith',
     caption: {
-      el: 'Coffee & spirits, το λέει και η ταμπέλα. Καφές από τις 07:00 και κοκτέιλ, όλα 6€. Ρόδου 68.',
-      en: 'Coffee & spirits, the sign says it. Coffee from 7am and cocktails, all €6. Rodou 68.',
+      el: 'Λιγότερο άγχος, περισσότερος καφές. Το λέει και το ρολό μας: faith over fear.',
+      en: 'Less worry, more coffee. Our shutter says it too: faith over fear.',
     },
   },
   {
-    id: 'shop-faith',
-    html: () => pro({ img: 'shutter-faith', kicker: 'Στο ρολο μας', h1: 'Faith<br><em>over fear.</em>', lede: 'Το γράφουμε. Το εννοούμε.' }),
-    caption: {
-      el: 'Faith over fear. Το γράφει το ρολό μας, και το εννοούμε. Ρόδου 68, Κάτω Πατήσια.',
-      en: "Faith over fear. It's written on our shutter, and we mean it. Rodou 68, Kato Patisia.",
-    },
-  },
-  {
-    id: 'shop-shutter',
-    html: () => pro({ img: 'shutter-christ-2', plate: true, kicker: 'Ρολο κατω', h1: 'Αν το βλέπεις,<br>είναι πριν τις <em>07:00.</em>', lede: 'Ή μετά τις 22:00.', sm: true }),
+    id: 'shop-shutter', bare: 'shutter-christ-2', keep: 0.76, // trims the round sign the frame cuts
     caption: {
       el: 'Αν βλέπεις το ρολό, είναι πριν τις 07:00 ή μετά τις 22:00. Όλες τις άλλες ώρες, ελάτε μέσα.',
       en: 'If you can see the shutter, it is before 07:00 or after 22:00. Any other time, come on in.',
     },
   },
   {
-    id: 'shop-inside',
-    html: () => pro({ img: 'interior-wide', plate: true, kicker: 'Μεσα η εξω', h1: 'Κάτσε<br><em>λίγο.</em>', lede: 'Τραπέζια μέσα, καρέκλες έξω.' }),
+    id: 'shop-inside', bare: 'interior-wide',
     caption: {
-      el: 'Κάτσε λίγο. Τραπέζια μέσα, καρέκλες έξω, όπως σου κάνει κέφι. Ρόδου 68, κάθε μέρα 07:00 – 22:00.',
-      en: 'Sit for a bit. Tables inside, chairs outside, whatever you feel like. Rodou 68, every day 07:00 – 22:00.',
+      el: 'Κάτσε λίγο. Τα mail μπορούν να περιμένουν. Ρόδου 68, κάθε μέρα 07:00 – 22:00.',
+      en: 'Sit for a bit. The emails can wait. Rodou 68, every day 07:00 – 22:00.',
     },
   },
   {
-    id: 'shop-grateful',
-    html: () => pro({ img: 'wall-grateful', kicker: 'Στον τοιχο μας', h1: 'Τρεις λέξεις.<br><em>Μία διάθεση.</em>', sm: true }),
+    id: 'shop-grateful', bare: 'wall-grateful',
     caption: {
-      el: 'Τρεις λέξεις στον τοίχο μας: blessed, grateful, thankful. Με αυτή τη διάθεση ανοίγουμε κάθε πρωί στις 07:00.',
-      en: 'Three words on our wall: blessed, grateful, thankful. That is the mood we open with, every morning at 7.',
+      el: 'Blessed, grateful, thankful. Έτσι λέμε καλημέρα, κάθε μέρα από τις 07:00.',
+      en: 'Blessed, grateful, thankful. That is how we say good morning, every day from 7am.',
     },
   },
   {
     id: 'shop-coffee-guide',
-    html: () => pro({ img: 'coffee-guide', kicker: 'Εσυ τι πινεις;', h1: 'Ποιος καφές<br><em>είσαι;</em>', lede: 'Γράψ\' το στα σχόλια.' }),
+    html: () => pro({ img: 'coffee-guide', kicker: 'Τεστ', h1: 'Πες μου τι πίνεις,<br><em>να σου πω ποιος είσαι.</em>', sm: true }),
     caption: {
-      el: 'Στον τοίχο μας κρέμεται όλος ο χάρτης του καφέ. Εσύ ποιος είσαι; Espresso, freddo, cappuccino ή ελληνικός; Γράψ\' το στα σχόλια.',
-      en: 'The whole coffee map hangs on our wall. Which one are you? Espresso, freddo, cappuccino or Greek? Tell us in the comments.',
+      el: 'Πες μου τι καφέ πίνεις, να σου πω ποιος είσαι. Freddo espresso σκέτος; Cappuccino; Ελληνικός μέτριος; Γράψ\' το στα σχόλια.',
+      en: 'Tell me your coffee and I will tell you who you are. Plain freddo espresso? Cappuccino? Greek, medium sweet? Tell us in the comments.',
     },
   },
   // Ο καφές μας: the two blends, priced from MENU (first column Mrs Rose, second Dolce).
   {
     id: 'menu-mrs-rose',
     html: () => series({ ground: 'black', tag: 'Στο μενού · Mrs Rose', img: shoot('mrs-rose-tins'),
-      say: 'Mrs Rose<br><em>Caffè.</em>',
+      say: 'Ο κλασικός<br><em>μας.</em>',
       extra: rows([['Espresso', '1.80€'], ['Freddo espresso', '2.30€'], ['Cappuccino', '2.60€']]) }),
     caption: {
-      el: 'Mrs Rose Caffè, ο καφές μας. Espresso 1.80€, freddo espresso 2.30€, cappuccino 2.60€. Ρόδου 68, από τις 07:00.',
-      en: 'Mrs Rose Caffè, our coffee. Espresso €1.80, freddo espresso €2.30, cappuccino €2.60. Rodou 68, from 7am.',
+      el: 'Mrs Rose Caffè, ο κλασικός μας. Espresso 1.80€, freddo espresso 2.30€, cappuccino 2.60€. Ρόδου 68, από τις 07:00.',
+      en: 'Mrs Rose Caffè, our classic. Espresso €1.80, freddo espresso €2.30, cappuccino €2.60. Rodou 68, from 7am.',
     },
   },
   {
@@ -1056,101 +1040,92 @@ const POSTS = [
   },
   // Το ποτήρι
   {
-    id: 'cup-slogan',
-    html: () => pro({ img: 'cup-black', kicker: 'Γραφει το ποτηρι', h1: 'A taste<br>of <em>heaven.</em>', lede: 'In every cup.' }),
+    id: 'cup-slogan', bare: 'cup-black',
     caption: {
-      el: `A taste of heaven in every cup: το γράφει το ποτήρι μας, το εννοεί ο καφές. Ρόδου 68. ${TAG_US.el}`,
-      en: `A taste of heaven in every cup: the cup says it, the coffee means it. Rodou 68. ${TAG_US.en}`,
+      el: `Ο παράδεισος έχει καπάκι και χωράει στο χέρι. Ρόδου 68, από τις 07:00. ${TAG_US.el}`,
+      en: `Heaven comes with a lid and fits in your hand. Rodou 68, from 7am. ${TAG_US.en}`,
     },
   },
   {
     id: 'cup-ready',
-    html: () => pro({ img: 'cup-counter', kicker: 'Take away', h1: 'Έτοιμος<br><em>για το δρόμο.</em>', lede: 'Κάθε μέρα 07:00 – 22:00.', sm: true }),
+    html: () => pro({ img: 'cup-counter', kicker: 'Take away', h1: 'Κόλλησες στην κίνηση;<br><em>Τουλάχιστον έχεις καφέ.</em>', sm: true }),
     caption: {
-      el: `Ο καφές σου, έτοιμος για το δρόμο. Ρόδου 68, κάθε μέρα 07:00 – 22:00. ${TAG_US.el}`,
-      en: `Your coffee, ready for the road. Rodou 68, every day 07:00 – 22:00. ${TAG_US.en}`,
+      el: `Κόλλησες στην κίνηση; Τουλάχιστον έχεις καφέ. Ρόδου 68, κάθε μέρα 07:00 – 22:00. ${TAG_US.el}`,
+      en: `Stuck in traffic? At least you have coffee. Rodou 68, every day 07:00 – 22:00. ${TAG_US.en}`,
     },
   },
   {
     id: 'cup-pair',
-    html: () => pro({ img: 'cup-pair', kicker: 'Για δυο', h1: 'Ένας για σένα.<br><em>Ένας για τον φίλο.</em>', sm: true }),
+    html: () => pro({ img: 'cup-pair', kicker: 'Για δυο', h1: 'Κερνάς<br><em>ή κερνάω;</em>' }),
     caption: {
-      el: 'Ένας για σένα, ένας για τον φίλο. Κάνε tag αυτόν που σου χρωστάει καφέ.',
-      en: 'One for you, one for your friend. Tag the one who owes you a coffee.',
+      el: 'Κερνάς ή κερνάω; Κάνε tag αυτόν που σου χρωστάει καφέ.',
+      en: 'Your round or mine? Tag the one who owes you a coffee.',
     },
   },
   {
     id: 'cup-street',
-    html: () => pro({ img: 'cup-street', kicker: 'Το ποτηρι στη γειτονια', h1: 'Τράβα το δικό σου.<br><em>Κάνε tag.</em>', lede: '@blessedcoffee2024', sm: true }),
+    html: () => pro({ img: 'cup-street-left', kicker: 'Το ποτηρι στη γειτονια', h1: 'Τράβα το δικό σου.<br><em>Κάνε tag.</em>', lede: '@blessedcoffee2024', sm: true }),
     caption: {
       el: 'Το ποτήρι στη γειτονιά: ξεκινάμε εμείς. Τράβα κι εσύ το δικό σου, όπου κι αν το πας, και κάνε tag @blessedcoffee2024.',
       en: 'The cup around the neighbourhood: we go first. Snap yours wherever you take it and tag @blessedcoffee2024.',
     },
   },
   {
-    id: 'cup-foam',
-    html: () => pro({ img: 'foam-macro', kicker: 'Cappuccino · 2.60€', h1: 'Αφρός.<br><em>Όπως πρέπει.</em>' }),
+    id: 'cup-foam', bare: 'foam-macro',
     caption: {
-      el: 'Αφρός όπως πρέπει, κάθε φορά. Cappuccino 2.60€, κάθε μέρα από τις 07:00.',
-      en: 'Foam the way it should be, every time. Cappuccino €2.60, every day from 7am.',
+      el: 'Η ζωή είναι μικρή για κακό cappuccino. 2.60€, κάθε μέρα από τις 07:00.',
+      en: 'Life is too short for a bad cappuccino. €2.60, every day from 7am.',
     },
   },
   {
-    id: 'cup-espresso',
-    html: () => pro({ img: 'espresso-logo-cup', kicker: 'Espresso · 1.80€', h1: 'Στο δικό μας<br><em>ποτήρι.</em>' }),
+    id: 'cup-espresso', bare: 'espresso-logo-cup',
     caption: {
-      el: 'Espresso 1.80€, κατευθείαν στο ποτήρι με το σήμα μας. Για εδώ ή για το δρόμο.',
-      en: 'Espresso €1.80, straight into the cup with our mark on it. For here or to go.',
+      el: 'Λίγη υπομονή, αξίζει. Espresso 1.80€, για εδώ ή για το δρόμο.',
+      en: 'A little patience, it is worth it. Espresso €1.80, for here or to go.',
     },
   },
-  // Από τον κόκκο: the process, numbered like a series.
+  // Από τον κόκκο: the process, bare shots, numbered in the captions.
   {
-    id: 'bean-01',
-    html: () => pro({ img: 'beans-macro', kicker: 'Απο τον κοκκο · №01', h1: 'Ξεκινάει<br><em>από εδώ.</em>' }),
+    id: 'bean-01', bare: 'beans-macro',
     caption: {
-      el: 'Κάθε καφές ξεκινάει από εδώ: κόκκοι, πριν τους αλέσουμε. Από τον κόκκο, μέρος 1.',
-      en: 'Every coffee starts here: beans, before we grind them. From the bean, part 1.',
-    },
-  },
-  {
-    id: 'bean-02',
-    html: () => pro({ img: 'grinder-fill', kicker: 'Απο τον κοκκο · №02', h1: 'Γεμίζουμε<br><em>τον μύλο.</em>', lede: 'Αλέθεται τη στιγμή.' }),
-    caption: {
-      el: 'Γεμίζουμε τον μύλο και αλέθουμε τη στιγμή που τον παραγγέλνεις. Από τον κόκκο, μέρος 2.',
-      en: 'We fill the grinder and grind the moment you order. From the bean, part 2.',
+      el: 'Πριν γίνει η καλημέρα σου. Από τον κόκκο, 1/5.',
+      en: 'Before it becomes your good morning. From the bean, 1/5.',
     },
   },
   {
-    id: 'bean-03',
-    html: () => pro({ img: 'espresso-splash', kicker: 'Απο τον κοκκο · №03', h1: 'Τα πρώτα<br><em>δευτερόλεπτα.</em>' }),
+    id: 'bean-02', bare: 'grinder-fill',
     caption: {
-      el: 'Τα πρώτα δευτερόλεπτα του espresso σου. Από τον κόκκο, μέρος 3.',
-      en: 'The first seconds of your espresso. From the bean, part 3.',
+      el: 'Εμείς ξεκινάμε πριν από σένα. Από τον κόκκο, 2/5.',
+      en: 'We start before you do. From the bean, 2/5.',
     },
   },
   {
-    id: 'bean-04',
-    html: () => pro({ img: 'crema-double', kicker: 'Απο τον κοκκο · №04', h1: 'Η κρέμα λέει<br><em>την αλήθεια.</em>', sm: true }),
+    id: 'bean-03', bare: 'espresso-splash',
     caption: {
-      el: 'Η κρέμα λέει την αλήθεια για τον espresso. Η δική μας λέει καλά λόγια. Από τον κόκκο, μέρος 4.',
-      en: 'The crema tells the truth about an espresso. Ours says nice things. From the bean, part 4.',
+      el: 'Το καλύτερο θέαμα της μέρας. Από τον κόκκο, 3/5.',
+      en: 'The best view of the day. From the bean, 3/5.',
     },
   },
   {
-    id: 'bean-05',
-    html: () => pro({ img: 'milk-steam', kicker: 'Απο τον κοκκο · №05', h1: 'Ο αφρός<br><em>θέλει χέρι.</em>', lede: 'Cappuccino latte 2.60€' }),
+    id: 'bean-04', bare: 'crema-double',
     caption: {
-      el: 'Ο αφρός θέλει χέρι, όχι κουμπί. Cappuccino 2.60€, cappuccino latte 2.60€. Από τον κόκκο, μέρος 5.',
-      en: 'Good foam needs a hand, not a button. Cappuccino €2.60, cappuccino latte €2.60. From the bean, part 5.',
+      el: 'Η κρέμα λέει την αλήθεια για τον espresso. Η δική μας λέει καλά λόγια. Από τον κόκκο, 4/5.',
+      en: 'The crema tells the truth about an espresso. Ours says nice things. From the bean, 4/5.',
+    },
+  },
+  {
+    id: 'bean-05', bare: 'milk-steam',
+    caption: {
+      el: 'Ο αφρός θέλει χέρι, όχι κουμπί. Cappuccino 2.60€, cappuccino latte 2.60€. Από τον κόκκο, 5/5.',
+      en: 'Good foam needs a hand, not a button. Cappuccino €2.60, cappuccino latte €2.60. From the bean, 5/5.',
     },
   },
   // Πίσω από τον πάγκο: the team (staff photographed at the shoot).
   {
-    id: 'team-01',
-    html: () => pro({ img: 'staff-machine', kicker: 'Πισω απο τον παγκο · №01', h1: 'Εδώ<br><em>γίνεται.</em>', lede: 'Κάθε μέρα, από τις 07:00.' }),
+    id: 'team-01', bare: 'staff-machine',
     caption: {
-      el: 'Πίσω από τον πάγκο, εκεί που φτιάχνεται ο καφές σου. Κάθε μέρα από τις 07:00.',
-      en: 'Behind the counter, where your coffee gets made. Every day from 7am.',
+      el: 'Η παραγγελία σου, σε καλά χέρια. Κάθε μέρα από τις 07:00.',
+      en: 'Your order, in good hands. Every day from 7am.',
     },
   },
   {
@@ -1162,45 +1137,35 @@ const POSTS = [
     },
   },
   {
-    id: 'team-02',
-    html: () => pro({ img: 'staff-apron', kicker: 'Πισω απο τον παγκο · №02', h1: 'Το σήμα,<br><em>στην ποδιά.</em>', lede: 'Coffee &amp; spirits, από το 2024.' }),
-    caption: {
-      el: 'Το σήμα μας, στην ποδιά. Coffee & spirits, από το 2024, Ρόδου 68.',
-      en: 'Our mark, on the apron. Coffee & spirits since 2024, Rodou 68.',
-    },
-  },
-  {
-    id: 'team-phone',
-    html: () => pro({ img: 'staff-jacket', kicker: 'Τηλεφωνο', h1: '211 218<br><em>1815.</em>', lede: 'Το γράφουμε και στην πλάτη.' }),
-    caption: {
-      el: 'Το γράφουμε και στην πλάτη: 211 218 1815. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα 07:00 – 22:00.',
-      en: "It's on our backs too: 211 218 1815. Rodou 68, Kato Patisia, every day 07:00 – 22:00.",
-    },
-  },
-  {
-    id: 'team-03',
-    html: () => pro({ img: 'staff-back', kicker: 'Πισω απο τον παγκο · №03', h1: 'Ομάδα,<br><em>σε κάθε βάρδια.</em>' }),
-    caption: {
-      el: 'Ομάδα, σε κάθε βάρδια, από τις 07:00 ως τις 22:00. Πέρνα να πεις μια καλημέρα.',
-      en: 'A team on every shift, from 07:00 to 22:00. Drop by and say good morning.',
-    },
-  },
-  {
-    id: 'team-04',
-    html: () => pro({ img: 'apron-cup', kicker: 'Πισω απο τον παγκο · №04', h1: 'Ένα cappuccino,<br><em>έρχεται.</em>', sm: true }),
+    id: 'team-02', bare: 'apron-cup',
     caption: {
       el: 'Ένα cappuccino, έρχεται. 2.60€, κάθε μέρα από τις 07:00.',
       en: 'One cappuccino, coming up. €2.60, every day from 7am.',
     },
   },
-  // Η βιτρίνα: pastries. Only items visibly identifiable get a name and a MENU price.
   {
-    id: 'vitrine-croissant',
-    html: () => series({ ground: 'black', tag: 'Στο μενού · Κρουασάν', img: shoot('vitrine-croissant'),
-      say: 'Κρουασάν.<br><em>2.50€.</em>', sub: 'Φρέσκα, κάθε πρωί.' }),
+    id: 'team-phone', bare: 'staff-jacket',
     caption: {
-      el: 'Κρουασάν 2.50€, φρέσκα κάθε πρωί. Μαζί με έναν espresso 1.80€, το πρωινό λύθηκε.',
-      en: 'Croissant €2.50, fresh every morning. With an espresso at €1.80, breakfast is sorted.',
+      el: 'Θα μας αναγνωρίσεις. Ή πάρε μας: 211 218 1815, Ρόδου 68, κάθε μέρα 07:00 – 22:00.',
+      en: "You'll recognise us. Or call: 211 218 1815, Rodou 68, every day 07:00 – 22:00.",
+    },
+  },
+  {
+    id: 'team-03', bare: 'staff-back',
+    caption: {
+      el: 'Ομάδα, σε κάθε βάρδια, από τις 07:00 ως τις 22:00. Πέρνα να πεις μια καλημέρα.',
+      en: 'A team on every shift, from 07:00 to 22:00. Drop by and say good morning.',
+    },
+  },
+  // Η βιτρίνα: pastries. Only items identified for sure get a name and a MENU price.
+  {
+    id: 'vitrine-peinirli',
+    html: () => series({ ground: 'black', tag: 'Στο μενού · Πεϊνιρλί', img: shoot('vitrine-peinirli'),
+      say: 'Το καραβάκι<br><em>της βιτρίνας.</em>', cls: 'sm',
+      extra: rows([['Πεϊνιρλί', '2.90€'], ['Κρουασάν', '2.50€']]) }),
+    caption: {
+      el: 'Το καραβάκι της βιτρίνας: πεϊνιρλί 2.90€. Και κρουασάν 2.50€, για όσους δεν θέλουν να ταξιδέψουν.',
+      en: 'The little boat in the window: peinirli €2.90. And croissants at €2.50 for anyone not in the mood to sail.',
     },
   },
   {
@@ -1214,81 +1179,77 @@ const POSTS = [
     },
   },
   {
-    id: 'vitrine-craving',
-    html: () => pro({ img: 'pastry-sesame', kicker: 'Η βιτρινα', h1: 'Κάτι για<br><em>τη λιγούρα.</em>', lede: 'Από τις 07:00.' }),
+    id: 'vitrine-craving', bare: 'pastry-sesame',
     caption: {
       el: 'Κάτι για τη λιγούρα, όπως το είπε κι η Martha στο Google. Η βιτρίνα γεμίζει από τις 07:00.',
       en: 'Something for the craving, as Martha put it on Google. The counter fills up from 7am.',
     },
   },
   {
-    id: 'vitrine-plate',
-    html: () => pro({ img: 'pie-plate', kicker: 'Η βιτρινα', h1: 'Αλμυρό,<br><em>στο πιάτο.</em>', lede: 'Για εδώ ή για το δρόμο.' }),
+    id: 'vitrine-plate', bare: 'pie-plate',
     caption: {
-      el: 'Αλμυρό, στο πιάτο. Κάτσε να το φας εδώ ή πάρ\' το για το δρόμο.',
-      en: 'Something savoury, on a plate. Eat it here or take it with you.',
+      el: 'Δεν έφαγες πρωινό. Το ξέρουμε. Για εδώ ή για το δρόμο, από τις 07:00.',
+      en: "You skipped breakfast. We know. For here or to go, from 7am.",
     },
   },
   {
     id: 'vitrine-window',
     html: () => pro({ img: 'vitrine-window', kicker: 'Περνας;', h1: 'Πέρνα.<br>Πάρε.<br><em>Φύγε.</em>' }),
     caption: {
-      el: 'Πέρνα, πάρε, φύγε. Η βιτρίνα μας, από το δρόμο, Ρόδου 68.',
-      en: 'Stop, grab, go. Our counter, seen from the street, Rodou 68.',
+      el: 'Πέρνα, πάρε, φύγε. Ρόδου 68, από τις 07:00.',
+      en: 'Stop, grab, go. Rodou 68, from 7am.',
     },
   },
   {
-    id: 'vitrine-snack',
-    html: () => pro({ img: 'snack-cup', kicker: 'Πρωινο', h1: 'Καφές<br><em>και κάτι.</em>', lede: 'Το πρωινό, λυμένο.' }),
+    id: 'vitrine-snack', bare: 'snack-cup',
     caption: {
-      el: `Ένας καφές και κάτι στο πιάτο. Το πρωινό, λυμένο, από τις 07:00. ${TAG_US.el}`,
-      en: `A coffee and something on the plate. Breakfast, sorted, from 7am. ${TAG_US.en}`,
+      el: `Το πρωινό, λυμένο, από τις 07:00. ${TAG_US.el}`,
+      en: `Breakfast, sorted, from 7am. ${TAG_US.en}`,
     },
   },
-  // ─── Carousels from the shoot. Slide 1 carries the caption. ───────────────────
+  // ─── Carousels from the shoot: a type cover, bare middle slides (4:5, or the whole shot on the
+  //     dark ground when it's landscape signage), a type end slide. Slide 1 carries the caption. ──
   {
     id: 'bean-carousel-1',
-    html: () => pro({ img: 'beans-pour', kicker: 'Συρε →', h1: 'Από τον κόκκο<br><em>στο ποτήρι.</em>', sm: true }),
+    html: () => pro({ img: 'beans-pour', kicker: 'Συρε →', h1: 'Η Γένεση,<br><em>σε πέντε καρέ.</em>', sm: true }),
     caption: {
-      el: 'Από τον κόκκο στο ποτήρι, σε πέντε καρέ. Σύρε. Ρόδου 68, κάθε μέρα από τις 07:00.',
-      en: 'From the bean to the cup, in five frames. Swipe. Rodou 68, every day from 7am.',
+      el: 'Στην αρχή ήταν ο κόκκος. Μετά ο μύλος, ο espresso, το γάλα και, την πέμπτη μέρα, το ποτήρι σου. Σύρε. Ρόδου 68, από τις 07:00.',
+      en: 'In the beginning there was the bean. Then the grinder, the espresso, the milk and, on the fifth day, your cup. Swipe. Rodou 68, from 7am.',
     },
   },
-  { id: 'bean-carousel-2', html: () => slide({ img: 'beans-pile', idx: '01 / 05', h1: 'Ο <em>κόκκος.</em>' }) },
-  { id: 'bean-carousel-3', html: () => slide({ img: 'grinder-pour', idx: '02 / 05', h1: 'Το <em>άλεσμα.</em>', lede: 'Τη στιγμή που παραγγέλνεις.' }) },
-  { id: 'bean-carousel-4', html: () => slide({ img: 'crema-double-2', idx: '03 / 05', h1: 'Η <em>εκχύλιση.</em>' }) },
-  { id: 'bean-carousel-5', html: () => slide({ img: 'milk-close', idx: '04 / 05', h1: 'Το <em>γάλα.</em>' }) },
-  { id: 'bean-carousel-6', html: () => slide({ img: 'staff-cup', idx: '05 / 05', h1: 'Το <em>ποτήρι σου.</em>' }) },
+  { id: 'bean-carousel-2', bare: 'beans-pile', fixed: true },
+  { id: 'bean-carousel-3', bare: 'grinder-pour', fixed: true },
+  { id: 'bean-carousel-4', bare: 'crema-double-2', fixed: true },
+  { id: 'bean-carousel-5', bare: 'milk-close', fixed: true },
+  { id: 'bean-carousel-6', bare: 'staff-cup', fixed: true },
   { id: 'bean-carousel-7', html: () => series({ ground: 'black', tag: 'Στο μενού', img: shoot('last-drop'),
       say: 'Μέχρι την<br><em>τελευταία.</em>', cls: 'sm',
       extra: rows([['Espresso', '1.80€'], ['Freddo espresso', '2.30€'], ['Cappuccino', '2.60€']]) }) },
   {
     id: 'shop-carousel-1',
-    html: () => pro({ img: 'storefront-leaves', kicker: 'Συρε →', h1: 'Ρόδου 68.<br><em>Πάμε μια βόλτα.</em>', sm: true, pos: '50% 50%' }),
+    html: () => pro({ img: 'dolce-hand', kicker: 'Συρε →', h1: 'Ρόδου 68.<br><em>Πάμε μια βόλτα.</em>', sm: true }),
     caption: {
-      el: 'Ρόδου 68, πάμε μια βόλτα: η πρόσοψη, το ρολό, τα ράφια, ο μύλος. Σύρε, και μετά πέρνα από κοντά.',
-      en: 'Rodou 68, a quick tour: the front, the shutter, the shelves, the grinder. Swipe, then come see it in person.',
+      el: 'Ρόδου 68, πάμε μια βόλτα. Σύρε, και μετά πέρνα από κοντά: κάθε μέρα 07:00 – 22:00.',
+      en: 'Rodou 68, a quick tour. Swipe, then come see it in person: every day 07:00 – 22:00.',
     },
   },
-  { id: 'shop-carousel-2', html: () => slide({ img: 'storefront-glass', idx: '01 / 04', h1: 'Η <em>πρόσοψη.</em>', pos: '40% 50%' }) },
-  { id: 'shop-carousel-3', html: () => slide({ img: 'shutter-christ', idx: '02 / 04', h1: 'Το <em>ρολό.</em>', lede: 'Κατεβαίνει στις 22:00.' }) },
-  { id: 'shop-carousel-4', html: () => slide({ img: 'dolce-hand', idx: '03 / 04', h1: 'Τα <em>ράφια.</em>' }) },
-  { id: 'shop-carousel-5', html: () => slide({ img: 'beans-hopper', idx: '04 / 04', h1: 'Ο <em>μύλος.</em>' }) },
-  { id: 'shop-carousel-6', html: () => series({ ground: 'gold', tag: '07:00', say: 'Τα λέμε<br><em>από κοντά.</em>',
+  { id: 'shop-carousel-2', bare: 'beans-hopper', fixed: true },
+  { id: 'shop-carousel-3', bare: 'drip-close', fixed: true },
+  { id: 'shop-carousel-4', html: () => series({ ground: 'gold', tag: '07:00', say: 'Τα λέμε<br><em>από κοντά.</em>',
       sub: 'Ρόδου 68, Κάτω Πατήσια. Κάθε μέρα 07:00 – 22:00.' }) },
   {
     id: 'vitrine-carousel-1',
-    html: () => pro({ img: 'vitrine-tall', kicker: 'Συρε →', h1: 'Η βιτρίνα,<br><em>ράφι ράφι.</em>', sm: true }),
+    html: () => pro({ img: 'vitrine-tall', kicker: 'Συρε →', h1: 'Μην ψωνίζεις<br><em>πεινασμένος.</em>', sm: true }),
     caption: {
-      el: 'Η βιτρίνα, ράφι ράφι. Κρουασάν 2.50€, μπουγάτσα κρέμα 2.80€, τυρόπιτα 1.90€, σπανακόπιτα 1.60€, πίτσα 2.80€, ζαμπονοτυρόπιτα 2.80€. Εσύ τι παίρνεις;',
-      en: 'The counter, shelf by shelf. Croissant €2.50, cream bougatsa €2.80, cheese pie €1.90, spinach pie €1.60, pizza €2.80, ham and cheese pie €2.80. What are you having?',
+      el: 'Μην ψωνίζεις πεινασμένος. Ή ψώνισε, εδώ δεν σε κρίνει κανείς. Πεϊνιρλί 2.90€, κρουασάν 2.50€, μπουγάτσα κρέμα 2.80€, τυρόπιτα 1.90€, σπανακόπιτα 1.60€, πίτσα 2.80€. Εσύ τι παίρνεις;',
+      en: "Don't shop hungry. Or do, nobody judges here. Peinirli €2.90, croissant €2.50, cream bougatsa €2.80, cheese pie €1.90, spinach pie €1.60, pizza €2.80. What are you having?",
     },
   },
-  { id: 'vitrine-carousel-2', html: () => slide({ img: 'pie-macro', idx: '01 / 03', h1: 'Τραγανό<br><em>από πάνω.</em>' }) },
-  { id: 'vitrine-carousel-3', html: () => slide({ img: 'bread-sesame', idx: '02 / 03', h1: 'Με <em>σουσάμι.</em>' }) },
-  { id: 'vitrine-carousel-4', html: () => slide({ img: 'snack-plate', idx: '03 / 03', h1: 'Για το <em>διάλειμμα.</em>' }) },
+  { id: 'vitrine-carousel-2', bare: 'pie-macro', fixed: true },
+  { id: 'vitrine-carousel-3', bare: 'bread-sesame', fixed: true },
+  { id: 'vitrine-carousel-4', bare: 'snack-plate', fixed: true },
   { id: 'vitrine-carousel-5', html: () => series({ ground: 'black', tag: 'Στο μενού · Βιτρίνα', cls: 'sm', say: 'Εσύ τι<br><em>παίρνεις;</em>',
-      extra: rows([['Κρουασάν', '2.50€'], ['Μπουγάτσα κρέμα', '2.80€'], ['Τυρόπιτα', '1.90€'], ['Σπανακόπιτα', '1.60€'], ['Πίτσα', '2.80€'], ['Ζαμπονοτυρόπιτα', '2.80€']]) }) },
+      extra: rows([['Πεϊνιρλί', '2.90€'], ['Κρουασάν', '2.50€'], ['Μπουγάτσα κρέμα', '2.80€'], ['Τυρόπιτα', '1.90€'], ['Σπανακόπιτα', '1.60€'], ['Πίτσα', '2.80€']]) }) },
   {
     id: 'team-carousel-1',
     html: () => pro({ img: 'staff-profile', kicker: 'Συρε →', h1: 'Μια βάρδια<br><em>στο Blessed.</em>', sm: true }),
@@ -1297,8 +1258,8 @@ const POSTS = [
       en: 'A shift at Blessed, from the first dose to the last cup. Swipe. Every day 07:00 – 22:00.',
     },
   },
-  { id: 'team-carousel-2', html: () => slide({ img: 'staff-wide', idx: '01 / 02', h1: 'Η <em>μηχανή.</em>' }) },
-  { id: 'team-carousel-3', html: () => slide({ img: 'apron-blur', idx: '02 / 02', h1: 'Η <em>παραγγελία σου.</em>' }) },
+  { id: 'team-carousel-2', bare: 'staff-wide', fixed: true },
+  { id: 'team-carousel-3', bare: 'apron-blur', fixed: true },
   { id: 'team-carousel-4', html: () => series({ ground: 'cream', tag: 'Είπατε · ★★★★★', cls: 'q',
       say: '«Πολύ ομαδικά σε <em>όλες τις βάρδιες.</em>»', sub: 'Ninaki Euangelou, Google Maps' }) },
 ];
@@ -1324,14 +1285,12 @@ const page = await browser.newPage({
 });
 
 for (const post of posts) {
+  if (post.caption) writeFileSync(`${OUT}/${post.id}.txt`, `${post.caption.el}\n\n${post.caption.en}\n\n${TAGS}\n`);
+  if (post.bare) continue; // photo only, cropped below
   await page.setContent(`<style>${CSS}</style>${post.html(post.bg, post.real)}`, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready); // webfonts, or the type renders as fallback
   await page.screenshot({ path: `${TMP}/${post.id}.png` });
   // Carousel slides after the first carry no caption: the cover's .txt covers the whole set.
-  if (post.caption) writeFileSync(
-    `${OUT}/${post.id}.txt`,
-    `${post.caption.el}\n\n${post.caption.en}\n\n${TAGS}\n`
-  );
   console.log(`rendered ${post.id}`);
 }
 
@@ -1352,6 +1311,27 @@ for src in glob.glob(sys.argv[1] + '/*.png'):
   TMP,
   OUT,
 ], { stdio: 'inherit' });
+
+// Bare posts: the shot itself, 1080 wide. IG takes 4:5 up to 1.91:1, so portrait shots are trimmed to
+// 4:5 and landscape ones keep their shape (signage never gets cut). Carousel slides (fixed) are always 4:5.
+// keep: the top share of the shot to keep, to drop a sign the photographer's frame cuts at the bottom.
+const bare = posts.filter((p) => p.bare);
+if (bare.length) execFileSync('python3', ['-c', `
+import sys
+from PIL import Image, ImageOps
+for arg in sys.argv[1:]:
+    src, out, fixed, keep = arg.split('|')
+    im = ImageOps.exif_transpose(Image.open(src)).convert('RGB')
+    im = im.crop((0, 0, im.size[0], round(im.size[1] * float(keep))))
+    w, h = im.size
+    lo, hi = 0.8, (0.8 if fixed == '1' else 1.91)
+    r = min(max(w / h, lo), hi)
+    if w / h > r: cw = round(h * r); im = im.crop(((w - cw) // 2, 0, (w - cw) // 2 + cw, h))
+    elif w / h < r: ch = round(w / r); im = im.crop((0, (h - ch) // 2, w, (h - ch) // 2 + ch))
+    im = im.resize((${W}, round(${W} * im.size[1] / im.size[0])), Image.LANCZOS)
+    im.save(out, 'JPEG', quality=92, optimize=True, progressive=True)
+    print('  ->', out.split('/')[-1], im.size)
+`, ...bare.map((p) => `${ROOT}/social/photos/shoot/${p.bare}.jpg|${OUT}/${p.id}.jpg|${p.fixed ? 1 : 0}|${p.keep || 1}`)], { stdio: 'inherit' });
 
 rmSync(TMP, { recursive: true, force: true });
 console.log(`\n${posts.length} post(s) in social/library/`);

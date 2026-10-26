@@ -56,16 +56,18 @@ const CSS = `
   .fade { opacity: 0; }
   /* Photo reels: photographer shots crossfading under a slow push-in, dark where the type sits. */
   .sh { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+  .sh.whole { object-fit: contain; object-position: 50% 36%; } /* signage: whole shot on the ground, never cropped */
   .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,8,8,.5) 0%, rgba(8,8,8,0) 18%,
     rgba(8,8,8,0) 45%, rgba(6,6,6,.75) 64%, rgba(6,6,6,.95) 84%); }
-  .stack { position: relative; height: 110px; margin-top: 26px; }
+  .stack { position: relative; height: 215px; margin-top: 26px; } /* room for a two-line headline */
   .stack h1 { position: absolute; left: 0; right: 0; bottom: 0; margin: 0; }
 `;
 const foot = `<div class="foot"><span>${BRAND.address}</span><span>${BRAND.site}</span></div>`;
 
-// Photo reels (no cup): [img, from s, to s, zoom from, zoom to, pan px] per shot; each fades in over the one before.
-const shots = (list) => list.map(([img, a, b, z0 = 1.03, z1 = 1.14, px = 0]) =>
-  `<img class="sh" src="/photos/shoot/${img}.jpg" data-a="${a}" data-b="${b}" data-z0="${z0}" data-z1="${z1}" data-px="${px}">`).join('') +
+// Photo reels (no cup): [img, from s, to s, zoom from, zoom to, pan px, whole] per shot; each fades in over
+// the one before. whole: show the entire shot (landscape signage) instead of filling the frame.
+const shots = (list) => list.map(([img, a, b, z0 = 1.03, z1 = 1.14, px = 0, whole = false]) =>
+  `<img class="sh${whole ? ' whole' : ''}" src="/photos/shoot/${img}.jpg" data-a="${a}" data-b="${b}" data-z0="${z0}" data-z1="${z1}" data-px="${px}">`).join('') +
   '<div class="shade"></div>';
 // A fixed kicker, headlines that swap in one spot ([html, from, to]), and an optional closing lede [html, from].
 const lines = (kicker, list, lede) => `<img class="mark" src="${logo}"><div class="txt"><div class="kicker">${kicker}</div>
@@ -255,20 +257,20 @@ const REELS = [
     photo: true,
     seconds: 12,
     back: shots([['beans-macro', 0, 2], ['grinder-pour', 2, 4], ['espresso-splash', 4, 6], ['crema-double', 6, 8], ['milk-close', 8, 10], ['staff-cup', 10, 13]]),
-    front: lines('Απο τον κοκκο', [['Ο <em>κόκκος.</em>', 0.3, 2], ['Το <em>άλεσμα.</em>', 2.1, 4], ['Η <em>εκχύλιση.</em>', 4.1, 6], ['Η <em>κρέμα.</em>', 6.1, 8],
-      ['Το <em>γάλα.</em>', 8.1, 10], ['Το <em>ποτήρι σου.</em>', 10.1, 99]], ['Ρόδου 68 · από τις 07:00', 10.6]),
+    front: lines('Η γενεση', [['Στην αρχή,<br><em>ο κόκκος.</em>', 0.3, 2], ['Μετά,<br><em>ο μύλος.</em>', 2.1, 4], ['Και είδαμε ότι<br><em>ήταν καλό.</em>', 4.1, 6],
+      ['Πολύ <em>καλό.</em>', 6.1, 8], ['Λίγο <em>γάλα.</em>', 8.1, 10], ['Και τέλος,<br><em>ο δικός σου.</em>', 10.1, 99]], ['Ρόδου 68 · από τις 07:00', 10.6]),
     frame: (s, $) => $.photos(s),
     caption: {
-      el: 'Από τον κόκκο στο ποτήρι σου, σε 12 δευτερόλεπτα. Στην πραγματικότητα θέλει λίγο παραπάνω. Ρόδου 68, από τις 07:00.',
-      en: 'From the bean to your cup in 12 seconds. In real life it takes a little longer. Rodou 68, from 7am.',
+      el: 'Στην αρχή ήταν ο κόκκος. Η Γένεση του καφέ σου, σε 12 δευτερόλεπτα. Ρόδου 68, από τις 07:00.',
+      en: 'In the beginning there was the bean. The Genesis of your coffee, in 12 seconds. Rodou 68, from 7am.',
     },
   },
   {
     id: 'reel-shop',
     photo: true,
     seconds: 10,
-    back: shots([['storefront-leaves', 0, 2.5, 1.18, 1.05], ['storefront-day', 2.5, 5], ['sign-round', 5, 7.5], ['interior', 7.5, 11]]),
-    front: lines('Ροδου 68', [['Κάτω <em>Πατήσια.</em>', 0.4, 4.9], ['Coffee <em>&amp; spirits.</em>', 5.1, 7.4], ['Κάτσε <em>λίγο.</em>', 7.6, 99]],
+    back: shots([['storefront-leaves', 0, 2.5, 1, 1.05, 0, true], ['storefront-glass', 2.5, 5, 1, 1.05, 0, true], ['sign-round', 5, 7.5, 1, 1.05, 0, true], ['interior', 7.5, 11]]),
+    front: lines('Ροδου 68', [['Η γωνιά σου<br><em>στα Πατήσια.</em>', 0.4, 4.9], ['Από <em>το 2024.</em>', 5.1, 7.4], ['Κάτσε <em>λίγο.</em>', 7.6, 99]],
       ['Κάθε μέρα 07:00 – 22:00', 8.2]),
     frame: (s, $) => $.photos(s),
     caption: {
@@ -280,20 +282,20 @@ const REELS = [
     id: 'reel-vitrine',
     photo: true,
     seconds: 10,
-    back: shots([['vitrine-tall', 0, 2], ['pastry-sesame', 2, 4], ['vitrine-croissant', 4, 6], ['pie-macro', 6, 8], ['snack-cup', 8, 11]]),
-    front: lines('Η βιτρινα', [['Κάτι για <em>λιγούρα;</em>', 0.4, 3.9], ['Κρουασάν <em>2.50€.</em>', 4.1, 5.9], ['Τραγανό <em>απ\' έξω.</em>', 6.1, 7.9], ['Καφές <em>και κάτι.</em>', 8.1, 99]],
+    back: shots([['vitrine-tall', 0, 2], ['pastry-sesame', 2, 4], ['vitrine-peinirli', 4, 6], ['pie-macro', 6, 8], ['snack-cup', 8, 11]]),
+    front: lines('Η βιτρινα', [['Κάτι για <em>λιγούρα;</em>', 0.4, 3.9], ['Πεϊνιρλί <em>2.90€.</em>', 4.1, 5.9], ['Μην <em>αντισταθείς.</em>', 6.1, 7.9], ['Πρωινό, <em>λυμένο.</em>', 8.1, 99]],
       ['Από τις 07:00, Ρόδου 68', 8.6]),
     frame: (s, $) => $.photos(s),
     caption: {
-      el: 'Κάτι για τη λιγούρα; Κρουασάν 2.50€, μπουγάτσα κρέμα 2.80€, τυρόπιτα 1.90€. Η βιτρίνα γεμίζει από τις 07:00.',
-      en: 'Something for the craving? Croissant €2.50, cream bougatsa €2.80, cheese pie €1.90. The counter fills up from 7am.',
+      el: 'Κάτι για τη λιγούρα; Πεϊνιρλί 2.90€, κρουασάν 2.50€, μπουγάτσα κρέμα 2.80€, τυρόπιτα 1.90€. Η βιτρίνα γεμίζει από τις 07:00.',
+      en: 'Something for the craving? Peinirli €2.90, croissant €2.50, cream bougatsa €2.80, cheese pie €1.90. The counter fills up from 7am.',
     },
   },
   {
     id: 'reel-day',
     photo: true,
     seconds: 12,
-    back: shots([['storefront-day', 0, 2], ['staff-machine', 2, 4], ['cup-counter', 4, 6], ['vitrine-window', 6, 8], ['staff-back', 8, 10], ['shutter-faith', 10, 13]]),
+    back: shots([['storefront-glass', 0, 2, 1, 1.05, 0, true], ['staff-machine', 2, 4], ['cup-counter', 4, 6], ['vitrine-window', 6, 8], ['staff-back', 8, 10], ['shutter-faith', 10, 13]]),
     front: `<img class="mark" src="${logo}"><div class="txt">
       <div class="kicker">Καθε μερα / Every day</div>
       <h1 id="clock" style="font-size:190px;margin-top:10px;font-variant-numeric:tabular-nums">07:00</h1>
@@ -314,12 +316,12 @@ const REELS = [
     id: 'reel-faith',
     photo: true,
     seconds: 7,
-    back: shots([['shutter-faith', 0, 8, 1.0, 1.2]]),
-    front: lines('Στο ρολο μας', [['Faith <em>over fear.</em>', 1.2, 99]], ['Ρόδου 68, Κάτω Πατήσια', 2.6]),
+    back: shots([['shutter-faith', 0, 8, 1.0, 1.08, 0, true]]),
+    front: lines('Faith over fear', [['Άγχος;<br><em>Καφές.</em>', 1.2, 99]], ['Ρόδου 68, Κάτω Πατήσια', 2.6]),
     frame: (s, $) => $.photos(s),
     caption: {
-      el: 'Faith over fear. Το γράφει το ρολό μας, και το εννοούμε. Ρόδου 68.',
-      en: "Faith over fear. It's written on our shutter, and we mean it. Rodou 68.",
+      el: 'Λιγότερο άγχος, περισσότερος καφές. Faith over fear, Ρόδου 68.',
+      en: 'Less worry, more coffee. Faith over fear, Rodou 68.',
     },
   },
   {
