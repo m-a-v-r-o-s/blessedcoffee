@@ -1,0 +1,248 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ShopCard from '../components/ShopCard.astro';
+import ShopSwitch from '../components/ShopSwitch.astro';
+import Delivery from '../components/Delivery.astro';
+import Cup from '../components/Cup.astro';
+import { T, url } from '../i18n.js';
+import { SHOPS, REVIEWS, RATING, shop } from '../data/site.js';
+import { graph } from '../data/schema.js';
+import shutter from '../../social/photos/shoot/shutter-christ.jpg';
+import insideWide from '../../social/photos/shoot/interior-wide.jpg';
+import insideTall from '../../social/photos/shoot/staff-wide.jpg';
+import storefront from '../../social/photos/shoot/storefront-day.jpg';
+import kamateroCup from '../../social/photos/shoot/cup-pair.jpg';
+import faith from '../../social/photos/shoot/shutter-faith.jpg';
+import b1 from '../../social/photos/shoot/beans-macro.jpg';
+import b2 from '../../social/photos/shoot/grinder-pour.jpg';
+import b3 from '../../social/photos/shoot/crema-double.jpg';
+import b4 from '../../social/photos/shoot/milk-steam.jpg';
+import b5 from '../../social/photos/shoot/cup-counter.jpg';
+
+const { lang } = Astro.props;
+const t = T[lang];
+const el = lang === 'el';
+const beans = [b1, b2, b3, b4, b5];
+
+// Art-directed reveal behind the shutter: wide room on desktop, the bar on phones.
+const insideD = await getImage({ src: insideWide, width: 1920, format: 'webp' });
+const insideM = await getImage({ src: insideTall, width: 900, format: 'webp' });
+const marquee = [...t.marquee, ...t.marquee];
+// LCP is the shutter: preload the same AVIF set the <Picture> below emits.
+const HERO_W = [480, 750, 1080, 1440, 2000];
+const heroPre = await getImage({ src: shutter, widths: HERO_W, format: 'avif' });
+---
+<Base lang={lang} page="home" schema={graph(lang, SHOPS)}>
+  <link slot="head" rel="preload" as="image" type="image/avif" imagesrcset={heroPre.srcSet.attribute} imagesizes="100vw" fetchpriority="high" />
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="stage">
+      <picture class="inside" aria-hidden="true">
+        <source media="(min-width: 700px)" srcset={insideD.src} />
+        <img src={insideM.src} alt="" width="900" height="1260" decoding="async" fetchpriority="low" />
+      </picture>
+      <div class="shutter">
+        <Picture src={shutter} alt={el ? 'Το ζωγραφισμένο ρολό του Blessed στα Πατήσια' : 'The painted shutter of Blessed in Patisia'}
+          widths={HERO_W} sizes="100vw" formats={['avif', 'webp']} loading="eager" fetchpriority="high" />
+        <span class="hem" aria-hidden="true"></span>
+      </div>
+      <div class="shade" aria-hidden="true"></div>
+      <div class="copy wrap">
+        <p class="eyebrow">{t.heroEyebrow}</p>
+        <h1 id="hero-title" class="display">
+          <span>{t.slogan.a}</span> <em>{t.slogan.b}</em> <span>{t.slogan.c}</span>
+        </h1>
+        <p class="sub">{t.heroSub}</p>
+        <div class="ctas">
+          <a class="btn btn-solid" href={url(lang, 'menu')}>{t.seeMenu}</a>
+          <button class="btn" popovertarget="order">{t.order}</button>
+        </div>
+      </div>
+      <p class="cue mono" aria-hidden="true">{t.scrollCue} ↓</p>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="track display">{marquee.map((m) => <span>{m}<i>✦</i></span>)}</div>
+  </div>
+
+  <section class="band shops" aria-labelledby="shops-title">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="eyebrow">{t.shopsEyebrow}</p>
+        <h2 id="shops-title" class="h2">{t.shopsTitle}</h2>
+      </header>
+      <div class="cards">
+        <ShopCard shop={shop('patisia')} lang={lang} image={storefront} />
+        <ShopCard shop={shop('kamatero')} lang={lang} image={kamateroCup} />
+      </div>
+    </div>
+  </section>
+
+  <section class="band paper bean" aria-labelledby="bean-title">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="eyebrow">{t.beanEyebrow}</p>
+        <h2 id="bean-title" class="h2">{t.beanTitle}</h2>
+      </header>
+    </div>
+    <ol class="rail wrap">
+      {t.bean.map(([title, text], i) => (
+        <li class="step rise">
+          <Picture src={beans[i]} alt="" widths={[360, 600]} sizes="(min-width: 1100px) 20vw, 70vw" formats={['avif', 'webp']} />
+          <span class="num mono">0{i + 1}</span>
+          <h3 class="display">{title}</h3>
+          <p>{text}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="band faith" aria-labelledby="faith-title">
+    <div class="wrap split">
+      <div class="faith-photo">
+        <Picture src={faith} alt={el ? 'Το ρολό με το γκράφιτι «Faith over fear»' : 'The shutter with the “Faith over fear” graffiti'}
+          widths={[480, 800, 1200]} sizes="(min-width: 900px) 45vw, 100vw" formats={['avif', 'webp']} />
+      </div>
+      <div class="faith-copy">
+        <p class="eyebrow">{t.faithEyebrow}</p>
+        <h2 id="faith-title" class="display">Faith<br />over<br />fear.</h2>
+        <p class="lede">{t.faithText}</p>
+      </div>
+    </div>
+  </section>
+
+  <Cup lang={lang} />
+
+  <section class="band paper reviews" aria-labelledby="reviews-title">
+    <div class="wrap">
+      <header class="sec-head row">
+        <div>
+          <p class="eyebrow">{t.reviewsEyebrow}</p>
+          <h2 id="reviews-title" class="h2">{t.reviewsTitle}</h2>
+        </div>
+        <a class="score" href={RATING.url} target="_blank" rel="noopener">
+          <span class="display">{RATING.score}</span>
+          <span><span class="stars" aria-hidden="true">★★★★★</span><br />{RATING.count} {t.reviewsCount}</span>
+        </a>
+      </header>
+    </div>
+    <ul class="quotes wrap">
+      {REVIEWS.map((r) => (
+        <li>
+          <blockquote><p>“{r[lang]}”</p></blockquote>
+          <p class="who mono">{r.name} · Google</p>
+        </li>
+      ))}
+    </ul>
+    <div class="wrap foot">
+      <p class="note">{t.reviewsNote}</p>
+      <a class="btn" href={RATING.url} target="_blank" rel="noopener">{t.reviewsAll}</a>
+    </div>
+  </section>
+
+  <section class="band order" aria-labelledby="order-band-title">
+    <div class="wrap order-grid">
+      <header class="sec-head">
+        <p class="eyebrow">{t.orderEyebrow}</p>
+        <h2 id="order-band-title" class="h2">{t.orderTitle}</h2>
+      </header>
+      <div class="order-box">
+        <ShopSwitch lang={lang} />
+        {SHOPS.map((s) => <div data-only={s.id}><Delivery shop={s} lang={lang} /></div>)}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ── Hero: the Patisia shutter rolls up as you scroll and the shop is behind it. ── */
+  .hero { position: relative; margin-top: calc(-1 * (var(--header-h) + env(safe-area-inset-top, 0px))); }
+  .stage { position: relative; height: 100svh; min-height: 560px; overflow: hidden; background: var(--ink); }
+  .inside, .inside img, .shutter, .shutter :global(picture), .shutter :global(img), .shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .inside img { object-fit: cover; filter: brightness(0.62); }
+  .shutter { z-index: 1; will-change: transform; }
+  .shutter :global(img) { object-fit: cover; object-position: 50% 40%; }
+  .shutter::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(180deg, transparent 0 11px, rgb(0 0 0 / 0.22) 11px 13px); pointer-events: none; }
+  .hem { position: absolute; left: 0; right: 0; bottom: 0; height: 16px; background: linear-gradient(#3a3a3a, #121212); border-top: 2px solid #6b6b6b; z-index: 1; }
+  .shade { z-index: 2; background: linear-gradient(to top, rgb(0 0 0 / 0.88) 0%, rgb(0 0 0 / 0.55) 38%, rgb(0 0 0 / 0) 70%); }
+  .copy { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; display: grid; gap: 16px; justify-items: start; padding-bottom: clamp(56px, 9vh, 96px); }
+  h1 { font-size: clamp(52px, 11vw, 150px); max-width: 12ch; }
+  h1 em { font-style: normal; color: var(--amber); }
+  .sub { font-size: clamp(17px, 1.8vw, 21px); max-width: 40ch; color: #e7e2d8; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 10px; }
+  .cue { position: absolute; z-index: 3; right: var(--gutter-r); bottom: 20px; font-size: 13px; color: var(--on-ink-muted); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .hero { height: 210svh; view-timeline: --hero block; }
+      .stage { position: sticky; top: 0; }
+      .shutter { animation-name: lift; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 0% contain 60%; }
+      .inside img { animation-name: settle; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 0% contain 70%; }
+      .cue { animation-name: fade; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 0% contain 12%; }
+    }
+    @supports not (animation-timeline: view()) {
+      .shutter { animation: lift 1.8s cubic-bezier(0.65, 0, 0.25, 1) 1.4s both; }
+      .cue { display: none; }
+    }
+  }
+  @keyframes lift { to { transform: translateY(-100%); } }
+  @keyframes settle { from { transform: scale(1.12); filter: brightness(0.35); } to { transform: none; filter: brightness(0.62); } }
+  @keyframes fade { to { opacity: 0; } }
+
+  /* ── Marquee ── */
+  .marquee { overflow: hidden; background: var(--paper); color: var(--ink); padding-block: 14px; border-block: 1px solid var(--ink); }
+  .track { display: flex; width: max-content; font-size: clamp(26px, 3.4vw, 40px); white-space: nowrap; }
+  .track span { display: inline-flex; align-items: center; }
+  .track i { font-style: normal; margin-inline: 0.6em; color: var(--amber-ink); font-size: 0.6em; }
+  @media (prefers-reduced-motion: no-preference) { .track { animation: tick 40s linear infinite; } }
+  @keyframes tick { to { transform: translateX(-50%); } }
+
+  .sec-head { display: grid; gap: 14px; margin-bottom: clamp(32px, 5vw, 56px); }
+  .sec-head.row { grid-template-columns: 1fr; align-items: end; gap: 24px; }
+  @media (min-width: 900px) { .sec-head.row { grid-template-columns: 1fr auto; } }
+
+  .cards { display: grid; gap: 20px; }
+  @media (min-width: 900px) { .cards { grid-template-columns: 1fr 1fr; } }
+
+  /* ── Bean to cup: native scroll-snap rail on phones, five columns on wide screens ── */
+  .rail { display: grid; grid-auto-flow: column; grid-auto-columns: min(72vw, 300px); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; padding-bottom: 8px; scrollbar-width: none; }
+  .rail::-webkit-scrollbar { display: none; }
+  @media (min-width: 1100px) { .rail { grid-auto-flow: row; grid-template-columns: repeat(5, 1fr); overflow: visible; } }
+  .step { scroll-snap-align: start; display: grid; gap: 8px; align-content: start; }
+  .step :global(img) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); }
+  .num { font-size: 13px; color: var(--amber-ink); margin-top: 6px; }
+  .step h3 { font-size: 34px; }
+  .step p { color: var(--on-paper-muted); font-size: 16px; }
+
+  /* ── Faith over fear ── */
+  .split { display: grid; gap: 32px; align-items: center; }
+  @media (min-width: 900px) { .split { grid-template-columns: 1fr 1fr; gap: 64px; } }
+  .faith-photo { border-radius: 22px; overflow: hidden; }
+  .faith-photo :global(img) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .faith-photo :global(img) { animation-name: drift; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: view(); }
+      @keyframes drift { from { transform: scale(1.14) translateY(-3%); } to { transform: scale(1.02) translateY(2%); } }
+    }
+  }
+  .faith-copy { display: grid; gap: 20px; }
+  .faith-copy h2 { font-size: clamp(72px, 12vw, 168px); }
+
+  /* ── Reviews ── */
+  .score { display: flex; align-items: center; gap: 14px; text-decoration: none; padding: 14px 20px; border: 1px solid var(--line-paper); border-radius: var(--radius); font-size: 14px; }
+  .score .display { font-size: 64px; }
+  .stars { color: var(--amber-ink); letter-spacing: 2px; font-size: 16px; }
+  .quotes { display: grid; grid-auto-flow: column; grid-auto-columns: min(84vw, 520px); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; padding-bottom: 8px; scrollbar-width: thin; }
+  .quotes li { scroll-snap-align: start; display: grid; align-content: space-between; gap: 24px; padding: 28px; background: #fff; border-radius: 22px; }
+  blockquote { margin: 0; }
+  blockquote p { font: 600 clamp(22px, 2.4vw, 30px)/1.15 var(--display); }
+  .who { font-size: 13px; color: var(--on-paper-muted); }
+  .foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 28px; }
+  .note { font-size: 14px; color: var(--on-paper-muted); }
+
+  /* ── Order band ── */
+  .order-grid { display: grid; gap: 24px; }
+  @media (min-width: 900px) { .order-grid { grid-template-columns: 1.2fr 1fr; align-items: start; } }
+  .order-box { display: grid; gap: 16px; }
+</style>

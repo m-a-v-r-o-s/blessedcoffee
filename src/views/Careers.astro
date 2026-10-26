@@ -1,0 +1,67 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { T } from '../i18n.js';
+import { SHOPS, JOBS, SOCIAL, phoneText } from '../data/site.js';
+import team from '../../social/photos/shoot/staff-profile.jpg';
+
+const { lang } = Astro.props;
+const t = T[lang];
+---
+<Base lang={lang} page="careers" slug="careers">
+  <section class="band">
+    <div class="wrap split">
+      <div class="copy">
+        <p class="eyebrow">Blessed Coffee & Spirits</p>
+        <h1 class="display">{t.careersTitle}</h1>
+        <p class="lede">{t.careersSub}</p>
+      </div>
+      <div class="photo">
+        <Picture src={team} alt={lang === 'el' ? 'Barista του Blessed στη μηχανή του espresso' : 'A Blessed barista at the espresso machine'} widths={[500, 900]} sizes="(min-width: 900px) 40vw, 100vw" formats={['avif', 'webp']} loading="eager" />
+      </div>
+    </div>
+  </section>
+
+  <section class="paper band" aria-labelledby="jobs-h">
+    <div class="wrap">
+      <h2 id="jobs-h" class="h2">{t.openings}</h2>
+      <ul class="jobs">
+        {JOBS.map((j) => (
+          <li>
+            <h3 class="display">{j[lang].title}</h3>
+            <p>{j[lang].desc}</p>
+            <ul class="tags">{j[lang].tags.map((x) => <li class="mono">{x}</li>)}</ul>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="apply-h">
+    <div class="wrap apply">
+      <h2 id="apply-h" class="h2">{t.applyTitle}</h2>
+      <p class="lede">{t.applyText}</p>
+      <div class="ctas">
+        {SHOPS.map((s) => <a class="btn" href={`tel:${s.phones[0]}`}>{s.area[lang]} <span class="mono">{phoneText(s.phones[0])}</span></a>)}
+        <a class="btn btn-solid" href={SOCIAL.instagram} target="_blank" rel="noopener">{t.instagramDm}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .split { display: grid; gap: 32px; align-items: center; }
+  @media (min-width: 900px) { .split { grid-template-columns: 1.2fr 1fr; gap: 56px; } }
+  .copy { display: grid; gap: 18px; }
+  h1 { font-size: clamp(64px, 11vw, 150px); }
+  .photo { border-radius: 22px; overflow: hidden; }
+  .photo :global(img) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  .jobs { display: grid; gap: 16px; margin-top: 32px; }
+  @media (min-width: 900px) { .jobs { grid-template-columns: 1fr 1fr; } }
+  .jobs > li { display: grid; gap: 12px; align-content: start; padding: 28px; background: #fff; border-radius: 22px; }
+  .jobs h3 { font-size: 44px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tags li { font-size: 13px; padding: 6px 12px; border-radius: 999px; background: var(--paper-2); }
+  .apply { display: grid; gap: 20px; justify-items: start; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 10px; }
+</style>

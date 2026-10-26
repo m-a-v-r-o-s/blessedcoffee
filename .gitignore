@@ -29,3 +29,6 @@ dist-ssr
 # Social render intermediates (regenerated on demand by social/cup/shots.mjs and the render scripts)
 social/cup/shots/
 social/.render-*tmp/
+
+# Astro generated types
+.astro/

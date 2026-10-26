@@ -1,7 +1,8 @@
 # Blessed Coffee & Spirits
 
-Website and marketing automation for Blessed Coffee & Spirits, a neighbourhood coffee shop and bar
-at Rodou 68, Kato Patisia, Athens. Three parts live in this repo:
+Website and marketing automation for Blessed Coffee & Spirits, neighbourhood coffee shops in Athens:
+Blessed Coffee Patisia (Rodou 68, Kato Patisia) and Blessed Coffee Kamatero (Kosti Palama 17A,
+Kamatero). Three parts live in this repo:
 
 | Part | Where | Runs on |
 | --- | --- | --- |
@@ -11,15 +12,25 @@ at Rodou 68, Kato Patisia, Athens. Three parts live in this repo:
 
 ## Website
 
-React 19 + Vite single page site. Menu, prices and opening hours live in `src/App.jsx`; everything
-else in the marketing automation copies its facts from there.
+Static Astro site, Greek at `/` and English at `/en/`: home, menu, one page per shop (`/patisia`,
+`/kamatero`) and jobs. Shops, menu, prices, hours, reviews and jobs live in `src/data/site.js`; UI
+copy in `src/i18n.js`. Everything else in the marketing automation copies its facts from there.
+Photos come straight from `social/photos/shoot/` and are resized at build time.
 
 ```
 npm install
-npm run dev      # local dev server
+npm run dev      # local dev server on port 3001
 npm run build    # production build into dist/
 npm run lint
 ```
+
+- Kamatero facts still missing are marked `TODO` in `src/data/site.js` (hours, delivery links, menu)
+  and show as "coming soon" on the site. Fill them in there.
+- The visitor's chosen shop (`html[data-shop]`) drives the order and call buttons on every page.
+- The 3D cup (`src/scripts/cup.js`) is the scene from `social/cup/cup.html`, lazy-loaded with
+  three.js when it scrolls into view.
+- Caddy serves `dist/` with a strict CSP (`Caddyfile`). The one inline script (in
+  `src/layouts/Base.astro`) is allowed by its sha256; if you change it, recompute the hash.
 
 Railway only redeploys when the site's own files change. Commits that touch only `reviews/` or
 `social/` show as "Skipped, no changes to watched files", which is expected.
@@ -68,7 +79,7 @@ scheduled publisher posts them.
 ### Content
 
 Everything is rendered from code with headless Chrome (`playwright-core`) so it can be regenerated
-and diffed. Every price and time comes from `src/App.jsx`, never invented. Real photos only: no
+and diffed. Every price and time comes from `src/data/site.js`, never invented. Real photos only: no
 AI-generated imagery.
 
 | Script | Output |

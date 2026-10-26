@@ -1,0 +1,81 @@
+---
+import { Image } from 'astro:assets';
+import { T, url } from '../i18n.js';
+import logo from '../assets/blessed-logo.webp';
+
+const { lang, slug } = Astro.props;
+const t = T[lang];
+const other = lang === 'el' ? 'en' : 'el';
+const links = ['menu', 'patisia', 'kamatero', 'careers'];
+---
+<header class="hdr">
+  <div class="bar wrap">
+    <a class="brand" href={url(lang)} aria-label="Blessed Coffee">
+      <Image src={logo} alt="" width={44} height={44} densities={[1, 2]} loading="eager" />
+      <span>Blessed</span>
+    </a>
+    <nav class="desk" aria-label="Main">
+      {links.map((l) => <a href={url(lang, l)} aria-current={slug === l ? 'page' : undefined}>{t.nav[l]}</a>)}
+    </nav>
+    <div class="end">
+      <a class="lang" href={url(other, slug)} hreflang={other} lang={other} aria-label={t.otherLabel}>{other === 'en' ? 'EN' : 'ΕΛ'}</a>
+      <button class="btn btn-solid order" popovertarget="order">{t.order}</button>
+      <button class="burger" popovertarget="nav" aria-label={t.menuOpen}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+      </button>
+    </div>
+  </div>
+  <div id="nav" popover class="drawer">
+    <div class="drawer-top">
+      <span class="eyebrow">Blessed Coffee & Spirits</span>
+      <button class="x" popovertarget="nav" popovertargetaction="hide" aria-label={t.close}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+    </div>
+    <nav aria-label="Mobile">
+      <a href={url(lang)} aria-current={slug === '' ? 'page' : undefined}>{lang === 'el' ? 'Αρχική' : 'Home'}</a>
+      {links.map((l) => <a href={url(lang, l)} aria-current={slug === l ? 'page' : undefined}>{t.nav[l]}</a>)}
+      <a href={url(other, slug)} hreflang={other} lang={other}>{t.other}</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .hdr { position: sticky; top: 0; z-index: 50; padding-top: env(safe-area-inset-top, 0px); background: rgb(11 11 11 / 0.82); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); border-bottom: 1px solid var(--line-ink); view-transition-name: header; }
+  .bar { height: var(--header-h); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand img { width: 44px; height: 44px; }
+  .brand span { font: 800 26px/1 var(--display); text-transform: uppercase; letter-spacing: 0.01em; }
+  .desk { display: none; gap: 28px; }
+  .desk a, .lang { font: 600 15px/1 var(--text); text-decoration: none; color: var(--on-ink-muted); padding: 10px 2px; transition: color 0.2s; }
+  .desk a[aria-current='page'] { color: var(--on-ink); box-shadow: inset 0 -2px 0 var(--amber); }
+  @media (hover: hover) and (pointer: fine) { .desk a:hover, .lang:hover { color: var(--on-ink); } }
+  .end { display: flex; align-items: center; gap: 10px; }
+  .lang { display: none; min-width: 44px; text-align: center; }
+  .order { min-height: 42px; padding: 0 18px; font-size: 14px; }
+  .burger, .x { display: grid; place-items: center; width: 44px; height: 44px; border: 0; background: none; cursor: pointer; border-radius: 50%; transition: transform var(--press-ms) var(--ease-out); }
+  .burger:active, .x:active { transform: scale(0.92); }
+  @media (min-width: 900px) {
+    .desk, .lang { display: flex; }
+    .lang { display: block; }
+    .burger { display: none; }
+  }
+
+  .drawer {
+    margin: 0; inset: 0 0 auto auto; width: min(420px, 100%); height: 100dvh; max-height: none; border: 0;
+    padding: calc(env(safe-area-inset-top, 0px) + 12px) max(20px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 24px) 24px;
+    background: var(--ink-2); color: var(--on-ink); overscroll-behavior: contain;
+    transform: translateX(100%);
+    transition: transform var(--spring-smooth-ms) var(--spring-smooth), overlay 0.4s allow-discrete, display 0.4s allow-discrete;
+  }
+  .drawer:popover-open { transform: none; }
+  @starting-style { .drawer:popover-open { transform: translateX(100%); } }
+  .drawer::backdrop { background: rgb(0 0 0 / 0); transition: background 0.3s, overlay 0.4s allow-discrete, display 0.4s allow-discrete; }
+  .drawer:popover-open::backdrop { background: rgb(0 0 0 / 0.55); }
+  @starting-style { .drawer:popover-open::backdrop { background: rgb(0 0 0 / 0); } }
+  .drawer-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .drawer nav { display: grid; }
+  .drawer nav a { font: 800 44px/1.1 var(--display); text-transform: uppercase; text-decoration: none; padding: 8px 0; border-bottom: 1px solid var(--line-ink); transition: color 0.2s; }
+  .drawer nav a[aria-current='page'] { color: var(--amber); }
+  .drawer nav a:last-child { font: 500 16px/1 var(--mono); padding-top: 24px; border: 0; color: var(--on-ink-muted); }
+</style>

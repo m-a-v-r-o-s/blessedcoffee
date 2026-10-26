@@ -1,0 +1,66 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { T } from '../i18n.js';
+import poster from '../assets/cup-front.png';
+import labelSrc from '../assets/cup-label.jpg';
+import mrsRose from '../assets/mrsrose.webp';
+
+const { lang } = Astro.props;
+const t = T[lang];
+const label = await getImage({ src: labelSrc, width: 2048, format: 'webp', quality: 82 });
+---
+<section class="cup band" aria-labelledby="cup-title">
+  <div class="wrap grid">
+    <div class="stage" data-label={label.src}>
+      <Image src={poster} alt="" widths={[310, 620, 1240]} sizes="(min-width: 900px) 420px, 70vw" class="poster" />
+      <canvas aria-label={t.cupLabel} role="img"></canvas>
+    </div>
+    <div class="copy">
+      <p class="eyebrow">{t.cupEyebrow}</p>
+      <h2 id="cup-title" class="h2">{t.cupTitle}</h2>
+      <p class="lede">{t.cupText}</p>
+      <div class="sides switch" role="group" aria-label={t.cupHint}>
+        {t.cupPanels.map((p, i) => <button type="button" aria-pressed={i === 0 ? 'true' : 'false'}>{p}</button>)}
+      </div>
+      <p class="hint mono">↔ {t.cupHint}</p>
+      <div class="partner">
+        <Image src={mrsRose} alt="Mrs Rose Caffè" width={96} height={96} />
+        <span class="eyebrow">{t.partner}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const stage = document.querySelector<HTMLElement>('.cup .stage')!;
+  const canvas = stage.querySelector('canvas')!;
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('.cup .sides button')];
+  // Load three.js only when the cup is about to scroll into view; the poster stays if WebGL is missing.
+  const io = new IntersectionObserver(async ([e]) => {
+    if (!e.isIntersecting) return;
+    io.disconnect();
+    try {
+      const { mount } = await import('../scripts/cup.js');
+      await mount(canvas, stage.dataset.label, buttons);
+      stage.classList.add('live');
+    } catch { /* no WebGL: keep the still */ }
+  }, { rootMargin: '400px' });
+  io.observe(stage);
+</script>
+
+<style>
+  .cup { background: radial-gradient(ellipse at 30% 50%, #2a1d12 0%, var(--ink) 65%); overflow: hidden; }
+  .grid { display: grid; gap: 32px; align-items: center; }
+  @media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+  .stage { position: relative; width: min(420px, 78vw); aspect-ratio: 620 / 820; margin-inline: auto; }
+  .stage :global(.poster), canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .stage :global(.poster) { object-fit: contain; transition: opacity 0.4s; filter: drop-shadow(0 40px 40px rgb(0 0 0 / 0.5)); }
+  canvas { opacity: 0; transition: opacity 0.4s; touch-action: pan-y; cursor: grab; filter: drop-shadow(0 40px 40px rgb(0 0 0 / 0.5)); }
+  canvas:active { cursor: grabbing; }
+  .live canvas { opacity: 1; }
+  .live :global(.poster) { opacity: 0; }
+  .copy { display: grid; gap: 18px; justify-items: start; }
+  .hint { font-size: 13px; color: var(--on-ink-muted); }
+  .partner { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+  .partner :global(img) { width: 72px; height: 72px; }
+</style>

@@ -1,0 +1,59 @@
+---
+import { T } from '../i18n.js';
+import { SHOPS } from '../data/site.js';
+import Delivery from './Delivery.astro';
+import ShopSwitch from './ShopSwitch.astro';
+
+const { lang } = Astro.props;
+const t = T[lang];
+---
+<div id="order" popover class="sheet" aria-labelledby="order-title">
+  <div class="grab" aria-hidden="true"></div>
+  <div class="head">
+    <h2 id="order-title" class="display">{t.order}</h2>
+    <button class="x" popovertarget="order" popovertargetaction="hide" aria-label={t.close}>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+  </div>
+  <ShopSwitch lang={lang} />
+  {SHOPS.map((s) => <div data-only={s.id}><Delivery shop={s} lang={lang} /></div>)}
+</div>
+
+<!-- Sticky order bar on phones: ordering is the point of the site. -->
+<div class="dock" role="group" aria-label={t.order}>
+  {SHOPS.map((s) => (
+    <a data-only={s.id} class="btn" href={`tel:${s.phones[0]}`}>{t.call}</a>
+  ))}
+  <button class="btn btn-solid" popovertarget="order">{t.order}</button>
+</div>
+
+<style>
+  .sheet {
+    margin: auto 0 0; inset: auto 0 0 0; width: 100%; max-width: 560px; margin-inline: auto; max-height: 88dvh; overflow: auto; overscroll-behavior: contain;
+    border: 0; border-radius: 24px 24px 0 0; background: var(--ink-2); color: var(--on-ink);
+    padding: 10px max(20px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px));
+    display: none; gap: 16px; transform: translateY(100%);
+    transition: transform var(--spring-smooth-ms) var(--spring-smooth), overlay 0.4s allow-discrete, display 0.4s allow-discrete;
+  }
+  .sheet:popover-open { display: grid; transform: none; }
+  @starting-style { .sheet:popover-open { transform: translateY(100%); } }
+  .sheet::backdrop { background: rgb(0 0 0 / 0); transition: background 0.3s, overlay 0.4s allow-discrete, display 0.4s allow-discrete; }
+  .sheet:popover-open::backdrop { background: rgb(0 0 0 / 0.6); }
+  @starting-style { .sheet:popover-open::backdrop { background: rgb(0 0 0 / 0); } }
+  @media (min-width: 700px) { .sheet { border-radius: 24px; margin-bottom: 24px; } }
+  .grab { justify-self: center; width: 40px; height: 5px; border-radius: 3px; background: var(--line-ink); }
+  .head { display: flex; align-items: center; justify-content: space-between; }
+  .head h2 { font-size: 44px; }
+  .x { display: grid; place-items: center; width: 44px; height: 44px; border: 0; background: none; cursor: pointer; }
+
+  .dock {
+    position: fixed; z-index: 40; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 1fr 1.6fr; gap: 10px;
+    padding: 10px max(12px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
+    background: rgb(11 11 11 / 0.86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line-ink);
+  }
+  :global(body) { padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
+  @media (min-width: 900px) {
+    .dock { display: none; }
+    :global(body) { padding-bottom: 0; }
+  }
+</style>

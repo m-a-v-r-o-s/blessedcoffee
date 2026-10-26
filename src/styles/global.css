@@ -1,0 +1,125 @@
+/* Blessed. Black and white like the shutters and the storefront letters, crema amber used sparingly.
+   Display: Fira Sans Extra Condensed (heavy, has Greek). Text: Commissioner. Numbers: Fira Mono. */
+:root {
+  --ink: #0b0b0b;
+  --ink-2: #171513;
+  --paper: #f2efe8;
+  --paper-2: #e5e0d5;
+  --on-ink: #f2efe8;
+  --on-ink-muted: #b0a99d;
+  --on-paper: #141210;
+  --on-paper-muted: #5f594f;
+  --amber: #d6913f;
+  --amber-ink: #8a5419;
+  --open: #4cc27f;
+  --closed: #e07a5f;
+  --line-ink: rgb(255 255 255 / 0.14);
+  --line-paper: rgb(20 18 16 / 0.14);
+
+  --display: 'Fira Sans Extra Condensed', 'Arial Narrow', 'Roboto Condensed', sans-serif-condensed, sans-serif;
+  --text: 'Commissioner Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: 'Fira Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  --header-h: 64px;
+  --radius: 14px;
+
+  /* Akos DS mobile feel: Apple spring presets as linear() easings (spring.js --css). */
+  --spring-smooth: linear(0, 0.017, 0.06, 0.119, 0.187, 0.258, 0.33, 0.4, 0.467, 0.528, 0.585, 0.637, 0.683, 0.724, 0.761, 0.794, 0.822, 0.847, 0.868, 0.887, 0.904, 0.918, 0.93, 0.94, 0.949, 0.957, 0.963, 0.969, 0.974, 0.978, 0.981, 0.984, 0.987, 0.989, 0.99, 0.992, 0.993, 0.994, 0.995, 0.996, 0.997, 0.997, 0.998, 0.998, 0.998, 0.999, 0.999, 1);
+  --spring-smooth-ms: 736ms;
+  --spring-snappy: linear(0, 0.017, 0.062, 0.124, 0.198, 0.277, 0.357, 0.435, 0.51, 0.58, 0.643, 0.7, 0.751, 0.795, 0.834, 0.867, 0.895, 0.919, 0.938, 0.954, 0.967, 0.977, 0.985, 0.992, 0.997, 1, 1.003, 1.004, 1.005, 1.006, 1.006, 1.006, 1.006, 1.006, 1.005, 1.005, 1.004, 1.004, 1.003, 1.003, 1.002, 1.002, 1.002, 1.001, 1.001, 1);
+  --spring-snappy-ms: 704ms;
+  --press-ms: 120ms;
+  --press-scale: 0.97;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  color-scheme: dark;
+}
+@supports not (transition-timing-function: linear(0, 1)) {
+  :root { --spring-smooth: cubic-bezier(0.25, 1, 0.5, 1); --spring-snappy: cubic-bezier(0.2, 0.9, 0.3, 1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --spring-smooth: ease; --spring-snappy: ease; --press-scale: 1; }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--header-h) + env(safe-area-inset-top, 0px) + 16px); }
+body { margin: 0; background: var(--ink); color: var(--on-ink); font: 400 17px/1.6 var(--text); -webkit-font-smoothing: antialiased; }
+img, svg, video, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; text-wrap: pretty; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+a, button, [role='button'], label, summary { touch-action: manipulation; }
+button, [role='button'], summary { -webkit-user-select: none; user-select: none; }
+@media (pointer: coarse) { input, textarea, select { font-size: max(16px, 1em); } }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 4px; }
+
+.wrap { width: 100%; max-width: 1240px; margin-inline: auto; padding-left: var(--gutter); padding-right: var(--gutter-r); }
+.band { padding-block: clamp(64px, 10vw, 128px); }
+.paper { background: var(--paper); color: var(--on-paper); }
+.paper :focus-visible { outline-color: var(--amber-ink); }
+
+.eyebrow { font: 500 13px/1.3 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); }
+.paper .eyebrow { color: var(--amber-ink); }
+.display { font-family: var(--display); font-weight: 800; text-transform: uppercase; line-height: 0.9; letter-spacing: -0.005em; }
+.h2 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(40px, 7vw, 88px); line-height: 0.92; }
+.lede { font-size: clamp(17px, 1.6vw, 20px); max-width: 52ch; color: var(--on-ink-muted); }
+.paper .lede { color: var(--on-paper-muted); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Buttons: 48px tall, press state on touch-down, hover only where hover is real. */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 0 22px; border-radius: 999px; border: 1.5px solid currentColor;
+  font: 700 15px/1 var(--text); letter-spacing: 0.02em; text-decoration: none; cursor: pointer;
+  background: transparent; color: inherit;
+  transition: transform var(--press-ms) var(--ease-out), background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn:active { transform: scale(var(--press-scale)); }
+.btn-solid { background: var(--on-ink); color: var(--ink); border-color: var(--on-ink); }
+.paper .btn-solid { background: var(--on-paper); color: var(--paper); border-color: var(--on-paper); }
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { background: var(--on-ink); color: var(--ink); border-color: var(--on-ink); }
+  .btn-solid:hover { background: var(--amber); border-color: var(--amber); color: var(--ink); }
+  .paper .btn:hover { background: var(--on-paper); color: var(--paper); border-color: var(--on-paper); }
+  .paper .btn-solid:hover { background: var(--amber-ink); border-color: var(--amber-ink); color: var(--paper); }
+}
+.btn[aria-disabled='true'] { opacity: 0.5; pointer-events: none; }
+
+/* Shop switch: whatever is not the chosen shop hides. html[data-shop] is set before paint. */
+html[data-shop='patisia'] [data-only='kamatero'],
+html[data-shop='kamatero'] [data-only='patisia'] { display: none !important; }
+
+.switch { display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; padding: 4px; border-radius: 999px; background: rgb(255 255 255 / 0.08); border: 1px solid var(--line-ink); }
+.paper .switch { background: rgb(20 18 16 / 0.06); border-color: var(--line-paper); }
+.switch button {
+  min-height: 40px; padding: 0 18px; border: 0; border-radius: 999px; background: transparent; cursor: pointer;
+  font: 700 14px/1 var(--text);
+  transition: background-color var(--spring-snappy-ms) var(--spring-snappy), color 0.2s, transform var(--press-ms) var(--ease-out);
+}
+.switch button:active { transform: scale(var(--press-scale)); }
+.switch button[aria-pressed='true'] { background: var(--on-ink); color: var(--ink); }
+.paper .switch button[aria-pressed='true'] { background: var(--on-paper); color: var(--paper); }
+
+/* Open / closed pill, filled in by the shop script from the hours. */
+.pill { display: inline-flex; align-items: center; gap: 8px; min-height: 28px; padding: 0 12px; border-radius: 999px; font: 500 13px/1 var(--mono); border: 1px solid currentColor; white-space: nowrap; }
+.pill::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.pill[data-state='open'] { color: var(--open); }
+.pill[data-state='closed'] { color: var(--closed); }
+.paper .pill[data-state='open'] { color: #1d7a45; }
+.paper .pill[data-state='closed'] { color: #a8432a; }
+
+/* Scroll-driven entrances. Content is fully visible without support or with reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* Longhands on purpose: the minifier folds a shorthand + timeline into one invalid shorthand. */
+    .rise { animation-name: rise; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
+    @keyframes rise { from { transform: translateY(48px) scale(0.98); } }
+  }
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.35s; }
+}

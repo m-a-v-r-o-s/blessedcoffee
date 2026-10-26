@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base lang="el" page="notfound" noindex>
+  <section class="band">
+    <div class="wrap nf">
+      <p class="eyebrow">404</p>
+      <h1 class="display">Εδώ το ρολό<br />είναι κάτω.</h1>
+      <p class="lede">Αυτή η σελίδα δεν υπάρχει. <span lang="en">This page does not exist.</span></p>
+      <div class="ctas">
+        <a class="btn btn-solid" href="/">Αρχική</a>
+        <a class="btn" href="/menu">Μενού</a>
+        <a class="btn" href="/en/" lang="en">English</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { display: grid; gap: 20px; justify-items: start; min-height: 60svh; align-content: center; }
+  h1 { font-size: clamp(64px, 12vw, 160px); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 10px; }
+</style>

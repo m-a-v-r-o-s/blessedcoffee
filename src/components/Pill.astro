@@ -1,0 +1,14 @@
+---
+import { T } from '../i18n.js';
+const { shop, lang } = Astro.props;
+const t = T[lang];
+const h = shop.hours;
+---
+{h ? (
+  <span class="pill" data-opens={h.opens} data-closes={h.closes}
+    data-open-text={`${t.openNow} · ${t.until} ${h.closes}`} data-closed-text={`${t.closedNow} · ${t.opensAt} ${h.opens}`}>
+    {t.everyDay} {h.opens} – {h.closes}
+  </span>
+) : (
+  <span class="pill">{t.hoursSoon}</span>
+)}

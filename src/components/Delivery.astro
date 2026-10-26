@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import { T } from '../i18n.js';
+import { phoneText } from '../data/site.js';
+import efood from '../assets/delivery/e-food.webp';
+import wolt from '../assets/delivery/wolt.webp';
+import box from '../assets/delivery/box.png';
+
+const { shop, lang } = Astro.props;
+const t = T[lang];
+const LOGOS = { 'e-food': efood, Wolt: wolt, Box: box };
+---
+<div class="delivery">
+  {shop.delivery.length > 0 ? (
+    <ul>
+      {shop.delivery.map((d) => (
+        <li>
+          <a href={d.url} target="_blank" rel="noopener" class="tile">
+            <Image src={LOGOS[d.name]} alt="" width={44} height={44} class={d.name === 'Box' ? 'contain' : ''} />
+            <span>{d.name}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p class="soon">{t.deliverySoon}</p>
+  )}
+  <a class="tile call" href={`tel:${shop.phones[0]}`}>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2" /></svg>
+    <span>{t.call} <span class="mono">{phoneText(shop.phones[0])}</span></span>
+  </a>
+</div>
+
+<style>
+  .delivery { display: grid; gap: 10px; }
+  ul { display: grid; gap: 10px; }
+  .tile {
+    display: flex; align-items: center; gap: 14px; min-height: 60px; padding: 8px 18px 8px 8px;
+    border-radius: var(--radius); border: 1px solid currentColor; border-color: color-mix(in srgb, currentColor 22%, transparent);
+    text-decoration: none; font-weight: 700; transition: transform var(--press-ms) var(--ease-out), border-color 0.2s, background-color 0.2s;
+  }
+  .tile:active { transform: scale(var(--press-scale)); }
+  @media (hover: hover) and (pointer: fine) { .tile:hover { border-color: currentColor; } }
+  .tile img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
+  .tile img.contain { object-fit: contain; background: #0d1117; padding: 6px; }
+  .tile > span { flex: 1; }
+  .call { padding-left: 18px; }
+  .soon { font-size: 15px; opacity: 0.8; }
+</style>

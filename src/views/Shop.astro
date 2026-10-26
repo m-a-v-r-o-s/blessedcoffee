@@ -1,0 +1,147 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ShopCard from '../components/ShopCard.astro';
+import Delivery from '../components/Delivery.astro';
+import Pill from '../components/Pill.astro';
+import { T, url } from '../i18n.js';
+import { SHOPS, shop as getShop, address, directions, phoneText } from '../data/site.js';
+import { graph } from '../data/schema.js';
+import apron_cup from '../../social/photos/shoot/apron-cup.jpg';
+import corner_wide from '../../social/photos/shoot/corner-wide.jpg';
+import crema_double from '../../social/photos/shoot/crema-double.jpg';
+import cup_pair from '../../social/photos/shoot/cup-pair.jpg';
+import dolce_hand from '../../social/photos/shoot/dolce-hand.jpg';
+import espresso_logo_cup from '../../social/photos/shoot/espresso-logo-cup.jpg';
+import espresso_splash from '../../social/photos/shoot/espresso-splash.jpg';
+import foam_macro from '../../social/photos/shoot/foam-macro.jpg';
+import interior_wide from '../../social/photos/shoot/interior-wide.jpg';
+import milk_steam from '../../social/photos/shoot/milk-steam.jpg';
+import pie_plate from '../../social/photos/shoot/pie-plate.jpg';
+import shutter_faith_wide from '../../social/photos/shoot/shutter-faith-wide.jpg';
+import sign_round from '../../social/photos/shoot/sign-round.jpg';
+import snack_cup from '../../social/photos/shoot/snack-cup.jpg';
+import staff_machine from '../../social/photos/shoot/staff-machine.jpg';
+import staff_smile from '../../social/photos/shoot/staff-smile.jpg';
+import storefront_day from '../../social/photos/shoot/storefront-day.jpg';
+import vitrine_pies from '../../social/photos/shoot/vitrine-pies.jpg';
+import vitrine_window from '../../social/photos/shoot/vitrine-window.jpg';
+
+// Kamatero uses only shots that don't show the Patisia shop (no storefront, shutters or jackets
+// with the Rodou address). TODO: swap in real Kamatero photos when they exist.
+const SETS = {
+  patisia: { hero: storefront_day, card: storefront_day, gallery: [interior_wide, vitrine_window, staff_smile, sign_round, staff_machine, vitrine_pies, corner_wide, shutter_faith_wide] },
+  kamatero: { hero: espresso_logo_cup, card: cup_pair, gallery: [crema_double, milk_steam, foam_macro, pie_plate, snack_cup, espresso_splash, apron_cup, dolce_hand] },
+};
+
+const { lang, id } = Astro.props;
+const t = T[lang];
+const s = getShop(id);
+const other = SHOPS.find((x) => x.id !== id);
+const set = SETS[id];
+---
+<Base lang={lang} page={id} slug={id} schema={graph(lang, [s])}>
+  <section class="hero">
+    <div class="wrap split">
+      <div class="copy">
+        <p class="eyebrow">{s.nick[lang]}{s.isNew && <span class="new"> · {t.newBadge}</span>}</p>
+        <h1 class="display">{s.name}</h1>
+        <p class="addr">{address(s, lang)}</p>
+        <Pill shop={s} lang={lang} />
+        <div class="ctas">
+          <a class="btn btn-solid" href={directions(s)} target="_blank" rel="noopener">{t.directions}</a>
+          <a class="btn" href={`tel:${s.phones[0]}`}>{t.call} <span class="mono">{phoneText(s.phones[0])}</span></a>
+          <a class="btn" href={url(lang, 'menu')}>{t.seeMenu}</a>
+        </div>
+      </div>
+      <div class="photo">
+        <Picture src={set.hero} alt={`${s.name}`} widths={[600, 900, 1400]} sizes="(min-width: 900px) 50vw, 100vw" formats={['avif', 'webp']} loading="eager" fetchpriority="high" />
+      </div>
+    </div>
+  </section>
+
+  <section class="paper band" aria-label={t.addressLabel}>
+    <div class="wrap facts">
+      <dl>
+        <div><dt class="eyebrow">{t.addressLabel}</dt><dd>{address(s, lang)}</dd></div>
+        <div><dt class="eyebrow">{t.hours}</dt><dd>{s.hours ? `${t.everyDay} ${s.hours.opens} – ${s.hours.closes}` : t.hoursSoon}</dd></div>
+        <div><dt class="eyebrow">{t.phone}</dt><dd>{s.phones.map((p) => <a class="mono" href={`tel:${p}`}>{phoneText(p)}</a>)}</dd></div>
+      </dl>
+      <div class="deliv">
+        <p class="eyebrow">{t.deliveryLabel}</p>
+        <Delivery shop={s} lang={lang} />
+      </div>
+      <div class="map" data-embed={s.embed} data-title={`${s.name}, ${address(s, lang)}`}>
+        <button type="button" class="btn btn-solid">{t.mapLoad}</button>
+        <p>{t.mapNote}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="gallery-h">
+    <div class="wrap"><h2 id="gallery-h" class="h2">{t.gallery}</h2></div>
+    <ul class="gallery wrap">
+      {set.gallery.map((n) => (
+        <li><Picture src={n} alt="" widths={[360, 640]} sizes="(min-width: 900px) 25vw, 70vw" formats={['avif', 'webp']} /></li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="band other" aria-labelledby="other-h">
+    <div class="wrap">
+      <h2 id="other-h" class="eyebrow">{t.otherShop}</h2>
+      <div class="other-card"><ShopCard shop={other} lang={lang} image={SETS[other.id].card} /></div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Two-click map: Google only loads after the visitor asks for it, so the site needs no cookie banner.
+  for (const box of document.querySelectorAll<HTMLElement>('.map')) {
+    box.querySelector('button')!.addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = box.dataset.embed!;
+      f.title = box.dataset.title!;
+      f.loading = 'lazy';
+      f.referrerPolicy = 'no-referrer-when-downgrade';
+      f.allowFullscreen = true;
+      box.replaceChildren(f);
+      box.classList.add('on');
+    }, { once: true });
+  }
+</script>
+
+<style>
+  .hero { padding-block: 32px 64px; }
+  .split { display: grid; gap: 32px; align-items: center; }
+  @media (min-width: 900px) { .split { grid-template-columns: 1fr 1fr; gap: 56px; } }
+  .copy { display: grid; gap: 18px; justify-items: start; }
+  h1 { font-size: clamp(64px, 10vw, 136px); }
+  .new { color: var(--on-ink); }
+  .addr { font-size: 20px; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 10px; }
+  .photo { border-radius: 22px; overflow: hidden; }
+  .photo :global(img) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  @media (min-width: 900px) { .photo :global(img) { aspect-ratio: 5 / 6; } }
+
+  .facts { display: grid; gap: 40px; }
+  @media (min-width: 900px) { .facts { grid-template-columns: 1fr 1fr; } .map { grid-column: 1 / -1; } }
+  dl { display: grid; gap: 22px; margin: 0; }
+  dd { margin: 6px 0 0; font-size: 20px; display: grid; justify-items: start; }
+  dd a { text-decoration: none; padding-block: 2px; }
+  .deliv { display: grid; gap: 12px; align-content: start; }
+  .map { display: grid; place-content: center; justify-items: center; gap: 12px; text-align: center; min-height: 320px; padding: 24px; border-radius: 22px; background: var(--paper-2); }
+  .map p { font-size: 14px; color: var(--on-paper-muted); max-width: 40ch; }
+  .map.on { padding: 0; overflow: hidden; display: block; }
+  .map :global(iframe) { width: 100%; height: 420px; border: 0; display: block; }
+
+  .gallery { display: grid; grid-auto-flow: column; grid-auto-columns: min(70vw, 300px); gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; margin-top: 32px; scrollbar-width: none; }
+  .gallery::-webkit-scrollbar { display: none; }
+  @media (min-width: 1100px) { .gallery { grid-auto-flow: row; grid-template-columns: repeat(4, 1fr); overflow: visible; } }
+  .gallery li { scroll-snap-align: start; }
+  .gallery :global(img) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); }
+
+  .other { padding-top: 0; }
+  .other h2 { margin-bottom: 16px; }
+  .other-card { max-width: 640px; }
+</style>

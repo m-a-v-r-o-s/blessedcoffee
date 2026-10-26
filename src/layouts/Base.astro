@@ -1,0 +1,74 @@
+---
+import '@fontsource/fira-sans-extra-condensed/800.css';
+import '@fontsource-variable/commissioner';
+import '@fontsource/fira-mono/400.css';
+import '@fontsource/fira-mono/500.css';
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import { T, url } from '../i18n.js';
+import { SITE } from '../data/site.js';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import OrderSheet from '../components/OrderSheet.astro';
+import logo from '../assets/blessed-logo.webp';
+import ogSrc from '../../social/photos/shoot/shutter-christ.jpg';
+// Preloaded so the big display headline doesn't reflow (CLS) when its font arrives.
+import dispEl from '@fontsource/fira-sans-extra-condensed/files/fira-sans-extra-condensed-greek-800-normal.woff2?url';
+import dispEn from '@fontsource/fira-sans-extra-condensed/files/fira-sans-extra-condensed-latin-800-normal.woff2?url';
+import textEl from '@fontsource-variable/commissioner/files/commissioner-greek-wght-normal.woff2?url';
+import textEn from '@fontsource-variable/commissioner/files/commissioner-latin-wght-normal.woff2?url';
+
+const { lang, page, slug = '', schema, noindex = false } = Astro.props;
+const t = T[lang];
+const [title, description] = t.meta[page];
+const canonical = SITE + url(lang, slug);
+const og = await getImage({ src: ogSrc, width: 1200, height: 630, format: 'jpg', quality: 80 });
+const icon = await getImage({ src: logo, width: 64, height: 64, format: 'png' });
+const touch = await getImage({ src: logo, width: 180, height: 180, format: 'png' });
+---
+<!doctype html>
+<html lang={t.htmlLang} data-shop="patisia">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0b0b" />
+  <meta name="color-scheme" content="dark" />
+  <script is:inline>try{if(localStorage.getItem('bc_shop')==='kamatero')document.documentElement.dataset.shop='kamatero'}catch(e){}</script>
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  {noindex ? <meta name="robots" content="noindex" /> : <>
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="el" href={SITE + url('el', slug)} />
+    <link rel="alternate" hreflang="en" href={SITE + url('en', slug)} />
+    <link rel="alternate" hreflang="x-default" href={SITE + url('el', slug)} />
+  </>}
+  <link rel="icon" type="image/png" href={icon.src} />
+  <link rel="apple-touch-icon" href={touch.src} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Blessed Coffee & Spirits" />
+  <meta property="og:locale" content={t.locale} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={SITE + og.src} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={lang === 'el' ? 'Το ζωγραφισμένο ρολό του Blessed στα Πατήσια' : 'The painted shutter of Blessed in Patisia'} />
+  <meta name="twitter:card" content="summary_large_image" />
+  {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  {(lang === 'el' ? [dispEl, dispEn, textEl] : [dispEn, textEn]).map((f) => <link rel="preload" href={f} as="font" type="font/woff2" crossorigin />)}
+  <slot name="head" />
+</head>
+<body>
+  <a class="skip" href="#main">{t.skip}</a>
+  <Header lang={lang} slug={slug} />
+  <main id="main"><slot /></main>
+  <Footer lang={lang} />
+  <OrderSheet lang={lang} />
+  <script>import '../scripts/shop.js';</script>
+  <style>
+    .skip { position: absolute; left: 12px; top: -60px; z-index: 200; padding: 12px 16px; background: var(--on-ink); color: var(--ink); border-radius: 8px; font-weight: 700; }
+    .skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+  </style>
+</body>
+</html>

@@ -1,0 +1,48 @@
+---
+import { T, url } from '../i18n.js';
+import { SHOPS, SOCIAL, address, phoneText } from '../data/site.js';
+
+const { lang } = Astro.props;
+const t = T[lang];
+---
+<footer class="ftr">
+  <div class="wrap">
+    <div class="big display" aria-hidden="true"></div>
+    <div class="cols">
+      {SHOPS.map((s) => (
+        <div>
+          <h2 class="eyebrow">{s.name}</h2>
+          <p><a href={url(lang, s.id)}>{address(s, lang)}</a></p>
+          {s.phones.map((p) => <p class="mono"><a href={`tel:${p}`}>{phoneText(p)}</a></p>)}
+          <p class="mono">{s.hours ? `${t.everyDay} ${s.hours.opens} – ${s.hours.closes}` : t.hoursSoon}</p>
+        </div>
+      ))}
+      <div>
+        <h2 class="eyebrow">Blessed</h2>
+        <p><a href={url(lang, 'menu')}>{t.nav.menu}</a></p>
+        <p><a href={url(lang, 'careers')}>{t.nav.careers}</a></p>
+        <p><a href={SOCIAL.instagram} target="_blank" rel="noopener">Instagram</a></p>
+        <p><a href={SOCIAL.facebook} target="_blank" rel="noopener">Facebook</a></p>
+      </div>
+    </div>
+    <div class="legal">
+      <p>© 2026 Blessed Coffee & Spirits. {t.footerTag} {t.rights}</p>
+      <p><a href="/privacy-policy.html">{t.privacy}</a> · <a href="/terms-of-service.html">{t.terms}</a></p>
+      <p>{t.siteBy}: <a href="https://www.akosds.com" target="_blank" rel="noopener">Akos Digital Services</a></p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr { background: var(--ink); border-top: 1px solid var(--line-ink); padding-block: 64px 40px; }
+  /* Decorative watermark: drawn from CSS so it isn't read out or contrast-checked as text. */
+  .big::before { content: 'Blessed'; }
+  .big { font-size: clamp(88px, 22vw, 300px); line-height: 0.8; color: var(--ink-2); -webkit-text-stroke: 1px var(--line-ink); margin-bottom: 40px; user-select: none; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
+  .cols div { display: grid; gap: 6px; align-content: start; }
+  .cols h2 { margin-bottom: 6px; }
+  .cols a, .legal a { text-decoration: none; display: inline-block; padding-block: 4px; }
+  @media (hover: hover) and (pointer: fine) { .cols a:hover, .legal a:hover { color: var(--amber); } }
+  .legal { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line-ink); display: grid; gap: 6px; font-size: 14px; color: var(--on-ink-muted); }
+  .legal a { text-decoration: underline; text-underline-offset: 3px; }
+</style>

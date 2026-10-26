@@ -1,0 +1,10 @@
+---
+import { T } from '../i18n.js';
+import { SHOPS } from '../data/site.js';
+
+const { lang } = Astro.props;
+const t = T[lang];
+---
+<div class="switch" role="group" aria-label={t.chooseShop}>
+  {SHOPS.map((s) => <button type="button" data-set-shop={s.id} aria-pressed={s.id === 'patisia' ? 'true' : 'false'}>{s.area[lang]}</button>)}
+</div>
