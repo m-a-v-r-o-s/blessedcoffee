@@ -19,10 +19,6 @@ const label = await getImage({ src: labelSrc, width: 2048, format: 'webp', quali
       <p class="eyebrow">{t.cupEyebrow}</p>
       <h2 id="cup-title" class="h2">{t.cupTitle}</h2>
       <p class="lede">{t.cupText}</p>
-      <div class="sides switch" role="group" aria-label={t.cupHint}>
-        {t.cupPanels.map((p, i) => <button type="button" aria-pressed={i === 0 ? 'true' : 'false'}>{p}</button>)}
-      </div>
-      <p class="hint mono">↔ {t.cupHint}</p>
       <div class="partner">
         <Image src={mrsRose} alt="Mrs Rose Caffè" width={96} height={96} />
         <span class="eyebrow">{t.partner}</span>
@@ -34,14 +30,13 @@ const label = await getImage({ src: labelSrc, width: 2048, format: 'webp', quali
 <script>
   const stage = document.querySelector<HTMLElement>('.cup .stage')!;
   const canvas = stage.querySelector('canvas')!;
-  const buttons = [...document.querySelectorAll<HTMLButtonElement>('.cup .sides button')];
   // Load three.js only when the cup is about to scroll into view; the poster stays if WebGL is missing.
   const io = new IntersectionObserver(async ([e]) => {
     if (!e.isIntersecting) return;
     io.disconnect();
     try {
       const { mount } = await import('../scripts/cup.js');
-      await mount(canvas, stage.dataset.label, buttons);
+      await mount(canvas, stage.dataset.label, []);
       stage.classList.add('live');
     } catch { /* no WebGL: keep the still */ }
   }, { rootMargin: '400px' });
@@ -60,7 +55,6 @@ const label = await getImage({ src: labelSrc, width: 2048, format: 'webp', quali
   .live canvas { opacity: 1; }
   .live :global(.poster) { opacity: 0; }
   .copy { display: grid; gap: 18px; justify-items: start; }
-  .hint { font-size: 13px; color: var(--on-ink-muted); }
   .partner { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
   .partner :global(img) { width: 72px; height: 72px; }
 </style>
