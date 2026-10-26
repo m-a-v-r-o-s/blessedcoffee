@@ -1,7 +1,7 @@
 # Blessed Coffee & Spirits
 
 Website and marketing automation for Blessed Coffee & Spirits, neighbourhood coffee shops in Athens:
-Blessed Coffee Patisia (Rodou 68, Kato Patisia) and Blessed Coffee Kamatero (Kosti Palama 17A,
+Blessed Coffee 2024 (Rodou 68, Kato Patisia, the original shop) and Blessed Coffee Kamatero (Kosti Palama 17A,
 Kamatero). Three parts live in this repo:
 
 | Part | Where | Runs on |

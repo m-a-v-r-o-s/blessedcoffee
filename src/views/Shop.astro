@@ -121,8 +121,8 @@ const set = SETS[id];
   .addr { font-size: 20px; }
   .ctas { display: flex; flex-wrap: wrap; gap: 10px; }
   .photo { border-radius: 22px; overflow: hidden; }
-  .photo :global(img) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-  @media (min-width: 900px) { .photo :global(img) { aspect-ratio: 5 / 6; } }
+  /* Natural aspect ratio: never crop the BLESSED sign on the storefront. */
+  .photo :global(img) { width: 100%; height: auto; max-height: 80svh; object-fit: contain; }
 
   .facts { display: grid; gap: 40px; }
   @media (min-width: 900px) { .facts { grid-template-columns: 1fr 1fr; } .map { grid-column: 1 / -1; } }

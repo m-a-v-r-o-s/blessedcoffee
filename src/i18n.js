@@ -86,7 +86,7 @@ export const T = {
     meta: {
       home: ['Blessed Coffee | Καφετέρια σε Πατήσια και Καματερό', 'Καφές, σφολιάτες, sandwiches και cocktails στα Κάτω Πατήσια (Ρόδου 68) και στο Καματερό (Κωστή Παλαμά 17Α). Delivery από e-food, Wolt και Box.'],
       menu: ['Μενού και τιμές | Blessed Coffee', 'Espresso 1.80€, freddo espresso 2.30€, cappuccino 2.60€, σφολιάτες, sandwiches, γλυκά, μπύρες και cocktails. Όλο το μενού του Blessed Coffee.'],
-      patisia: ['Blessed Coffee Patisia | Καφέ στη Ρόδου 68, Κάτω Πατήσια', 'Ανοιχτά κάθε μέρα 07:00 – 22:00. Καφές, σφολιάτες, cocktails και delivery από e-food, Wolt και Box. Τηλ. 211 218 1815.'],
+      patisia: ['Blessed Coffee 2024 | Καφέ στη Ρόδου 68, Κάτω Πατήσια', 'Ανοιχτά κάθε μέρα 07:00 – 22:00. Καφές, σφολιάτες, cocktails και delivery από e-food, Wolt και Box. Τηλ. 211 218 1815.'],
       kamatero: ['Blessed Coffee Kamatero | Καφέ στην Κωστή Παλαμά 17Α, Καματερό', 'Το νέο Blessed Coffee στο Καματερό. Καφές, σφολιάτες και γλυκά στην Κωστή Παλαμά 17Α. Τηλ. 210 238 8812.'],
       notfound: ['Η σελίδα δεν βρέθηκε | Blessed Coffee', 'Αυτή η σελίδα δεν υπάρχει.'],
       careers: ['Θέσεις εργασίας για barista και διανομέα | Blessed Coffee', 'Δουλειά για barista και διανομέα στο Blessed Coffee, στα Πατήσια και στο Καματερό. Κάνε αίτηση τηλεφωνικά ή στο κατάστημα.'],
@@ -174,7 +174,7 @@ export const T = {
     meta: {
       home: ['Blessed Coffee & Spirits | Cafe in Patisia and Kamatero, Athens', 'Coffee, pastries, sandwiches and cocktails in Kato Patisia (Rodou 68) and Kamatero (Kosti Palama 17A), Athens. Delivery via e-food, Wolt and Box.'],
       menu: ['Menu and prices | Blessed Coffee Athens', 'Espresso €1.80, freddo espresso €2.30, cappuccino €2.60, Greek pastries, sandwiches, desserts, beer and cocktails. The full Blessed Coffee menu.'],
-      patisia: ['Blessed Coffee Patisia | Cafe at Rodou 68, Kato Patisia, Athens', 'Open every day 07:00 – 22:00. Coffee, pastries, cocktails and delivery via e-food, Wolt and Box. Phone 211 218 1815.'],
+      patisia: ['Blessed Coffee 2024 | Cafe at Rodou 68, Kato Patisia, Athens', 'Open every day 07:00 – 22:00. Coffee, pastries, cocktails and delivery via e-food, Wolt and Box. Phone 211 218 1815.'],
       kamatero: ['Blessed Coffee Kamatero | Cafe at Kosti Palama 17A, Kamatero', 'The new Blessed Coffee in Kamatero, Athens. Coffee, pastries and desserts at Kosti Palama 17A. Phone 210 238 8812.'],
       notfound: ['Page not found | Blessed Coffee', 'This page does not exist.'],
       careers: ['Barista and delivery driver jobs | Blessed Coffee Athens', 'Barista and delivery driver jobs at Blessed Coffee in Patisia and Kamatero, Athens. Apply by phone or in the shop.'],

@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import { T } from '../i18n.js';
 import { phoneText } from '../data/site.js';
-import efood from '../assets/delivery/e-food.webp';
+import efood from '../assets/delivery/e-food.png';
 import wolt from '../assets/delivery/wolt.webp';
 import box from '../assets/delivery/box.png';
 
@@ -16,7 +16,7 @@ const LOGOS = { 'e-food': efood, Wolt: wolt, Box: box };
       {shop.delivery.map((d) => (
         <li>
           <a href={d.url} target="_blank" rel="noopener" class="tile">
-            <Image src={LOGOS[d.name]} alt="" width={44} height={44} class={d.name === 'Box' ? 'contain' : ''} />
+            <Image src={LOGOS[d.name]} alt="" width={44} height={44} densities={[1, 2, 3]} format="webp" quality={90} />
             <span>{d.name}</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg>
           </a>
@@ -43,7 +43,6 @@ const LOGOS = { 'e-food': efood, Wolt: wolt, Box: box };
   .tile:active { transform: scale(var(--press-scale)); }
   @media (hover: hover) and (pointer: fine) { .tile:hover { border-color: currentColor; } }
   .tile img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
-  .tile img.contain { object-fit: contain; background: #0d1117; padding: 6px; }
   .tile > span { flex: 1; }
   .call { padding-left: 18px; }
   .soon { font-size: 15px; opacity: 0.8; }

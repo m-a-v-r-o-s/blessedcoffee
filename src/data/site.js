@@ -14,7 +14,7 @@ export const RATING = { score: 4.8, count: '100+', url: 'https://maps.app.goo.gl
 export const SHOPS = [
   {
     id: 'patisia',
-    name: 'Blessed Coffee Patisia',
+    name: 'Blessed Coffee 2024',
     nick: { el: 'Πατήσια, το πρώτο', en: 'Patisia, the original' },
     area: { el: 'Κάτω Πατήσια', en: 'Kato Patisia' },
     street: { el: 'Ρόδου 68', en: 'Rodou 68' },

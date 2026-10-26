@@ -9,8 +9,18 @@ import { T, url } from '../i18n.js';
 import { SHOPS, REVIEWS, RATING, shop } from '../data/site.js';
 import { graph } from '../data/schema.js';
 import shutter from '../../social/photos/shoot/shutter-christ.jpg';
-import insideWide from '../../social/photos/shoot/interior-wide.jpg';
-import insideTall from '../../social/photos/shoot/staff-wide.jpg';
+import c0 from '../../social/photos/shoot/pastry-sesame.jpg';
+import c1 from '../../social/photos/shoot/espresso-splash.jpg';
+import c2 from '../../social/photos/shoot/pie-macro.jpg';
+import c3 from '../../social/photos/shoot/cappuccino-foam.jpg';
+import c4 from '../../social/photos/shoot/vitrine-pies.jpg';
+import c5 from '../../social/photos/shoot/drip-close.jpg';
+import c6 from '../../social/photos/shoot/snack-plate.jpg';
+import c7 from '../../social/photos/shoot/foam-macro.jpg';
+import c8 from '../../social/photos/shoot/vitrine-peinirli.jpg';
+import c9 from '../../social/photos/shoot/crema-double-2.jpg';
+import c10 from '../../social/photos/shoot/pie-plate.jpg';
+import c11 from '../../social/photos/shoot/espresso-steam.jpg';
 import storefront from '../../social/photos/shoot/storefront-day.jpg';
 import kamateroCup from '../../social/photos/shoot/cup-pair.jpg';
 import faith from '../../social/photos/shoot/shutter-faith.jpg';
@@ -25,9 +35,9 @@ const t = T[lang];
 const el = lang === 'el';
 const beans = [b1, b2, b3, b4, b5];
 
-// Art-directed reveal behind the shutter: wide room on desktop, the bar on phones.
-const insideD = await getImage({ src: insideWide, width: 1920, format: 'webp' });
-const insideM = await getImage({ src: insideTall, width: 900, format: 'webp' });
+// Behind the shutter: 6 tiles of coffee and food (4 on phones), two photos each. Every 7s one tile
+// crossfades to its other photo.
+const tiles = [[c0, c8], [c1, c9], [c2, c10], [c3, c11], [c4, c6], [c5, c7]];
 const marquee = [...t.marquee, ...t.marquee];
 // LCP is the shutter: preload the same AVIF set the <Picture> below emits.
 const HERO_W = [480, 750, 1080, 1440, 2000];
@@ -37,15 +47,14 @@ const heroPre = await getImage({ src: shutter, widths: HERO_W, format: 'avif' })
   <link slot="head" rel="preload" as="image" type="image/avif" imagesrcset={heroPre.srcSet.attribute} imagesizes="100vw" fetchpriority="high" />
   <section class="hero" aria-labelledby="hero-title">
     <div class="stage">
-      <picture class="inside" aria-hidden="true">
-        <source media="(min-width: 700px)" srcset={insideD.src} />
-        <img src={insideM.src} alt="" width="900" height="1260" decoding="async" fetchpriority="low" />
-      </picture>
-      <div class="shutter">
-        <Picture src={shutter} alt={el ? 'Το ζωγραφισμένο ρολό του Blessed στα Πατήσια' : 'The painted shutter of Blessed in Patisia'}
-          widths={HERO_W} sizes="100vw" formats={['avif', 'webp']} loading="eager" fetchpriority="high" />
-        <span class="hem" aria-hidden="true"></span>
-      </div>
+      <ul class="inside" aria-hidden="true">
+        {tiles.map(([a, b]) => (
+          <li>
+            <Picture src={a} alt="" widths={[320, 640]} sizes="(min-width: 700px) 33vw, 50vw" formats={['avif', 'webp']} fetchpriority="low" class="on" />
+            <Picture src={b} alt="" widths={[320, 640]} sizes="(min-width: 700px) 33vw, 50vw" formats={['avif', 'webp']} loading="lazy" />
+          </li>
+        ))}
+      </ul>
       <div class="shade" aria-hidden="true"></div>
       <div class="copy wrap">
         <p class="eyebrow">{t.heroEyebrow}</p>
@@ -57,6 +66,12 @@ const heroPre = await getImage({ src: shutter, widths: HERO_W, format: 'avif' })
           <a class="btn btn-solid" href={url(lang, 'menu')}>{t.seeMenu}</a>
           <button class="btn" popovertarget="order">{t.order}</button>
         </div>
+      </div>
+      <!-- Closed shop: the shutter sits over everything until you scroll it up. -->
+      <div class="shutter">
+        <Picture src={shutter} alt={el ? 'Το ζωγραφισμένο ρολό του Blessed στα Πατήσια' : 'The painted shutter of Blessed in Patisia'}
+          widths={HERO_W} sizes="100vw" formats={['avif', 'webp']} loading="eager" fetchpriority="high" />
+        <span class="hem" aria-hidden="true"></span>
       </div>
       <p class="cue mono" aria-hidden="true">{t.scrollCue} ↓</p>
     </div>
@@ -155,39 +170,72 @@ const heroPre = await getImage({ src: shutter, widths: HERO_W, format: 'avif' })
   </section>
 </Base>
 
+<script>
+  // One tile at a time, every 7s, only while the hero is on screen. No rotation with reduced motion.
+  const tiles = [...document.querySelectorAll<HTMLElement>('.hero .inside li')];
+  let onScreen = true, last = -1;
+  new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; }).observe(document.querySelector('.hero')!);
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    setInterval(() => {
+      if (!onScreen || document.hidden) return;
+      const shown = tiles.map((t, i) => [t, i] as const).filter(([t, i]) => t.offsetParent && i !== last);
+      const [tile, i] = shown[Math.floor(Math.random() * shown.length)];
+      last = i;
+      for (const img of tile.querySelectorAll('img')) img.classList.toggle('on');
+    }, 7000);
+  }
+</script>
+
 <style>
   /* ── Hero: the Patisia shutter rolls up as you scroll and the shop is behind it. ── */
   .hero { position: relative; margin-top: calc(-1 * (var(--header-h) + env(safe-area-inset-top, 0px))); }
   .stage { position: relative; height: 100svh; min-height: 560px; overflow: hidden; background: var(--ink); }
-  .inside, .inside img, .shutter, .shutter :global(picture), .shutter :global(img), .shade { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .inside img { object-fit: cover; filter: brightness(0.62); }
-  .shutter { z-index: 1; will-change: transform; }
+  .shutter, .shutter :global(picture), .shutter :global(img), .shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .inside { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; gap: 4px; }
+  .inside li:nth-child(n + 5) { display: none; }
+  @media (min-width: 700px) {
+    .inside { grid-template-columns: repeat(3, 1fr); }
+    .inside li:nth-child(n + 5) { display: block; }
+  }
+  .inside li { position: relative; overflow: hidden; min-height: 0; }
+  .inside :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity 1.4s ease, transform 7s linear; }
+  .inside :global(img.on) { opacity: 1; transform: none; }
+  .shade { z-index: 1; background: linear-gradient(to top, rgb(0 0 0 / 0.9) 0%, rgb(0 0 0 / 0.6) 45%, rgb(0 0 0 / 0.25) 100%); }
+  .copy { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: grid; gap: 16px; justify-items: start; padding-bottom: clamp(56px, 9vh, 96px); }
+  .shutter { z-index: 3; will-change: transform; }
   .shutter :global(img) { object-fit: cover; object-position: 50% 40%; }
   .shutter::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(180deg, transparent 0 11px, rgb(0 0 0 / 0.22) 11px 13px); pointer-events: none; }
   .hem { position: absolute; left: 0; right: 0; bottom: 0; height: 16px; background: linear-gradient(#3a3a3a, #121212); border-top: 2px solid #6b6b6b; z-index: 1; }
-  .shade { z-index: 2; background: linear-gradient(to top, rgb(0 0 0 / 0.88) 0%, rgb(0 0 0 / 0.55) 38%, rgb(0 0 0 / 0) 70%); }
-  .copy { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; display: grid; gap: 16px; justify-items: start; padding-bottom: clamp(56px, 9vh, 96px); }
   h1 { font-size: clamp(52px, 11vw, 150px); max-width: 12ch; }
   h1 em { font-style: normal; color: var(--amber); }
   .sub { font-size: clamp(17px, 1.8vw, 21px); max-width: 40ch; color: #e7e2d8; }
   .ctas { display: flex; flex-wrap: wrap; gap: 10px; }
-  .cue { position: absolute; z-index: 3; right: var(--gutter-r); bottom: 20px; font-size: 13px; color: var(--on-ink-muted); }
+  .cue { position: absolute; z-index: 4; left: 50%; bottom: 36px; translate: -50% 0; white-space: nowrap; font-size: 14px; padding: 12px 18px; border-radius: 999px; background: rgb(11 11 11 / 0.72); color: var(--on-ink); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  /* Tabbing into the hidden hero opens the shutter, so focus is never behind it. */
+  .stage:focus-within .shutter { animation: none; transform: translateY(-100%); }
+  .stage:focus-within .cue { opacity: 0; }
 
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
-      .hero { height: 210svh; view-timeline: --hero block; }
+      /* inset 0: by default the timeline subtracts html's scroll-padding and starts the shutter half-open. */
+      .hero { height: 220svh; view-timeline: --hero block; view-timeline-inset: 0; }
       .stage { position: sticky; top: 0; }
-      .shutter { animation-name: lift; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 0% contain 60%; }
-      .inside img { animation-name: settle; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 0% contain 70%; }
-      .cue { animation-name: fade; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 0% contain 12%; }
+      .shutter { animation-name: lift; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 0% contain 55%; }
+      .inside li { animation-name: settle; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 0% contain 60%; }
+      .inside li:nth-child(even) { animation-range: contain 5% contain 70%; }
+      .copy { animation-name: up; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 25% contain 60%; }
+      .cue { animation-name: fade; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 0% contain 10%; }
     }
     @supports not (animation-timeline: view()) {
       .shutter { animation: lift 1.8s cubic-bezier(0.65, 0, 0.25, 1) 1.4s both; }
       .cue { display: none; }
     }
   }
+  /* Reduced motion: no shutter to scroll away, the hero shows straight away. */
+  @media (prefers-reduced-motion: reduce) { .shutter, .cue { display: none; } }
   @keyframes lift { to { transform: translateY(-100%); } }
-  @keyframes settle { from { transform: scale(1.12); filter: brightness(0.35); } to { transform: none; filter: brightness(0.62); } }
+  @keyframes settle { from { transform: scale(1.3); } }
+  @keyframes up { from { transform: translateY(60px); } }
   @keyframes fade { to { opacity: 0; } }
 
   /* ── Marquee ── */
