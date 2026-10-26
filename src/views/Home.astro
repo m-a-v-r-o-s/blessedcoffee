@@ -50,8 +50,8 @@ const heroPre = await getImage({ src: shutter, widths: HERO_W, format: 'avif' })
       <ul class="inside" aria-hidden="true">
         {tiles.map(([a, b]) => (
           <li>
-            <Picture src={a} alt="" widths={[320, 640]} sizes="(min-width: 700px) 33vw, 50vw" formats={['avif', 'webp']} fetchpriority="low" class="on" />
-            <Picture src={b} alt="" widths={[320, 640]} sizes="(min-width: 700px) 33vw, 50vw" formats={['avif', 'webp']} loading="lazy" />
+            <Picture src={a} alt="" widths={[320, 640]} sizes="(min-width: 700px) 50vw, 100vw" formats={['avif', 'webp']} fetchpriority="low" class="on" />
+            <Picture src={b} alt="" widths={[320, 640]} sizes="(min-width: 700px) 50vw, 100vw" formats={['avif', 'webp']} loading="lazy" />
           </li>
         ))}
       </ul>
@@ -191,11 +191,21 @@ const heroPre = await getImage({ src: shutter, widths: HERO_W, format: 'avif' })
   .hero { position: relative; margin-top: calc(-1 * (var(--header-h) + env(safe-area-inset-top, 0px))); }
   .stage { position: relative; height: 100svh; min-height: 560px; overflow: hidden; background: var(--ink); }
   .shutter, .shutter :global(picture), .shutter :global(img), .shade { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .inside { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; gap: 4px; }
+  /* Bento: mixed tile sizes. Phones: 4 tiles on a 2x3 grid. Desktop: 6 tiles on a 4x3 grid. */
+  .inside { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: 4px; }
+  .inside li:nth-child(1) { grid-area: 1 / 1 / 2 / 3; }
+  .inside li:nth-child(2) { grid-area: 2 / 1 / 4 / 2; }
+  .inside li:nth-child(3) { grid-area: 2 / 2 / 3 / 3; }
+  .inside li:nth-child(4) { grid-area: 3 / 2 / 4 / 3; }
   .inside li:nth-child(n + 5) { display: none; }
   @media (min-width: 700px) {
-    .inside { grid-template-columns: repeat(3, 1fr); }
-    .inside li:nth-child(n + 5) { display: block; }
+    .inside { grid-template-columns: repeat(4, 1fr); }
+    .inside li:nth-child(1) { grid-area: 1 / 1 / 3 / 3; }
+    .inside li:nth-child(2) { grid-area: 1 / 3 / 2 / 4; }
+    .inside li:nth-child(3) { grid-area: 1 / 4 / 3 / 5; }
+    .inside li:nth-child(4) { grid-area: 2 / 3 / 4 / 4; }
+    .inside li:nth-child(5) { grid-area: 3 / 1 / 4 / 3; display: block; }
+    .inside li:nth-child(6) { grid-area: 3 / 4 / 4 / 5; display: block; }
   }
   .inside li { position: relative; overflow: hidden; min-height: 0; }
   .inside :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity 1.4s ease, transform 7s linear; }
