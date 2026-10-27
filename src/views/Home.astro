@@ -250,6 +250,8 @@ const rim = Array.from({ length: 16 }, (_, i) => i + 1);
   /* The sticker logo is the headline. Negative margins trim its transparent padding so it lines up. */
   h1 { perspective: 1100px; filter: drop-shadow(0 16px 34px rgb(0 0 0 / 0.55)); }
   .coin { --w: min(92vw, 60svh, 720px); --d: calc(var(--w) * 0.0028); position: relative; display: block; width: var(--w); margin: calc(var(--w) * -0.025) 0 calc(var(--w) * -0.05) calc(var(--w) * -0.11); transform-style: preserve-3d; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+  /* Phones: logo centred; trimming the 8.6% right padding too keeps the artwork optically centred. */
+  @media (max-width: 699px) { h1 { justify-self: center; } .coin { margin-right: calc(var(--w) * -0.086); } }
   .coin :global(picture), .coin :global(img) { display: block; width: 100%; height: auto; }
   .rim { position: absolute; inset: 0; -webkit-mask: var(--mask) center / 100% 100% no-repeat; mask: var(--mask) center / 100% 100% no-repeat; background: color-mix(in oklab, #b9b3a7, #3b3832 calc(var(--i) * 6%)); transform: translateZ(calc(var(--i) * var(--d) * -1)); }
   /* Touch screens have no pointer to follow: a slow sway shows off the rim instead. */

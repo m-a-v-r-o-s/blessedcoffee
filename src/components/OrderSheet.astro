@@ -1,6 +1,6 @@
 ---
 import { T } from '../i18n.js';
-import { SHOPS } from '../data/site.js';
+import { SHOPS, phoneText } from '../data/site.js';
 import Delivery from './Delivery.astro';
 import ShopSwitch from './ShopSwitch.astro';
 
@@ -19,13 +19,12 @@ const t = T[lang];
   {SHOPS.map((s) => <div data-only={s.id}><Delivery shop={s} lang={lang} /></div>)}
 </div>
 
-<!-- Sticky order bar on phones: ordering is the point of the site. -->
-<div class="dock" role="group" aria-label={t.order}>
-  {SHOPS.map((s) => (
-    <a data-only={s.id} class="btn" href={`tel:${s.phones[0]}`}>{t.call}</a>
-  ))}
-  <button class="btn btn-solid" popovertarget="order">{t.order}</button>
-</div>
+<!-- Floating call button on phones; ordering stays in the header. -->
+{SHOPS.map((s) => (
+  <a data-only={s.id} class="btn btn-solid dock" href={`tel:${s.phones[0]}`} aria-label={`${t.call} ${phoneText(s.phones[0])}`}>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2" /></svg>
+  </a>
+))}
 
 <style>
   .sheet {
@@ -47,11 +46,11 @@ const t = T[lang];
   .x { display: grid; place-items: center; width: 44px; height: 44px; border: 0; background: none; cursor: pointer; }
 
   .dock {
-    position: fixed; z-index: 40; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 1fr 1.6fr; gap: 10px;
-    padding: 10px max(12px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
-    background: rgb(11 11 11 / 0.86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line-ink);
+    position: fixed; z-index: 40; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    width: 56px; height: 56px; padding: 0; box-shadow: 0 8px 24px rgb(0 0 0 / 0.4);
   }
-  :global(body) { padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
+  /* Room at the end of the page so the button never covers the last line of the footer. */
+  :global(body) { padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
   @media (min-width: 900px) {
     .dock { display: none; }
     :global(body) { padding-bottom: 0; }

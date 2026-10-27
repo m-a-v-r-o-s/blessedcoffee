@@ -15,7 +15,7 @@ from there. Kamatero gaps are `TODO`s in that file.
 - [ ] Real-phone pass (cup drag, order sheet, shutter scroll)
 - [x] Internal links: nav, footer, shop pages link each other and the menu
 - [x] Open Graph with a real 1200x630 image
-- [x] Above-the-fold CTA and sticky mobile order bar
+- [x] Above-the-fold CTA and floating round call button on phones (order is in the header)
 - [x] Privacy policy and terms (`public/*.html`, cover both shops)
 - [x] Cookie banner (Accept all / Reject all / Preferences, footer "Cookie settings"); only governs the Google map, fonts are self-hosted, no analytics
 - [x] Contact info per shop
