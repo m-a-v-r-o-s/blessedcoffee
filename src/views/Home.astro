@@ -8,6 +8,7 @@ import Cup from '../components/Cup.astro';
 import { T, url } from '../i18n.js';
 import { SHOPS, REVIEWS, RATING, shop } from '../data/site.js';
 import { graph } from '../data/schema.js';
+import logo from '../assets/blessed-logo.webp';
 import shutter from '../../social/photos/shoot/shutter-christ.jpg';
 import c0 from '../../social/photos/shoot/vitrine-window.jpg';
 import c1 from '../../social/photos/shoot/espresso-splash.jpg';
@@ -58,8 +59,9 @@ const heroPre = await getImage({ src: shutter, widths: HERO_W, format: 'avif' })
       <div class="shade" aria-hidden="true"></div>
       <div class="copy wrap">
         <p class="eyebrow">{t.heroEyebrow}</p>
-        <h1 id="hero-title" class="display">
-          <span>{t.slogan.a}</span> <em>{t.slogan.b}</em> <span>{t.slogan.c}</span>
+        <h1 id="hero-title">
+          <Picture src={logo} alt="Blessed Coffee & Spirits" widths={[280, 460, 920]} sizes="(min-width: 700px) 460px, 62vw" formats={['avif', 'webp']} loading="eager" />
+          <span class="sr-only">{t.slogan.a} {t.slogan.b} {t.slogan.c}</span>
         </h1>
         <p class="sub">{t.heroSub}</p>
         <div class="ctas">
@@ -216,8 +218,8 @@ const heroPre = await getImage({ src: shutter, widths: HERO_W, format: 'avif' })
   .shutter :global(img) { object-fit: cover; object-position: 50% 40%; }
   .shutter::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(180deg, transparent 0 11px, rgb(0 0 0 / 0.22) 11px 13px); pointer-events: none; }
   .hem { position: absolute; left: 0; right: 0; bottom: 0; height: 16px; background: linear-gradient(#3a3a3a, #121212); border-top: 2px solid #6b6b6b; z-index: 1; }
-  h1 { font-size: clamp(52px, 11vw, 150px); max-width: 12ch; }
-  h1 em { font-style: normal; color: var(--amber); }
+  /* The sticker logo is the headline; it has ~11% transparent margin, so it bleeds left to line up. */
+  h1 :global(img) { display: block; width: min(62vw, 40svh, 460px); height: auto; margin-left: -5%; filter: drop-shadow(0 12px 30px rgb(0 0 0 / 0.5)); }
   .sub { font-size: clamp(17px, 1.8vw, 21px); max-width: 40ch; color: #e7e2d8; }
   .ctas { display: flex; flex-wrap: wrap; gap: 10px; }
   .cue { position: absolute; z-index: 4; left: 50%; bottom: 36px; translate: -50% 0; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: rgb(11 11 11 / 0.72); color: var(--on-ink); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
