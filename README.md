@@ -27,8 +27,8 @@ npm run lint
 - Kamatero facts still missing are marked `TODO` in `src/data/site.js` (hours, delivery links, menu)
   and show as "coming soon" on the site. Fill them in there.
 - The visitor's chosen shop (`html[data-shop]`) drives the order and call buttons on every page.
-- The 3D cup (`src/scripts/cup.js`) is the scene from `social/cup/cup.html`, lazy-loaded with
-  three.js when it scrolls into view.
+- The 3D cup (`src/scripts/cup.js`) is lazy-loaded with three.js when it scrolls into view. It is the one
+  cup model: `social/cup/cup.html` imports its `studioScene()` for every social still, reel and the GLB.
 - Caddy serves `dist/` with a strict CSP (`Caddyfile`). The one inline script (in
   `src/layouts/Base.astro`) is allowed by its sha256; if you change it, recompute the hash.
 

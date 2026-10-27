@@ -152,13 +152,14 @@ function studio() {
 
 // Contact shadow on the implied surface: tight dark core under the base, soft falloff, nudged away from the key.
 const shadowMat = () => new THREE.ShaderMaterial({
-  transparent: true, depthWrite: false,
+  transparent: true, depthWrite: false, uniforms: { uA: { value: 1 } },
   vertexShader: 'varying vec2 vP; void main(){ vP = position.xy; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-  fragmentShader: `varying vec2 vP;
+  fragmentShader: `uniform float uA;
+    varying vec2 vP;
     void main(){
       float r = length(vP - vec2(6.0, 8.0));
       float a = 0.5 * (1.0 - smoothstep(24.0, 40.0, r)) + 0.42 * exp(-r * r / 3600.0);
-      gl_FragColor = vec4(0.0, 0.0, 0.0, a);
+      gl_FragColor = vec4(0.0, 0.0, 0.0, a * uA);
     }`,
 });
 
@@ -187,13 +188,9 @@ const steamMat = () => new THREE.ShaderMaterial({
     }`,
 });
 
-export async function mount(canvas, labelUrl) {
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  renderer.toneMapping = THREE.NeutralToneMapping;
-  renderer.toneMappingExposure = 1;
-  const reduced = prefersReducedMotion();
-
+// The lit studio with the cup in it, shared by mount() and the social renders (social/cup/cup.html).
+// tilt holds the lean, cup the turn; vent is where the steam rises from.
+export async function studioScene(renderer, labelUrl) {
   const scene = new THREE.Scene();
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(studio(), 0.04).texture;
@@ -216,20 +213,29 @@ export async function mount(canvas, labelUrl) {
   tilt.add(cup);
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(280, 280), shadowMat());
   floor.rotation.x = -Math.PI / 2;
-  scene.add(tilt, floor);
+  const steam = new THREE.Mesh(new THREE.PlaneGeometry(34, 46).translate(0, 23, 0), steamMat());
+  const vent = new THREE.Object3D();
+  vent.position.set(-36.5, H + 22, 0);
+  cup.add(vent);
+  scene.add(tilt, floor, steam);
+  return { scene, key, fill, rim, tilt, cup, floor, steam, vent };
+}
+
+export async function mount(canvas, labelUrl) {
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.toneMapping = THREE.NeutralToneMapping;
+  renderer.toneMappingExposure = 1;
+  const reduced = prefersReducedMotion();
+  const { scene, tilt, cup, steam, vent } = await studioScene(renderer, labelUrl);
 
   // 'front' framing from shots.mjs, so the poster image and the live canvas line up.
   const camera = new THREE.PerspectiveCamera(24, 620 / 820, 300, 900);
   camera.position.set(0, 150, 560);
   camera.lookAt(0, 72, 0);
 
-  const steam = new THREE.Mesh(new THREE.PlaneGeometry(34, 46).translate(0, 23, 0), steamMat());
   steam.quaternion.copy(camera.quaternion);
   steam.visible = !reduced;
-  const vent = new THREE.Object3D();
-  vent.position.set(-36.5, H + 22, 0);
-  cup.add(vent);
-  scene.add(steam);
 
   let dirty = true;
   const size = () => {

@@ -3,28 +3,29 @@
 <head>
 <meta charset="utf-8">
 <title>Blessed cup 3D</title>
-<!-- 16oz Blessed cup. Units are mm, measured off IMG_0239 (0.102 mm/px, 90mm top rim).
-     render.mjs drives this page: window.frame(t) poses the cup for time t (0..1 = one loop),
-     window.glb() returns the model as a base64 GLB. Open directly for a live preview. -->
+<!-- The site's cup (src/scripts/cup.js studioScene: model, studio light, contact shadow, steam), posed for
+     social renders. Served from the repo root (serve.mjs), so three.js is the site's own copy.
+     window.pose(o) poses a still or a reel frame, window.frame(t) one turn of the spin loop (t 0..1),
+     window.glb() returns the model as a base64 GLB. Open directly for a live preview (?live). -->
 <style>
   html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #1a1410; }
   #bg { position: fixed; inset: -40px; background: url(boxes-backdrop.jpg) center / cover;
         filter: blur(14px) brightness(.55) saturate(.9); }
-  canvas { position: fixed; inset: 0; filter: drop-shadow(0 40px 50px rgba(0,0,0,.55)); }
+  canvas { position: fixed; inset: 0; }
   html.clean, body.clean { background: transparent; }
   body.clean #bg { display: none; }
 </style>
 <script type="importmap">
-{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
-               "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }
+{ "imports": { "three": "/node_modules/three/build/three.module.js",
+               "three/addons/": "/node_modules/three/examples/jsm/" } }
 </script>
 </head>
 <body>
 <div id="bg"></div>
 <script type="module">
 import * as THREE from 'three';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+import { studioScene } from '/src/scripts/cup.js';
 
 const q = new URLSearchParams(location.search);
 if (q.has('clean')) { document.body.classList.add('clean'); document.documentElement.classList.add('clean'); }
@@ -32,139 +33,59 @@ if (q.has('clean')) { document.body.classList.add('clean'); document.documentEle
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(devicePixelRatio); // 1 for render.mjs, 2 for the supersampled stills
 renderer.setSize(innerWidth, innerHeight);
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.9;
+renderer.toneMapping = THREE.NeutralToneMapping;
 document.body.appendChild(renderer.domElement);
 
-const scene = new THREE.Scene();
-scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
-scene.environmentIntensity = 0.28;
-
-const camera = new THREE.PerspectiveCamera(24, innerWidth / innerHeight, 100, 1400);
-
-// key light from upper left so the highlight travels across the label as it turns
-const key = new THREE.SpotLight(0xfff1e0, 7e3, 0, 0.5, 0.6, 1.2);
-key.position.set(-260, 260, 380);
-scene.add(key);
-const rim = new THREE.DirectionalLight(0xffe2c0, 0.6);
-rim.position.set(300, 120, -300);
-scene.add(rim);
-
-const cup = new THREE.Group();
-cup.name = 'BlessedCup16oz';
-scene.add(cup);
-
-// paper body: frustum, label wraps the full 360 with the logo facing +z
-const H = 132.8, RT = 45, RB = 31.2;
-const label = await new THREE.TextureLoader().loadAsync('cup-label.jpg');
-label.colorSpace = THREE.SRGBColorSpace;
-label.anisotropy = 8;
-label.userData.mimeType = 'image/jpeg';
-const body = new THREE.Mesh(
-  new THREE.CylinderGeometry(RT, RB, H, 160, 1, true, Math.PI),
-  new THREE.MeshPhysicalMaterial({ map: label, roughness: 0.8 })
-);
-body.name = 'Body';
-body.position.y = H / 2;
-cup.add(body);
-
-const base = new THREE.Mesh(new THREE.CircleGeometry(RB, 96), new THREE.MeshStandardMaterial({ color: 0xefebe4, roughness: 0.7 }));
-base.name = 'Base';
-base.rotation.x = Math.PI / 2;
-cup.add(base);
-
-// top cap under the lid, so the paper tube is never see-through
-const cap = new THREE.Mesh(new THREE.CircleGeometry(RT, 96), base.material);
-cap.name = 'Cap';
-cap.rotation.x = -Math.PI / 2;
-cap.position.y = H - 0.5;
-cup.add(cap);
-
-// lid, measured off the lid photos (IMG_0306-0316): 99.6mm brim, flat ring 24.1mm above the skirt edge,
-// recessed centre well, sip plateau 4.6mm proud on the spout side with a ramp, sip slot and vent pinhole.
-// One mesh per angle column: a sculpted top (height field) that runs into the traced side profile,
-// so the top, wall, beads and skirt are one closed surface. The skirt edge sits 1mm below the paper rim.
-const rAt = (d) => RT - (RT - RB) * d / H;                 // paper radius d mm below the rim
-const RE = 41.5, RING = 24.1;                                // top edge radius, flat ring height
-const side = [[42.0, 22.8], [43.8, 16.6], [46.5, 15.3], [48.8, 14.5], [49.8, 11.4], [48.8, 8.3],
-  [49.2, 7.4], [49.8, 3.5], [49.4, 0], [rAt(1), 0]];        // (r, h) from the top edge down to the skirt, then in to the paper
-const SIP = new THREE.Vector2(-1, 0);                        // spout points left of the logo, as on the cup
-const ss = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
-function top(x, z, r) {
-  const s = x * SIP.x + z * SIP.y, v = -x * SIP.y + z * SIP.x;   // along / across the sip axis
-  let h = -2.2 * (1 - ss(31.2, 32, r));                          // recessed centre well
-  h += 4.6 * ss(5, 10, s);                                       // ramp up to the sip plateau
-  h -= 0.6 * ss(40.6, RE, r);                                    // rounded top edge
-  const q = Math.pow(Math.pow(Math.abs(v) / 6, 4) + Math.pow(Math.abs(s - 36.5) / 2.5, 4), 0.25);
-  h -= 9 * (1 - ss(0.85, 1, q));                                 // sip slot 12 x 5mm
-  const dv = Math.hypot(s + 36, v);
-  h += 0.7 * Math.exp(-(dv * dv) / 5) - 5 * (1 - ss(0.7, 1.1, dv)); // vent pinhole on a small nub
-  return RING + h;
-}
-function lidGeometry(A = 480, NR = 200) {
-  const cols = [];
-  for (let i = 0; i <= NR; i++) cols.push(RE * Math.pow(i / NR, 0.85));   // denser towards the rim
-  const P = [], idx = [], per = NR + 1 + side.length;
-  for (let a = 0; a < A; a++) {
-    const th = a / A * Math.PI * 2, c = Math.cos(th), s = Math.sin(th);
-    for (const r of cols) P.push(r * c, top(r * c, r * s, r), r * s);
-    for (const [r, h] of side) P.push(r * c, h, r * s);
-  }
-  for (let a = 0; a < A; a++) {
-    const o = a * per, n = ((a + 1) % A) * per;
-    for (let k = 0; k < per - 1; k++) idx.push(o + k, o + k + 1, n + k, n + k, o + k + 1, n + k + 1);
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
-  g.setIndex(idx);
-  g.computeVertexNormals();
-  return g;
-}
-const lidMat = new THREE.MeshPhysicalMaterial({ color: 0x08080a, roughness: 0.4, clearcoat: 0.35, clearcoatRoughness: 0.3, side: THREE.DoubleSide });
-const lid = new THREE.Mesh(lidGeometry(), lidMat);
-lid.name = 'Lid';
-lid.position.y = H - 1;
-cup.add(lid);
-
-camera.position.set(0, 150, 560);
-camera.lookAt(0, 72, 0);
-
-window.camera = camera;
-window.frame = (t) => {
-  // one full turn per loop, with a slow breathing tilt so it never reads as a flat product spin
-  cup.rotation.y = t * Math.PI * 2;
-  cup.rotation.z = Math.sin(t * Math.PI * 2) * 0.05;
-  cup.position.y = Math.sin(t * Math.PI * 4) * 3;
-  renderer.render(scene, camera);
-};
+const { scene, key, rim, tilt, cup, floor, steam, vent } = await studioScene(renderer, '/src/assets/cup-label.jpg');
+cup.children[0].material.map.userData.mimeType = 'image/jpeg';
+steam.material.uniforms.uTop.value = renderer.domElement.height;
+const camera = new THREE.PerspectiveCamera(24, innerWidth / innerHeight, 20, 3000);
 
 // Posed stills and reels (social/cup/shots.mjs, social/render-reels.mjs). Every field is optional;
-// anything left out falls back to the default hero framing above. rot is in turns: 0 = logo panel,
-// 0.37 = slogan panel, 0.69 = Mrs Rose + Goppion panel (measured off renders, not evenly spaced). Seams
-// sit near 0.185, 0.53 and 0.85: never hold a close-up there.
-const KEY0 = key.position.clone();
-window.pose = ({ rot = 0, tilt = 0, lean = 0, lift = 0, cam = [0, 150, 560], look = [0, 72, 0], fov = 24,
-                 keyPos = KEY0.toArray(), keyI = 7e3, keyAngle = 0.5, rimI = 0.6, env = 0.28, exposure = 0.9 } = {}) => {
-  cup.rotation.set(lean, rot * Math.PI * 2, tilt);
-  cup.position.y = lift;
+// anything left out falls back to the site's 'front' framing and studio light. rot is in turns:
+// 0 = logo panel, 0.37 = slogan panel, 0.69 = Mrs Rose + Goppion panel. Seams sit near 0.185, 0.53
+// and 0.85: never hold a close-up there. shadow scales the contact shadow, steam is the steam's
+// clock in seconds (left out: no steam).
+const D = { keyPos: key.position.toArray(), keyI: key.intensity, keyAngle: key.angle, rimI: rim.intensity, env: scene.environmentIntensity };
+const v3 = new THREE.Vector3();
+window.pose = ({ rot = 0, tilt: z = 0, lean = 0, lift = 0, cam = [0, 150, 560], look = [0, 72, 0], fov = 24,
+                 keyPos = D.keyPos, keyI = D.keyI, keyAngle = D.keyAngle, rimI = D.rimI, env = D.env, exposure = 1,
+                 shadow = 1, steam: st } = {}) => {
+  tilt.rotation.set(lean, 0, z);
+  tilt.position.y = lift;
+  cup.rotation.y = rot * Math.PI * 2;
+  floor.visible = shadow > 0;
+  floor.material.uniforms.uA.value = shadow;
   camera.fov = fov;
   camera.aspect = innerWidth / innerHeight;
   camera.position.set(...cam);
   camera.up.set(0, 1, 0);
   if (Math.abs(cam[0] - look[0]) < 1e-3 && Math.abs(cam[2] - look[2]) < 1e-3) camera.up.set(0, 0, -1); // straight down
   camera.lookAt(...look);
-  camera.near = 20; camera.updateProjectionMatrix();
+  camera.updateProjectionMatrix();
   key.position.set(...keyPos); key.intensity = keyI; key.angle = keyAngle;
   rim.intensity = rimI;
   scene.environmentIntensity = env;
   renderer.toneMappingExposure = exposure;
+  steam.visible = st !== undefined;
+  if (steam.visible) {
+    steam.material.uniforms.uTime.value = st;
+    steam.quaternion.copy(camera.quaternion);
+    tilt.updateMatrixWorld();
+    steam.position.copy(vent.getWorldPosition(v3));
+  }
   renderer.render(scene, camera);
 };
+
+// One full turn per loop, with a slow breathing tilt so it never reads as a flat product spin (cup/render.mjs).
+window.frame = (t) => window.pose({ rot: t, tilt: Math.sin(t * Math.PI * 2) * 0.05, lift: Math.sin(t * Math.PI * 4) * 3 });
 
 window.glb = () => new Promise((res, rej) => {
   const c = cup.clone();
   c.rotation.set(0, 0, 0); c.position.set(0, 0, 0);
   c.scale.setScalar(0.001);            // glTF is metres: 1 unit = 1 m
+  c.children[0].material = c.children[0].material.clone();
+  c.children[0].material.normalMap = null; // procedural paper grain (DataTexture): GLTFExporter can't write it
   new GLTFExporter().parse(c, (buf) => {
     let s = ''; const b = new Uint8Array(buf);
     for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000));
@@ -172,8 +93,8 @@ window.glb = () => new Promise((res, rej) => {
   }, rej, { binary: true });
 });
 
-if (q.has('live')) renderer.setAnimationLoop((ms) => window.frame((ms / 8000) % 1));
-else window.frame(0);
+if (q.has('live')) renderer.setAnimationLoop((ms) => window.pose({ rot: (ms / 8000) % 1, steam: ms / 1000 }));
+else window.pose();
 window.ready = true;
 </script>
 </body>

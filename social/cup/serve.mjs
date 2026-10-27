@@ -1,5 +1,6 @@
-// Static server for social/, so the cup scene can load its texture and the CDN import map
-// (file:// blocks both). Used by shots.mjs and ../render-reels.mjs. Port 3011+, never 3000.
+// Static server for the repo root, so cup.html can import the site's cup (src/scripts/cup.js), its label and
+// three.js from node_modules (file:// blocks all three). Used by shots.mjs, render.mjs and ../render-reels.mjs.
+// Loopback only. Port 3011+, never 3000.
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';

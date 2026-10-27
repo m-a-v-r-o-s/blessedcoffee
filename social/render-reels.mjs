@@ -71,7 +71,7 @@ const foot = `<div class="foot"><span>${BRAND.address}</span><span>${BRAND.site}
 // Photo reels (no cup): [img, from s, to s, zoom from, zoom to, pan px, whole] per shot; each fades in over
 // the one before. whole: show the entire shot (landscape signage) instead of filling the frame.
 const shots = (list) => list.map(([img, a, b, z0 = 1.03, z1 = 1.14, px = 0, whole = false]) =>
-  `<img class="sh${whole ? ' whole' : ''}" src="/photos/shoot/${img}.jpg" data-a="${a}" data-b="${b}" data-z0="${z0}" data-z1="${z1}" data-px="${px}">`).join('') +
+  `<img class="sh${whole ? ' whole' : ''}" src="/social/photos/shoot/${img}.jpg" data-a="${a}" data-b="${b}" data-z0="${z0}" data-z1="${z1}" data-px="${px}">`).join('') +
   '<div class="shade"></div>';
 // A fixed kicker, headlines that swap in one spot ([html, from, to]), and an optional closing lede [html, from].
 const lines = (kicker, list, lede) => `<img class="mark" src="${logo}"><div class="txt"><div class="kicker">${kicker}</div>
@@ -94,7 +94,7 @@ const REELS = [
     frame: (s, $) => {
       const a = $.io($.seg(s, 0, 4.2));
       $.pose({ ...$.LID, rot: $.lerp(-0.16, 0, $.out($.seg(s, 0, 5))), cam: [0, $.lerp(60, 150, a), $.lerp(1080, 830, a)], look: [0, 36, 0], fov: 26,
-        keyI: 13000 * $.io($.seg(s, 0.2, 3)), keyPos: [$.lerp(320, -220, a), 420, 220], rimI: 3.5 * $.seg(s, 1.5, 3.5), env: 0.15 * $.seg(s, 1, 4) });
+        keyI: 13000 * $.io($.seg(s, 0.2, 3)), keyPos: [$.lerp(320, -220, a), 420, 220], rimI: 3.5 * $.seg(s, 1.5, 3.5), env: 0.15 * $.seg(s, 1, 4), steam: s });
       $.show('#k', $.seg(s, 3.6, 4.4)); $.show('#h', $.out($.seg(s, 4.2, 5.4)), 40);
     },
     caption: {
@@ -140,7 +140,7 @@ const REELS = [
       const phi = $.lerp(89.9, 6, a) * Math.PI / 180, r = $.lerp(620, 770, a);
       const ly = $.lerp(95, 36, a);
       $.pose({ ...$.LID, rot: $.lerp(-0.12, 0, a), cam: [0, ly + r * Math.sin(phi), r * Math.cos(phi)], look: [0, ly, 0], fov: 26,
-        keyPos: [-220, 420, 240], keyAngle: $.lerp(0.35, 0.55, a) });
+        keyPos: [-220, 420, 240], keyAngle: $.lerp(0.35, 0.55, a), steam: s });
       $.show('#k', $.seg(s, 4.8, 5.4)); $.show('#h', $.out($.seg(s, 5.1, 6)), 40); $.show('#l', $.seg(s, 5.8, 6.5), 20);
     },
     caption: {
@@ -152,8 +152,6 @@ const REELS = [
     id: 'reel-drop',
     bg: 'crema-double-2',
     seconds: 6,
-    back: `<div id="shadow" style="position:absolute;left:340px;width:400px;height:60px;border-radius:50%;
-      background:radial-gradient(closest-side, rgba(0,0,0,.85), rgba(0,0,0,0));"></div>`,
     front: `<div class="txt">
       <div class="kicker fade" id="k">Espresso · 1.80€</div>
       <h1 class="fade" id="h">Ο καφές σου.<br><em>Έτοιμος.</em></h1>
@@ -162,9 +160,8 @@ const REELS = [
       const d = $.seg(s, 0.2, 1.6);
       const lift = 900 * (1 - $.bounce(d));
       const wob = Math.exp(-4 * Math.max(0, s - 1.1)) * Math.sin(Math.max(0, s - 1.1) * 14) * 0.06;
-      $.pose({ ...$.LID, rot: 0.02, lift, tilt: wob, cam: [0, 150, 830], look: [0, 36, 0], fov: 26, keyPos: [-220, 440, 260] });
-      const sh = $.q('#shadow'); sh.style.top = '1128px';
-      sh.style.transform = `scale(${1 - 0.55 * Math.min(1, lift / 900)})`; sh.style.opacity = 1 - 0.8 * Math.min(1, lift / 900);
+      $.pose({ ...$.LID, rot: 0.02, lift, tilt: wob, cam: [0, 150, 830], look: [0, 36, 0], fov: 26, keyPos: [-220, 440, 260],
+        shadow: 1 - 0.8 * Math.min(1, lift / 900), steam: s > 1.6 ? s : undefined });
       $.show('#h', $.out($.seg(s, 2, 2.9)), 40); $.show('#k', $.seg(s, 2.8, 3.4));
     },
     caption: {
@@ -224,7 +221,7 @@ const REELS = [
       const sun = $.lerp(-0.45, 0.45, a) * Math.PI;
       $.pose({ ...$.LID, rot: $.lerp(-0.04, 0.04, a), cam: [0, 150, 830], look: [0, 36, 0], fov: 26,
         keyPos: [480 * Math.sin(sun), 130 + 360 * Math.cos(sun), 300], keyI: 9000 + 5000 * Math.cos(sun), keyAngle: 0.5,
-        exposure: 0.85 + 0.2 * Math.cos(sun) });
+        exposure: 0.85 + 0.2 * Math.cos(sun), steam: s });
       const m = 7 * 60 + Math.round(15 * 60 * a / 5) * 5;
       $.q('#clock').textContent = `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
       $.q('#ground').style.filter = `brightness(${0.75 + 0.45 * Math.cos(sun)})`;
@@ -248,7 +245,7 @@ const REELS = [
     </div>${foot}`,
     frame: (s, $) => {
       const a = $.out($.seg(s, 0, 1.6));
-      $.pose({ ...$.LID, rot: $.lerp(-0.5, 0, a), lean: 0, tilt: -0.25 * (1 - a) * (1 - a), cam: [$.lerp(-520, 0, a), 150, 830], look: [$.lerp(-520, 0, a), 36, 0], fov: 26 });
+      $.pose({ ...$.LID, rot: $.lerp(-0.5, 0, a), lean: 0, tilt: -0.25 * (1 - a) * (1 - a), cam: [$.lerp(-520, 0, a), 150, 830], look: [$.lerp(-520, 0, a), 36, 0], fov: 26, steam: s });
       $.q('#pat').style.transform = `rotate(-12deg) translateY(${-s * 14}px)`;
       $.show('#h', $.out($.seg(s, 1.7, 2.6)), 40);
       [...document.querySelectorAll('.tile')].forEach((e, i) => {
@@ -387,7 +384,7 @@ if (!reels.length) {
 }
 
 mkdirSync(OUT, { recursive: true });
-const srv = await serve(`${ROOT}/social`, PORT);
+const srv = await serve(ROOT, PORT);
 const browser = await chromium.launch({ headless: true, executablePath: CHROME, args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 
 async function render(reel) {
@@ -395,10 +392,10 @@ async function render(reel) {
   rmSync(dir, { recursive: true, force: true });
   mkdirSync(dir, { recursive: true });
   const page = await browser.newPage({ viewport: { width: W, height: H } });
-  await page.goto(`http://127.0.0.1:${PORT}/cup/serve.mjs`); // any same-origin URL, so the iframe's pose() is reachable
+  await page.goto(`http://127.0.0.1:${PORT}/social/cup/serve.mjs`); // any same-origin URL, so the iframe's pose() is reachable
   await page.setContent(`<!doctype html><meta charset="utf-8"><style>${CSS}</style>
-    <div id="ground">${reel.bg ? `<img src="/photos/shoot/${reel.bg}.jpg"><i></i>` : ''}</div><div id="back" class="layer">${reel.back || ''}</div>
-    ${reel.photo ? '' : '<iframe id="cup" src="/cup/cup.html?clean"></iframe>'}<div id="front" class="layer">${reel.front || ''}</div>
+    <div id="ground">${reel.bg ? `<img src="/social/photos/shoot/${reel.bg}.jpg"><i></i>` : ''}</div><div id="back" class="layer">${reel.back || ''}</div>
+    ${reel.photo ? '' : '<iframe id="cup" src="/social/cup/cup.html?clean"></iframe>'}<div id="front" class="layer">${reel.front || ''}</div>
     <script>${HELPERS}; window.F = ${reel.frame.toString()};</script>`, { waitUntil: 'domcontentloaded', timeout: 180000 });
   await page.waitForFunction(() => [...document.images].every((i) => i.complete && i.naturalWidth), null, { timeout: 60000 });
   if (!reel.photo) await page.waitForFunction(() => document.getElementById('cup').contentWindow.ready, null, { timeout: 180000 });
