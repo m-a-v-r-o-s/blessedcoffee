@@ -9,6 +9,7 @@ import { T, url } from '../i18n.js';
 import { SHOPS, REVIEWS, RATING, shop } from '../data/site.js';
 import { graph } from '../data/schema.js';
 import logo from '../assets/blessed-logo.webp';
+import coinMask from '../assets/blessed-coin-mask.png';
 import shutter from '../../social/photos/shoot/shutter-christ.jpg';
 import c0 from '../../social/photos/shoot/vitrine-window.jpg';
 import c1 from '../../social/photos/shoot/espresso-splash.jpg';
@@ -43,6 +44,8 @@ const marquee = [...t.marquee, ...t.marquee];
 // LCP is the shutter: preload the same AVIF set the <Picture> below emits.
 const HERO_W = [480, 750, 1080, 1440, 2000];
 const heroPre = await getImage({ src: shutter, widths: HERO_W, format: 'avif' });
+// The logo is a thick coin: 16 hard-edged silhouettes of it stacked behind the face make the rim.
+const rim = Array.from({ length: 16 }, (_, i) => i + 1);
 ---
 <Base lang={lang} page="home" schema={graph(lang, SHOPS)}>
   <link slot="head" rel="preload" as="image" type="image/avif" imagesrcset={heroPre.srcSet.attribute} imagesizes="100vw" fetchpriority="high" />
@@ -58,9 +61,11 @@ const heroPre = await getImage({ src: shutter, widths: HERO_W, format: 'avif' })
       </ul>
       <div class="shade" aria-hidden="true"></div>
       <div class="copy wrap">
-        <p class="eyebrow">{t.heroEyebrow}</p>
         <h1 id="hero-title">
-          <Picture src={logo} alt="Blessed Coffee & Spirits" widths={[360, 640, 1024]} sizes="(min-width: 700px) 640px, 86vw" formats={['avif', 'webp']} loading="eager" />
+          <span class="coin" style={`--mask: url(${coinMask.src})`}>
+            {rim.map((i) => <span class="rim" style={`--i: ${i}`} aria-hidden="true"></span>)}
+            <Picture src={logo} alt="Blessed Coffee & Spirits" widths={[360, 720, 1024]} sizes="(min-width: 700px) 720px, 92vw" formats={['avif', 'webp']} loading="eager" />
+          </span>
           <span class="sr-only">{t.slogan.a} {t.slogan.b} {t.slogan.c}</span>
         </h1>
         <p class="sub">{t.heroSub}</p>
@@ -186,6 +191,30 @@ const heroPre = await getImage({ src: shutter, widths: HERO_W, format: 'avif' })
       for (const img of tile.querySelectorAll('img')) img.classList.toggle('on');
     }, 7000);
   }
+
+  // Desktop only: the logo coin turns its face toward the pointer, easing like the cup's lean.
+  const coin = document.querySelector<HTMLElement>('.hero .coin')!;
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const aim = { x: 0, y: 0 }, at = { x: 0, y: 0 }, c = (v: number) => Math.max(-1, Math.min(1, v));
+    let raf = 0, last = 0;
+    const frame = (now: number) => {
+      const k = 1 - Math.exp(-Math.min(now - last, 64) / 1000 * 6);
+      last = now;
+      at.x += (aim.x - at.x) * k;
+      at.y += (aim.y - at.y) * k;
+      coin.style.setProperty('--ry', `${at.x * 24}deg`);
+      coin.style.setProperty('--rx', `${-at.y * 24}deg`);
+      raf = Math.abs(aim.x - at.x) + Math.abs(aim.y - at.y) > 0.001 ? requestAnimationFrame(frame) : 0;
+    };
+    const go = () => { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+    addEventListener('pointermove', (e) => {
+      const r = coin.getBoundingClientRect();
+      aim.x = c((e.clientX - r.left - r.width / 2) / r.width);
+      aim.y = c((e.clientY - r.top - r.height / 2) / r.height);
+      go();
+    }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', () => { aim.x = aim.y = 0; go(); });
+  }
 </script>
 
 <style>
@@ -218,8 +247,14 @@ const heroPre = await getImage({ src: shutter, widths: HERO_W, format: 'avif' })
   .shutter :global(img) { object-fit: cover; object-position: 50% 40%; }
   .shutter::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(180deg, transparent 0 11px, rgb(0 0 0 / 0.22) 11px 13px); pointer-events: none; }
   .hem { position: absolute; left: 0; right: 0; bottom: 0; height: 16px; background: linear-gradient(#3a3a3a, #121212); border-top: 2px solid #6b6b6b; z-index: 1; }
-  /* The sticker logo is the headline; it has ~11% transparent margin, so it bleeds left to line up. */
-  h1 :global(img) { display: block; width: min(86vw, 52svh, 640px); height: auto; margin-left: -5%; filter: drop-shadow(0 12px 30px rgb(0 0 0 / 0.5)); }
+  /* The sticker logo is the headline. Negative margins trim its transparent padding so it lines up. */
+  h1 { perspective: 1100px; filter: drop-shadow(0 16px 34px rgb(0 0 0 / 0.55)); }
+  .coin { --w: min(92vw, 60svh, 720px); --d: calc(var(--w) * 0.0028); position: relative; display: block; width: var(--w); margin: calc(var(--w) * -0.025) 0 calc(var(--w) * -0.05) calc(var(--w) * -0.11); transform-style: preserve-3d; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+  .coin :global(picture), .coin :global(img) { display: block; width: 100%; height: auto; }
+  .rim { position: absolute; inset: 0; -webkit-mask: var(--mask) center / 100% 100% no-repeat; mask: var(--mask) center / 100% 100% no-repeat; background: color-mix(in oklab, #b9b3a7, #3b3832 calc(var(--i) * 6%)); transform: translateZ(calc(var(--i) * var(--d) * -1)); }
+  /* Touch screens have no pointer to follow: a slow sway shows off the rim instead. */
+  @media (prefers-reduced-motion: no-preference) and (hover: none) { .coin { animation: sway 5s ease-in-out infinite alternate; } }
+  @keyframes sway { from { transform: rotateX(5deg) rotateY(-16deg); } to { transform: rotateX(-5deg) rotateY(16deg); } }
   .sub { font-size: clamp(17px, 1.8vw, 21px); max-width: 40ch; color: #e7e2d8; }
   .ctas { display: flex; flex-wrap: wrap; gap: 10px; }
   .cue { position: absolute; z-index: 4; left: 50%; bottom: 36px; translate: -50% 0; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: rgb(11 11 11 / 0.72); color: var(--on-ink); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
