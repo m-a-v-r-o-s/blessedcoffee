@@ -275,11 +275,6 @@ const STORIES = [
   },
   { id: 'reformat-review-martha', html: () => reformatStory('review-martha.jpg') },
   { id: 'reformat-tagline', html: () => reformatStory('tagline.jpg') },
-  // Seasonal pairs: each season gives the morning and the evening rotation one story each.
-  {
-    id: 'story-holidays',
-    html: () => textAnnouncementStory({ kicker: 'Χριστουγεννα', headline: 'Καλές<br><em>γιορτές.</em>', lede: 'Από όλους εμάς στο Blessed.' }),
-  },
   // ─── The 3D cup (social/cup/). Text stays between y=250 and y=1580, clear of IG's chrome. ──
   {
     id: 'story-cup-today',
@@ -402,8 +397,6 @@ const STORIES = [
     ['ph-grind', '21-36-37', 'Φρεσκο αλεσμα', 'Κάθε δόση,<br><em>φρέσκια.</em>', 'Αλέθεται τη στιγμή.'],
     ['ph-delivery', '21-34-55', 'Delivery', 'Βαριέσαι;<br><em>Ερχόμαστε.</em>', 'e-food · Wolt · Box'],
   ].map(([id, t, kicker, headline, lede, at]) => ({ id, html: () => photoStory({ img: `Screenshot_2026-09-20_${t}.png`, kicker, headline, lede, at }) })),
-  // Stock, like the feed greeting: no shop exteriors from the old pre-shoot batch (owner, 2026-10-29).
-  { id: 'ph-christmas', html: () => photoStory({ img: 'christmas-syntagma.jpg', kicker: 'Χριστουγεννα', headline: 'Καλά<br><em>Χριστούγεννα.</em>', lede: 'Από το Blessed, σε όλη τη γειτονιά.', pos: 'plate' }) },
   // ─── Photographer shoot, 2026-10-26 (social/photos/shoot/). ──
   ...[
     ['ps-open', 'storefront-day', 'Καλημερα', 'Ανοίξαμε.<br><em>07:00.</em>', 'Ρόδου 68, Κάτω Πατήσια.', 'plate:2'],

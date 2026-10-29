@@ -46,7 +46,7 @@ assert.equal(pick('story', '2026-10-01', cfg(), 'evening').id, stories.evening[0
 const am = pick('story', '2026-10-01', cfg({ storyCursor: { evening: 5 } }));
 assert.deepEqual(am.next.storyCursor, { morning: 1, evening: 5 });
 assert.equal(pick('story', '2026-10-01', cfg({ storyCursor: { morning: stories.morning.length } })).id, stories.morning[0]);
-assert.equal(pick('story', '2026-12-10', cfg({ storyCursor: { morning: stories.morning.length + winter.stories.morning.length } })).id, 'ph-christmas');
+assert.equal(pick('story', '2026-12-10', cfg({ storyCursor: { morning: stories.morning.length } })).id, winter.stories.morning[0]);
 const FOOD = /^ps-(peinirli|pies|craving|sesame|snack|window)(-2)?$/;
 for (const id of stories.evening) assert.ok(!FOOD.test(id), `food story in the evening: ${id}`);
 // Quiz: question in the evening, answer the next morning.
