@@ -1,8 +1,8 @@
-// node demo/promo.mjs: a 1080x1920 Instagram reel of the whole site, cut on the beat from demo/beat.py.
-// One shop day: the shutter rolls up, quick shots of every part of the site (shops, bean to cup,
-// Faith over fear, the 3D cup, reviews, menu, a shop page, the order sheet), then the shutter comes
-// back down and the credit sits on it. Each shot is a window of Chromium's screencast; whatever happens
-// between windows (page loads, repositioning) never makes the cut.
+// node demo/promo.mjs: a 1080x1920 Instagram reel of the whole site in one continuous phone take, with
+// the beat from demo/beat.py underneath. One shop day: the shutter rolls up, a steady scroll down the
+// home page (the bean rail slides, the 3D cup gets flicked round, the reviews get swiped), the order
+// sheet comes up, then the burger menu walks to the Menu and to Patisia, and the logo brings it home to
+// the closed shutter, where the credit goes. No cuts: every move is a scroll, swipe or tap on camera.
 // Default BASE is a local `astro preview --port 3002` (npm run build first); BASE=https://www.blessed.cafe for live.
 import { chromium } from 'playwright-core'
 import { execFileSync } from 'node:child_process'
@@ -15,7 +15,7 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url))
 const OUT = join(ROOT, 'demo/out')
 const TMP = mkdtempSync(join(tmpdir(), 'blessed-promo-')) // frames, left for the OS to clear
 const BASE = process.env.BASE || 'http://localhost:3002'
-const BEAT = 60 / 90 // beat.py's tempo; every cut lands on a beat
+const SPEED = 1.2 // playback speed-up of the take
 const CHROME = process.env.CHROME || `${process.env.HOME}/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome`
 const now = () => Date.now() / 1000
 const wait = ms => new Promise(r => setTimeout(r, ms))
@@ -42,10 +42,13 @@ function overlay() {
     }
     addEventListener('pointerup', lift, true)
     addEventListener('pointercancel', lift, true)
+    // Photos start loading as soon as the page does, so the scroll never reaches an empty frame.
+    for (const img of document.images) img.loading = 'eager'
   })
 }
 
-// Eased glide to a y offset, or to an element centred (plus dy), in a fixed time so shots are predictable.
+// Eased glide to a y offset, or to an element centred (plus dy). Without ms the time follows the
+// distance, so the scroll keeps one even pace down the page.
 const glide = (page, target, ms, dy = 0) => page.evaluate(([target, ms, dy]) => new Promise(done => {
   const from = scrollY
   let to = target
@@ -53,7 +56,8 @@ const glide = (page, target, ms, dy = 0) => page.evaluate(([target, ms, dy]) => 
     const r = document.querySelector(target).getBoundingClientRect()
     to = r.top + scrollY - (innerHeight - r.height) / 2
   }
-  to += dy
+  to = Math.max(0, Math.min(to + dy, document.documentElement.scrollHeight - innerHeight))
+  ms ??= 450 + Math.abs(to - from) * 0.9
   const t0 = performance.now()
   const ease = t => t < .5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2
   const step = () => {
@@ -62,22 +66,9 @@ const glide = (page, target, ms, dy = 0) => page.evaluate(([target, ms, dy]) => 
     p < 1 ? requestAnimationFrame(step) : done()
   }
   requestAnimationFrame(step)
-}), [target, ms, dy])
-const jump = (page, target, dy) => glide(page, target, 1, dy)
+}), [target, ms ?? null, dy])
 
-// Off camera after each load: every photo loaded and decoded, so no shot opens on an empty frame.
-const open = async (page, path) => {
-  await page.goto(BASE + path, { waitUntil: 'load' })
-  await page.evaluate(() => Promise.all([...document.images].map(i => { i.loading = 'eager'; return i.decode().catch(() => {}) })))
-}
-
-// A real touch fling sideways across a scroll-snap rail, so momentum and snapping are the browser's own.
-async function fling(cdp, page, selector, dx) {
-  const b = await page.locator(selector).boundingBox()
-  cdp.send('Input.synthesizeScrollGesture', { x: Math.round(b.x + b.width * (dx < 0 ? 0.8 : 0.2)), y: Math.round(b.y + b.height / 2), xDistance: dx, yDistance: 0, speed: 1400, gestureSourceType: 'touch' }).catch(() => {})
-}
-
-// Eased slide of a rail to its nth card, on the main thread: a fling on a photo rail scrolls on the
+// Eased slide of a photo rail to its nth card, on the main thread: a touch fling scrolls on the
 // compositor ahead of raster and the screencast catches blank tiles. Snap is off while it moves.
 const slide = (page, selector, n, ms) => page.evaluate(([selector, n, ms]) => new Promise(done => {
   const rail = document.querySelector(selector), from = rail.scrollLeft
@@ -94,6 +85,12 @@ const slide = (page, selector, n, ms) => page.evaluate(([selector, n, ms]) => ne
   }
   requestAnimationFrame(step)
 }), [selector, n, ms])
+
+// A real touch fling sideways across a text rail: the browser's own momentum and snapping.
+async function fling(cdp, page, selector, dx) {
+  const b = await page.locator(selector).boundingBox()
+  cdp.send('Input.synthesizeScrollGesture', { x: Math.round(b.x + b.width * (dx < 0 ? 0.8 : 0.2)), y: Math.round(b.y + b.height / 2), xDistance: dx, yDistance: 0, speed: 1400, gestureSourceType: 'touch' }).catch(() => {})
+}
 
 // Horizontal drag across the middle of an element, dx px over ms, then lift (fast = a flick).
 async function swipe(page, selector, dx, ms) {
@@ -112,6 +109,15 @@ async function tap(page, selector) {
   const b = await page.locator(selector).first().boundingBox()
   await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2)
   await page.mouse.down(); await wait(70); await page.mouse.up()
+  await wait(200)
+}
+
+// Burger menu, then a link in the drawer, and on to the new page once it has loaded.
+async function navTo(page, name) {
+  await tap(page, '.hdr .burger')
+  await wait(650)
+  await Promise.all([page.waitForEvent('load'), tap(page, `#nav a >> text=${name}`)])
+  await wait(500)
 }
 
 // ---------- run ----------
@@ -124,13 +130,12 @@ try {
   const page = await ctx.newPage()
   const cdp = await ctx.newCDPSession(page)
 
-  // Warm the cache on every page in the cut (photos, three.js, the cup label).
-  for (const path of ['/menu', '/patisia']) {
+  // Warm the cache on every page in the take (photos at this pixel density, three.js, the cup label).
+  for (const path of ['/menu', '/patisia', '/']) {
     await page.goto(BASE + path, { waitUntil: 'load' })
-    await jump(page, 'footer'); await wait(800)
+    await page.evaluate(() => Promise.all([...document.images].map(i => i.decode().catch(() => {}))))
   }
-  await page.goto(BASE, { waitUntil: 'load' })
-  for (const s of ['.shops', '.bean', '.faith', '.reviews', '.cup .stage']) { await jump(page, s); await wait(300) }
+  await glide(page, '.cup .stage', 1)
   await page.waitForSelector('.cup .stage.live', { timeout: 30000 })
 
   const frames = []
@@ -141,92 +146,93 @@ try {
     cdp.send('Page.screencastFrameAck', { sessionId }).catch(() => {})
   })
   await cdp.send('Page.startScreencast', { format: 'jpeg', quality: 92, maxWidth: 1080, maxHeight: 1920 })
+  await page.goto(BASE, { waitUntil: 'load' }) // not reload: that restores the scroll and opens on the cup
+  await page.evaluate(() => Promise.all([...document.images].map(i => i.decode().catch(() => {}))))
+  await wait(400)
+  const start = now()
+  await wait(1100)
 
-  // A shot keeps exactly `beats` beats of screen from when it starts, however long its action takes.
-  const shots = []
-  const shot = async (beats, action) => {
-    await wait(500) // off camera: lazy photos decode after a jump
-    const start = now(), len = beats * BEAT
-    await action()
-    const left = start + len - now()
-    if (left > 0) await wait(left * 1000)
-    else console.warn(`shot ${shots.length + 1} ran ${(-left).toFixed(2)}s long, cut early`)
-    shots.push([start, start + len])
-  }
-
-  await open(page, '/') // not reload: that restores the scroll and opens on the cup
-  await jump(page, 0)
+  // Opening: the shutter rolls up, the bento settles, the logo coin sways in.
   const shut = await page.evaluate(() => document.querySelector('.hero').offsetHeight - innerHeight)
-  await wait(600)
+  await glide(page, shut * 0.8, 2800)
+  await wait(1300)
 
-  // 1. Opening: the closed shutter rolls up on the shop, the logo coin sways in.
-  await shot(5, async () => { await wait(450); await glide(page, shut * 0.8, 2300) })
-  // 2. The two shops.
-  await jump(page, '.shops .cards', 160)
-  await shot(2, () => glide(page, '.shops .cards', 1200, -40))
-  // 3. Bean to cup: along the rail.
-  await jump(page, '.bean .rail', -60)
-  await shot(2, async () => { await wait(150); await slide(page, '.bean .rail', 2, 900) })
-  // 4. Faith over fear: the photo drifts as it passes.
-  await jump(page, '.faith .split', -220)
-  await shot(2, () => glide(page, '.faith .split', 1300, 120))
-  // 5. The cup: it turns with the scroll as it comes in, then two flicks round its printed sides.
-  await jump(page, '.cup .stage', 220)
-  await shot(6, async () => {
-    await glide(page, '.cup .stage', 900)
-    await wait(150)
-    await swipe(page, '.cup canvas', -230, 140)
-    await wait(1250)
-    await swipe(page, '.cup canvas', 300, 160)
-  })
-  // 6. Reviews: fling through the quotes.
-  await jump(page, '.reviews .quotes', -60)
-  await shot(2, async () => { await wait(150); await fling(cdp, page, '.reviews .quotes', -700) })
-  // 7. The menu.
-  await open(page, '/menu')
-  await shot(2, () => glide(page, '.sections', 1250, -120))
-  // 8. Patisia's page.
-  await open(page, '/patisia')
-  await shot(2, () => glide(page, '.facts', 1100, -60))
-  // 9. Order: the sheet springs up from the header button.
-  await shot(2, async () => { await wait(200); await tap(page, '.hdr .order') })
-  // 10. Closing: the shutter comes back down, the credit goes on it, both lines one size.
-  await open(page, '/')
-  await jump(page, shut * 0.8)
-  await shot(4, async () => {
-    await glide(page, 0, 1000)
-    await page.evaluate(() => {
-      const card = document.createElement('div')
-      card.innerHTML = `<img src="${document.querySelector('.coin img').currentSrc}" alt="" style="width:46%">
-        <p class="display" style="font-size:32px;line-height:1.1">Κατασκευή Site και A/I εργαλείων<br>
-        <span style="color:#c9972a">από Θεοδωρή Ι. Μαύρο<br>Akos DS</span></p>`
-      Object.assign(card.style, { position: 'fixed', inset: 0, zIndex: 99998, display: 'grid', placeContent: 'center', justifyItems: 'center', gap: '22px', padding: '0 24px', textAlign: 'center', background: 'radial-gradient(ellipse at 50% 50%, rgb(11 11 11 / 92%) 30%, rgb(11 11 11 / 55%) 100%)', color: '#faf6f0' })
-      document.body.appendChild(card)
-      card.animate([{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.2,.8,.2,1)' })
-    })
-  })
+  // Down the home page at one pace.
+  await glide(page, '.shops .cards', undefined, 60)
+  await wait(500)
+  await glide(page, '.bean .rail', undefined, -60)
+  await slide(page, '.bean .rail', 2, 1000)
   await wait(300)
-  await cdp.send('Page.stopScreencast')
-  const secs = shots.reduce((s, [a, b]) => s + b - a, 0)
-  console.log(`frames: ${frames.length}, ${shots.length} shots, video ${secs.toFixed(2)}s`)
+  await glide(page, '.faith .split', undefined, 80)
+  await wait(500)
+
+  // The cup: it turns with the scroll as it comes in, then two flicks round its printed sides.
+  await glide(page, '.cup .stage')
+  await wait(300)
+  await swipe(page, '.cup canvas', -230, 140)
+  await wait(1500)
+  await swipe(page, '.cup canvas', 300, 160)
+  await wait(1700)
+
+  await glide(page, '.reviews .quotes', undefined, -60)
+  await fling(cdp, page, '.reviews .quotes', -700)
+  await wait(1300)
+  await glide(page, '.order .order-grid')
+  await wait(500)
+
+  // Order: the sheet springs up from the header button, then away again.
+  await tap(page, '.hdr .order')
+  await wait(1500)
+  await tap(page, '#order .x')
+  await wait(500)
+
+  // The menu, through the burger.
+  await navTo(page, 'Μενού')
+  await glide(page, '.sections', undefined, -60)
+  await glide(page, '.sections', 1400, 600)
+  await wait(400)
+
+  // Patisia: the shop, its delivery links, its photos.
+  await navTo(page, 'Πατήσια')
+  await wait(400)
+  await glide(page, '.facts')
+  await wait(500)
+  await glide(page, '.gallery')
+  await slide(page, '.gallery', 3, 1100)
+  await wait(400)
+
+  // Home on the logo: the shutter is down again, and the credit goes on it.
+  await Promise.all([page.waitForEvent('load'), tap(page, '.hdr .brand')])
+  await wait(500)
+  await page.evaluate(() => {
+    const card = document.createElement('div')
+    card.innerHTML = `<img src="${document.querySelector('.coin img').currentSrc}" alt="" style="width:46%">
+      <p class="display" style="font-size:32px;line-height:1.1">Κατασκευή Site και A/I εργαλείων<br>
+      <span style="color:#c9972a">από Θεοδωρή Ι. Μαύρο<br>Akos DS</span></p>`
+    Object.assign(card.style, { position: 'fixed', inset: 0, zIndex: 99998, display: 'grid', placeContent: 'center', justifyItems: 'center', gap: '22px', padding: '0 24px', textAlign: 'center', background: 'radial-gradient(ellipse at 50% 50%, rgb(11 11 11 / 92%) 30%, rgb(11 11 11 / 55%) 100%)', color: '#faf6f0' })
+    document.body.appendChild(card)
+    card.animate([{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.2,.8,.2,1)' })
+  })
+  await wait(2800)
+  const end = now()
+  await wait(300)
+  console.log(`frames: ${frames.length}, take ${(end - start).toFixed(1)}s, video ${((end - start) / SPEED).toFixed(1)}s`)
 
   // ---------- encode ----------
-  // Each shot holds every frame that was on screen during its window, for as long as it was on screen.
   const lines = ['ffconcat version 1.0']
-  for (const [start, end] of shots) {
-    const first = Math.max(0, frames.findLastIndex(f => f.t <= start))
-    for (let i = first; i < frames.length && frames[i].t < end; i++) {
-      const a = Math.max(frames[i].t, start), b = Math.min(frames[i + 1]?.t ?? end, end)
-      if (b - a > 0.001) lines.push(`file '${frames[i].file}'`, `duration ${(b - a).toFixed(4)}`)
-    }
+  const first = Math.max(0, frames.findLastIndex(f => f.t <= start))
+  for (let i = first; i < frames.length && frames[i].t < end; i++) {
+    const a = Math.max(frames[i].t, start), b = Math.min(frames[i + 1]?.t ?? end, end)
+    if (b - a > 0.001) lines.push(`file '${frames[i].file}'`, `duration ${(b - a).toFixed(4)}`)
   }
   lines.push(lines.at(-2)) // the concat demuxer drops the last entry's duration unless the file is repeated
   const list = join(TMP, 'frames.txt')
   writeFileSync(list, lines.join('\n'))
   const silent = join(TMP, 'silent.mp4')
   const ffmpeg = args => execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', ...args], { stdio: 'inherit' })
-  ffmpeg(['-f', 'concat', '-safe', '0', '-i', list, '-vf', 'fps=30,scale=1080:1920:flags=lanczos,setsar=1',
+  ffmpeg(['-f', 'concat', '-safe', '0', '-i', list, '-vf', `setpts=PTS/${SPEED},fps=30,scale=1080:1920:flags=lanczos,setsar=1`,
     '-c:v', 'libx264', '-crf', '18', '-preset', 'medium', '-pix_fmt', 'yuv420p', silent])
+  const secs = (end - start) / SPEED
   const beat = join(TMP, 'beat.wav')
   execFileSync('python3', [join(ROOT, 'demo/beat.py'), beat, secs.toFixed(2)], { stdio: 'inherit' })
   ffmpeg(['-i', silent, '-i', beat, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest',
