@@ -37,18 +37,25 @@ assert.equal(pick('feed', '2027-01-04', cfg(s3.next)).id, read('queue.json')[1])
 // Next winter the pair comes round again.
 assert.equal(pick('feed', '2027-12-02', cfg(s3.next)).id, 'winter-espresso');
 
-// Stories: rotation plus in-season extras, cursor wraps.
+// Stories: a morning and an evening rotation, each with its own cursor; seasonal extras join the
+// evening one. Food stories never go out in the evening (it sells out by noon).
 const { stories, seasons: { winter } } = read('schedule.json');
-assert.equal(pick('story', '2026-10-01', cfg()).id, stories[0]);
-assert.equal(pick('story', '2026-10-01', cfg({ storyCursor: stories.length })).id, stories[0]);
-assert.equal(pick('story', '2026-12-10', cfg({ storyCursor: stories.length + winter.stories.length })).id, 'ph-christmas');
+assert.equal(pick('story', '2026-10-01', cfg()).id, stories.morning[0]);
+assert.equal(pick('story', '2026-10-01', cfg(), 'evening').id, stories.evening[0]);
+const am = pick('story', '2026-10-01', cfg({ storyCursor: { evening: 5 } }));
+assert.deepEqual(am.next.storyCursor, { morning: 1, evening: 5 });
+assert.equal(pick('story', '2026-10-01', cfg({ storyCursor: { morning: stories.morning.length } })).id, stories.morning[0]);
+assert.equal(pick('story', '2026-12-10', cfg({ storyCursor: { evening: stories.evening.length + winter.stories.length } }), 'evening').id, 'ph-christmas');
+const FOOD = /^ps-(peinirli|pies|craving|sesame|snack|window)(-2)?$/;
+for (const id of stories.evening) assert.ok(!FOOD.test(id), `food story in the evening: ${id}`);
+assert.equal(stories.morning.indexOf('story-quiz-espresso'), stories.evening.indexOf('story-quiz-answer'));
 
 // Every scheduled id resolves to a real file.
 const has = (id) => ['library', 'library-reels'].some((d) => existsSync(new URL(`./${d}/${id}.${d === 'library' ? 'jpg' : 'mp4'}`, import.meta.url)))
   || existsSync(new URL(`./library/${id}-1.jpg`, import.meta.url));
 const { greetings, seasons } = read('schedule.json');
 for (const id of [...read('queue.json'), ...greetings.map((g) => g.id), ...Object.values(seasons).flatMap((s) => s.feed)]) assert.ok(has(id), `missing feed media: ${id}`);
-for (const id of [...stories, ...Object.values(seasons).flatMap((s) => s.stories)])
+for (const id of [...stories.morning, ...stories.evening, ...Object.values(seasons).flatMap((s) => s.stories)])
   assert.ok(existsSync(new URL(`./library-stories/${id}.jpg`, import.meta.url)), `missing story: ${id}`);
 
 console.log('publish: all checks passed');

@@ -1,13 +1,15 @@
 // Posts Blessed Coffee content to Instagram, run by .github/workflows/social-publish.yml.
 //   node social/publish.mjs feed    daily: a greeting on its date, else the rotation on Mon/Thu
-//   node social/publish.mjs story   twice a day: the next story
+//   node social/publish.mjs story   twice a day: the next story for the slot in SLOT (morning|evening)
 // Node's native fetch, no SDK. Instagram API with Instagram Login (no Facebook Page).
 //
 // What goes out is decided by pick() from three files in social/publish/:
 //   queue.json     feed rotation. An id is a library/<id>.jpg image, a library-reels/<id>.mp4 reel,
 //                  or a carousel when library/<id>-1.jpg, <id>-2.jpg ... exist.
 //   schedule.json  greetings (fixed "MM-DD", or "easter" / "easter±N" for Orthodox Easter),
-//                  seasons (months, extra feed posts and stories), and the story rotation.
+//                  seasons (months, extra feed posts and stories), and the story rotations: one for
+//                  the morning run, one for the evening run (no food in the evening: it sells out
+//                  by noon). Seasonal stories join the evening rotation.
 //   state.json     cursors plus what already went out, written back by the workflow.
 //
 // Required env: IG_ACCESS_TOKEN, IG_USER_ID, GITHUB_REPOSITORY (set in Actions).
@@ -48,7 +50,7 @@ function greetingDate(spec, year) {
 }
 
 // Pure decision: what to post for this mode on this date. Returns { id, next } or null (nothing today).
-export function pick(mode, today, { queue, schedule, state }) {
+export function pick(mode, today, { queue, schedule, state }, slot = 'morning') {
   const year = Number(today.slice(0, 4)), month = Number(today.slice(5, 7));
   const weekday = new Date(`${today}T12:00:00Z`).getUTCDay();
   const seasons = Object.entries(schedule.seasons).filter(([, s]) => s.months.includes(month));
@@ -57,9 +59,9 @@ export function pick(mode, today, { queue, schedule, state }) {
   const next = structuredClone(state);
 
   if (mode === 'story') {
-    const pool = [...schedule.stories, ...seasons.flatMap(([, s]) => s.stories)];
-    const cursor = state.storyCursor ?? 0;
-    next.storyCursor = (cursor + 1) % pool.length;
+    const pool = [...schedule.stories[slot], ...(slot === 'evening' ? seasons.flatMap(([, s]) => s.stories) : [])];
+    const cursor = state.storyCursor?.[slot] ?? 0;
+    next.storyCursor = { ...state.storyCursor, [slot]: (cursor + 1) % pool.length };
     return { id: pool[cursor % pool.length], next };
   }
 
@@ -97,7 +99,9 @@ async function main() {
   const read = (f) => JSON.parse(readFileSync(`${DIR}/${f}`, 'utf8'));
   const state = read('state.json');
   const today = PUBLISH_DATE || new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Athens' });
-  const choice = pick(mode, today, { queue: read('queue.json'), schedule: read('schedule.json'), state });
+  // The workflow sets SLOT; a manual run goes by the clock.
+  const slot = process.env.SLOT || (new Date().getUTCHours() < 12 ? 'morning' : 'evening');
+  const choice = pick(mode, today, { queue: read('queue.json'), schedule: read('schedule.json'), state }, slot);
   if (!choice) return console.log(`${today}: no feed post today.`);
 
   const { id } = choice;
@@ -117,7 +121,7 @@ async function main() {
   else if (slides.length) [kind, params] = ['carousel', { media_type: 'CAROUSEL', caption: caption(`library/${id}-1.txt`) }];
   else [kind, params] = ['image', { image_url: url(`library/${id}.jpg`), caption: caption(`library/${id}.txt`) }];
 
-  console.log(`${today}: ${kind} "${id}"${DRY_RUN ? ' (dry run, nothing posted)' : ''}`);
+  console.log(`${today}${mode === 'story' ? ` ${slot}` : ''}: ${kind} "${id}"${DRY_RUN ? ' (dry run, nothing posted)' : ''}`);
   if (DRY_RUN) return console.log(JSON.stringify({ params, slides: slides.map(url) }, null, 2));
 
   async function graph(path, body, method = 'POST') {

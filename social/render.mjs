@@ -994,36 +994,36 @@ const POSTS = [
   {
     id: 'bean-01', bare: 'beans-macro',
     caption: {
-      el: 'Πριν γίνει η καλημέρα σου. Από τον κόκκο, 1/5.',
-      en: 'Before it becomes your good morning. From the bean, 1/5.',
+      el: 'Πριν γίνει η καλημέρα σου. Ρόδου 68, από τις 07:00.',
+      en: 'Before it becomes your good morning. Rodou 68, from 7am.',
     },
   },
   {
     id: 'bean-02', bare: 'grinder-fill',
     caption: {
-      el: 'Εμείς ξεκινάμε πριν από σένα. 2/5.',
-      en: 'We start before you do. 2/5.',
+      el: 'Εμείς ξεκινάμε πριν από σένα.',
+      en: 'We start before you do.',
     },
   },
   {
     id: 'bean-03', bare: 'espresso-splash',
     caption: {
-      el: 'Το καλύτερο θέαμα της μέρας. 3/5.',
-      en: 'The best view of the day. 3/5.',
+      el: 'Το καλύτερο θέαμα της μέρας.',
+      en: 'The best view of the day.',
     },
   },
   {
     id: 'bean-04', bare: 'crema-double',
     caption: {
-      el: 'Διπλή δόση, πυκνή κρέμα. 4/5.',
-      en: 'Double shot, thick crema. 4/5.',
+      el: 'Διπλή δόση, πυκνή κρέμα.',
+      en: 'Double shot, thick crema.',
     },
   },
   {
     id: 'bean-05', bare: 'milk-steam',
     caption: {
-      el: 'Γάλα, ζεσταμένο σωστά. Cappuccino 2.60€, cappuccino latte 2.70€. 5/5.',
-      en: 'Milk, steamed properly. Cappuccino €2.60, cappuccino latte €2.70. 5/5.',
+      el: 'Γάλα, ζεσταμένο σωστά. Cappuccino 2.60€, cappuccino latte 2.70€.',
+      en: 'Milk, steamed properly. Cappuccino €2.60, cappuccino latte €2.70.',
     },
   },
   // Πίσω από τον πάγκο: the team (staff photographed at the shoot).
