@@ -27,7 +27,7 @@ const cafe = (s, lang) => ({
     postalCode: s.postal,
     addressCountry: 'GR',
   },
-  servesCuisine: ['Coffee', 'Pastries', 'Cocktails'],
+  servesCuisine: ['Coffee', 'Pastries', 'Desserts'],
   priceRange: '€',
   knowsLanguage: ['el', 'en'],
   hasMenu: SITE + url(lang, 'menu'),

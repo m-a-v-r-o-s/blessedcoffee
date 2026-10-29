@@ -153,7 +153,7 @@ const REELS = [
     bg: 'crema-double-2',
     seconds: 6,
     front: `<div class="txt">
-      <div class="kicker fade" id="k">Espresso · 1.80€</div>
+      <div class="kicker fade" id="k">Espresso · 2€</div>
       <h1 class="fade" id="h">Ο καφές σου.<br><em>Έτοιμος.</em></h1>
     </div>${foot}`,
     frame: (s, $) => {
@@ -165,8 +165,8 @@ const REELS = [
       $.show('#h', $.out($.seg(s, 2, 2.9)), 40); $.show('#k', $.seg(s, 2.8, 3.4));
     },
     caption: {
-      el: 'Ο καφές σου, έτοιμος. Espresso 1.80€, κάθε μέρα από τις 07:00. Ρόδου 68.',
-      en: 'Your coffee, ready. Espresso €1.80, every day from 7am. Rodou 68.',
+      el: 'Ο καφές σου, έτοιμος. Espresso 2€, κάθε μέρα από τις 07:00. Ρόδου 68.',
+      en: 'Your coffee, ready. Espresso €2, every day from 7am. Rodou 68.',
     },
   },
   {
@@ -290,12 +290,12 @@ const REELS = [
     photo: true,
     seconds: 10,
     back: shots([['vitrine-tall', 0, 2], ['pastry-sesame', 2, 4], ['vitrine-peinirli', 4, 6], ['pie-macro', 6, 8], ['snack-cup', 8, 11]]),
-    front: lines('Η βιτρινα', [['Κάτι για <em>λιγούρα;</em>', 0.4, 3.9], ['Πεϊνιρλί <em>2.90€.</em>', 4.1, 5.9], ['Μην <em>αντισταθείς.</em>', 6.1, 7.9], ['Πρωινό, <em>λυμένο.</em>', 8.1, 99]],
+    front: lines('Η βιτρινα', [['Κάτι για <em>λιγούρα;</em>', 0.4, 3.9], ['Πεϊνιρλί <em>2.80€.</em>', 4.1, 5.9], ['Μην <em>αντισταθείς.</em>', 6.1, 7.9], ['Πρωινό, <em>λυμένο.</em>', 8.1, 99]],
       ['Από τις 07:00, Ρόδου 68', 8.6]),
     frame: (s, $) => $.photos(s),
     caption: {
-      el: 'Κάτι για τη λιγούρα; Πεϊνιρλί 2.90€, κρουασάν 2.50€, μπουγάτσα κρέμα 2.80€, τυρόπιτα 1.90€. Η βιτρίνα γεμίζει από τις 07:00.',
-      en: 'Something for the craving? Peinirli €2.90, croissant €2.50, cream bougatsa €2.80, cheese pie €1.90. The counter fills up from 7am.',
+      el: 'Κάτι για τη λιγούρα; Πεϊνιρλί 2.80€, κρουασάν 2.50€, μπουγάτσα κρέμα 2.80€, τυρόπιτα 1.60€. Η βιτρίνα γεμίζει από τις 07:00.',
+      en: 'Something for the craving? Peinirli €2.80, croissant €2.50, cream bougatsa €2.80, cheese pie €1.60. The counter fills up from 7am.',
     },
   },
   {

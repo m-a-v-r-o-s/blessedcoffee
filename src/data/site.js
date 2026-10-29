@@ -121,10 +121,6 @@ export const MENU = [
     id: 'beer', title: { el: 'Μπύρες', en: 'Beer' }, cols: { el: ['Τραπέζι', 'Take away'], en: ['Table', 'Take away'] },
     items: [['Amstel', 4, 3], ['Alfa', 4, 3], ['Heineken', 4, 3.5], ['Corona', 4, 3.5], ['Kaiser', 4, 3.5], ['Fischer', 4, 3.5]],
   },
-  {
-    id: 'cocktails', title: { el: 'Cocktails', en: 'Cocktails' },
-    items: [['Zombie', 6], ['Daiquiri', 6], ['Pornstar', 6], ['Mojito', 6], ['Cucumber Basil', 6], ['Bubble Blessed', 6]],
-  },
 ];
 
 // Real Google reviews of the Patisia shop (translations are ours).
