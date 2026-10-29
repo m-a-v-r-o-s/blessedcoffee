@@ -967,8 +967,8 @@ const POSTS = [
   {
     id: 'cup-slogan', bare: 'cup-black',
     caption: {
-      el: `Ο παράδεισος έχει καπάκι και χωράει στο χέρι. Ρόδου 68, από τις 07:00. ${TAG_US.el}`,
-      en: `Heaven comes with a lid and fits in your hand. Rodou 68, from 7am. ${TAG_US.en}`,
+      el: `Ένας καφές για τον δρόμο; Ρόδου 68, κάθε μέρα από τις 07:00. ${TAG_US.el}`,
+      en: `A coffee for the road? Rodou 68, every day from 7am. ${TAG_US.en}`,
     },
   },
   {
@@ -1034,8 +1034,8 @@ const POSTS = [
   {
     id: 'bean-04', bare: 'crema-double',
     caption: {
-      el: 'Η κρέμα λέει την αλήθεια για τον espresso. Η δική μας λέει καλά λόγια. Από τον κόκκο, 4/5.',
-      en: 'The crema tells the truth about an espresso. Ours says nice things. From the bean, 4/5.',
+      el: 'Διπλή δόση, πυκνή κρέμα. Από τον κόκκο, 4/5.',
+      en: 'Double shot, thick crema. From the bean, 4/5.',
     },
   },
   {
@@ -1127,10 +1127,10 @@ const POSTS = [
   //     dark ground when it's landscape signage), a type end slide. Slide 1 carries the caption. ──
   {
     id: 'bean-carousel-1',
-    html: () => pro({ img: 'beans-pour', kicker: 'Συρε →', h1: 'Η Γένεση,<br><em>σε πέντε καρέ.</em>', sm: true }),
+    html: () => pro({ img: 'beans-pour', kicker: 'Συρε →', h1: 'Από τον κόκκο<br><em>στο ποτήρι.</em>', sm: true }),
     caption: {
-      el: 'Στην αρχή ήταν ο κόκκος. Μετά ο μύλος, ο espresso, το γάλα και, την πέμπτη μέρα, το ποτήρι σου. Σύρε. Ρόδου 68, από τις 07:00.',
-      en: 'In the beginning there was the bean. Then the grinder, the espresso, the milk and, on the fifth day, your cup. Swipe. Rodou 68, from 7am.',
+      el: 'Από τον κόκκο στο ποτήρι σου: άλεσμα, espresso, γάλα. Σύρε. Ρόδου 68, από τις 07:00.',
+      en: 'From the bean to your cup: grind, espresso, milk. Swipe. Rodou 68, from 7am.',
     },
   },
   { id: 'bean-carousel-2', bare: 'beans-pile', fixed: true },
@@ -1155,10 +1155,10 @@ const POSTS = [
       sub: 'Ρόδου 68, Κάτω Πατήσια. Κάθε μέρα 07:00 – 22:00.' }) },
   {
     id: 'vitrine-carousel-1',
-    html: () => pro({ img: 'vitrine-tall', kicker: 'Συρε →', h1: 'Μην ψωνίζεις<br><em>πεινασμένος.</em>', sm: true }),
+    html: () => pro({ img: 'vitrine-tall', kicker: 'Συρε →', h1: 'Τι έχει<br><em>η βιτρίνα.</em>', sm: true }),
     caption: {
-      el: 'Μην ψωνίζεις πεινασμένος. Ή ψώνισε, εδώ δεν σε κρίνει κανείς. Πεϊνιρλί 2.80€, κρουασάν 2.50€, μπουγάτσα κρέμα 2.80€, τυρόπιτα 1.60€, σπανακόπιτα 2.50€, πίτσα 2.80€. Εσύ τι παίρνεις;',
-      en: "Don't shop hungry. Or do, nobody judges here. Peinirli €2.80, croissant €2.50, cream bougatsa €2.80, cheese pie €1.60, spinach pie €2.50, pizza €2.80. What are you having?",
+      el: 'Τι έχει η βιτρίνα: πεϊνιρλί 2.80€, κρουασάν 2.50€, μπουγάτσα κρέμα 2.80€, τυρόπιτα 1.60€, σπανακόπιτα 2.50€, πίτσα 2.80€. Εσύ τι παίρνεις;',
+      en: "What's in the window: peinirli €2.80, croissant €2.50, cream bougatsa €2.80, cheese pie €1.60, spinach pie €2.50, pizza €2.80. What are you having?",
     },
   },
   { id: 'vitrine-carousel-2', bare: 'pie-macro', fixed: true },

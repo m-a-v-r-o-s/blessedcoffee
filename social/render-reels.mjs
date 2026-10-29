@@ -264,12 +264,12 @@ const REELS = [
     photo: true,
     seconds: 12,
     back: shots([['beans-macro', 0, 2], ['grinder-pour', 2, 4], ['espresso-splash', 4, 6], ['crema-double', 6, 8], ['milk-close', 8, 10], ['staff-cup', 10, 13]]),
-    front: lines('Η γενεση', [['Στην αρχή,<br><em>ο κόκκος.</em>', 0.3, 2], ['Μετά,<br><em>ο μύλος.</em>', 2.1, 4], ['Και είδαμε ότι<br><em>ήταν καλό.</em>', 4.1, 6],
-      ['Πολύ <em>καλό.</em>', 6.1, 8], ['Λίγο <em>γάλα.</em>', 8.1, 10], ['Και τέλος,<br><em>ο δικός σου.</em>', 10.1, 99]], ['Ρόδου 68 · από τις 07:00', 10.6]),
+    front: lines('Απο τον κοκκο', [['Πρώτα,<br><em>ο κόκκος.</em>', 0.3, 2], ['Μετά,<br><em>το άλεσμα.</em>', 2.1, 4], ['Ο <em>espresso.</em>', 4.1, 6],
+      ['Η <em>κρέμα.</em>', 6.1, 8], ['Λίγο <em>γάλα.</em>', 8.1, 10], ['Και τέλος,<br><em>ο δικός σου.</em>', 10.1, 99]], ['Ρόδου 68 · από τις 07:00', 10.6]),
     frame: (s, $) => $.photos(s),
     caption: {
-      el: 'Στην αρχή ήταν ο κόκκος. Η Γένεση του καφέ σου, σε 12 δευτερόλεπτα. Ρόδου 68, από τις 07:00.',
-      en: 'In the beginning there was the bean. The Genesis of your coffee, in 12 seconds. Rodou 68, from 7am.',
+      el: 'Από τον κόκκο στο ποτήρι σου, σε 12 δευτερόλεπτα. Ρόδου 68, από τις 07:00.',
+      en: 'From the bean to your cup, in 12 seconds. Rodou 68, from 7am.',
     },
   },
   {
