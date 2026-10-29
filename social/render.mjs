@@ -208,7 +208,7 @@ const shell = (inner, bg, real, cls = '') => `<div class="card ${cls}">
   <div class="foot"><span>${BRAND.address}</span><span>${BRAND.site}</span></div>
 </div>`;
 
-// Series card. ground: gold (07:00), cream (Είπατε, reviews), black (Στο μενού, Ζητείται).
+// Series card. ground: gold (07:00), cream (Είπατε, reviews), black (Στο μενού).
 const rows = (items) => `<div class="rows">${items.map(([k, v]) =>
   `<div class="row"><span class="k">${k}</span><span class="dots"></span><span class="v">${v}</span></div>`).join('')}</div>`;
 // Photographer shots land in social/photos/shoot/<id>.jpg; until then the card renders text-only.
@@ -348,10 +348,10 @@ const POSTS = [
     html: () => series({ ground: 'winter', tag: 'Χειμώνας · №02', img: shoot('cappuccino-foam'),
       say: 'Cappuccino.<br><em>Για τα κρύα<br>πρωινά.</em>',
       extra: rows([['Cappuccino', '2.60€']]),
-      sub: 'Πάρ\' τον μαζί σου, ζεσταίνει και τα χέρια.' }),
+      sub: 'Πάρ\' τον μαζί σου, σε ζεσταίνει ως τη δουλειά.' }),
     caption: {
-      el: `Cappuccino 2.60€, για τα κρύα πρωινά. Πάρ' τον μαζί σου, ζεσταίνει και τα χέρια. Από τις 07:00. ${TAG_US.el}`,
-      en: `Cappuccino €2.60, for the cold mornings. Take it with you, it warms your hands too. From 7am. ${TAG_US.en}`,
+      el: `Cappuccino 2.60€, για τα κρύα πρωινά. Πάρ' τον μαζί σου, σε ζεσταίνει ως τη δουλειά. Από τις 07:00. ${TAG_US.el}`,
+      en: `Cappuccino €2.60, for the cold mornings. Take it with you, it keeps you warm all the way to work. From 7am. ${TAG_US.en}`,
     },
   },
   // ─── Στο μενού: the promos, black ground. Priced straight from MENU in src/App.jsx. ──
@@ -388,16 +388,6 @@ const POSTS = [
     caption: {
       el: 'Βαριέσαι να κατέβεις; Ερχόμαστε εμείς. e-food, Wolt και Box: ο καφές και η πίτα σου, στην πόρτα σου.',
       en: "Can't be bothered to come down? We'll come to you. e-food, Wolt and Box: coffee and pastries to your door.",
-    },
-  },
-  {
-    id: 'hiring',
-    html: () => series({ ground: 'black', tag: 'Ζητείται',
-      say: 'Ψάχνουμε<br><em>barista.</em>',
-      sub: 'Με πάθος για τον specialty καφέ. Πλήρης ή μερική απασχόληση.' }),
-    caption: {
-      el: 'Ψάχνουμε barista με πάθος για τον specialty καφέ. Πλήρης ή μερική απασχόληση. Στείλε μας μήνυμα ή πέρασε από το μαγαζί.',
-      en: 'We are looking for a barista with specialty coffee experience. Full or part-time. DM us or drop by.',
     },
   },
   {
@@ -548,17 +538,6 @@ const POSTS = [
       en: "We're here early. Open every day from 7am.",
     },
   },
-  // ─── Hiring, second role. ─────────────────────────────────────────────────────
-  {
-    id: 'hiring-driver',
-    html: () => series({ ground: 'black', tag: 'Ζητείται',
-      say: 'Ψάχνουμε<br><em>διανομέα.</em>',
-      sub: 'Για πρωινές και βραδινές βάρδιες. Ευέλικτο ωράριο.' }),
-    caption: {
-      el: 'Ψάχνουμε υπεύθυνο διανομέα για πρωινές και βραδινές βάρδιες, με ευέλικτο ωράριο. Στείλε μας μήνυμα ή πέρασε από το μαγαζί.',
-      en: 'Looking for a reliable delivery driver, morning and evening shifts, flexible hours. DM us or drop by.',
-    },
-  },
   {
     id: 'find-us',
     html: (bg, real) =>
@@ -602,13 +581,13 @@ const POSTS = [
         <div class="kicker">Η τεχνη του καφε</div>
         <h1>Με<br><em>προσοχή.</em></h1>
         <div class="rule"></div>
-        <div class="lede">Κάθε φλιτζάνι, φτιαγμένο στο χέρι.</div>
+        <div class="lede">Κάθε φλιτζάνι, ένα ένα.</div>
       </div>`, bg, real),
     bg: photo('Screenshot_2026-09-20_21-34-43.png'),
     real: true,
     caption: {
-      el: 'Κάθε φλιτζάνι, φτιαγμένο στο χέρι, με προσοχή.',
-      en: 'Every cup, made by hand, with care.',
+      el: 'Κάθε φλιτζάνι, ένα ένα, με προσοχή.',
+      en: 'Every cup, one at a time, with care.',
     },
   },
   {
@@ -634,15 +613,15 @@ const POSTS = [
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">Καθε παραγγελια</div>
-        <h1 class="sm">Με το<br><em>χέρι.</em></h1>
+        <h1 class="sm">Φτιαγμένη<br><em>τη στιγμή.</em></h1>
         <div class="rule"></div>
         <div class="lede">Όχι κουμπί, όχι μηχανή που αποφασίζει.</div>
       </div>`, bg, real),
     bg: photo('Screenshot_2026-09-20_21-36-24.png'),
     real: true,
     caption: {
-      el: 'Με το χέρι, κάθε παραγγελία. Όχι κουμπί που αποφασίζει μόνο του.',
-      en: 'By hand, every order. Not a button deciding on its own.',
+      el: 'Κάθε παραγγελία, φτιαγμένη τη στιγμή που τη ζητάς.',
+      en: 'Every order, made the moment you ask for it.',
     },
   },
   // ─── Seasonal occasions: pure goodwill greetings only, no menu/offer/hours claim. ──
@@ -874,15 +853,15 @@ const POSTS = [
       <img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">Απο τη μηχανη</div>
-        <h1 class="sm">Κατευθείαν<br><em>στο χέρι σου.</em></h1>
+        <h1 class="sm">Κατευθείαν<br><em>σε σένα.</em></h1>
         <div class="rule"></div>
         <div class="lede">Espresso 2€, για εδώ ή για το δρόμο.</div>
       </div>`, bg, real),
     bg: photo('Screenshot_2026-09-20_21-35-16.png'),
     real: true,
     caption: {
-      el: 'Από τη μηχανή, κατευθείαν στο χέρι σου. Espresso 2€, για εδώ ή για το δρόμο.',
-      en: 'Straight from the machine into your hand. Espresso €2, for here or to go.',
+      el: 'Από τη μηχανή, κατευθείαν σε σένα. Espresso 2€, για εδώ ή για το δρόμο.',
+      en: 'Straight from the machine to you. Espresso €2, for here or to go.',
     },
   },
   {
@@ -1020,37 +999,37 @@ const POSTS = [
   {
     id: 'bean-02', bare: 'grinder-fill',
     caption: {
-      el: 'Εμείς ξεκινάμε πριν από σένα. Από τον κόκκο, 2/5.',
-      en: 'We start before you do. From the bean, 2/5.',
+      el: 'Εμείς ξεκινάμε πριν από σένα. 2/5.',
+      en: 'We start before you do. 2/5.',
     },
   },
   {
     id: 'bean-03', bare: 'espresso-splash',
     caption: {
-      el: 'Το καλύτερο θέαμα της μέρας. Από τον κόκκο, 3/5.',
-      en: 'The best view of the day. From the bean, 3/5.',
+      el: 'Το καλύτερο θέαμα της μέρας. 3/5.',
+      en: 'The best view of the day. 3/5.',
     },
   },
   {
     id: 'bean-04', bare: 'crema-double',
     caption: {
-      el: 'Διπλή δόση, πυκνή κρέμα. Από τον κόκκο, 4/5.',
-      en: 'Double shot, thick crema. From the bean, 4/5.',
+      el: 'Διπλή δόση, πυκνή κρέμα. 4/5.',
+      en: 'Double shot, thick crema. 4/5.',
     },
   },
   {
     id: 'bean-05', bare: 'milk-steam',
     caption: {
-      el: 'Ο αφρός θέλει χέρι, όχι κουμπί. Cappuccino 2.60€, cappuccino latte 2.70€. Από τον κόκκο, 5/5.',
-      en: 'Good foam needs a hand, not a button. Cappuccino €2.60, cappuccino latte €2.70. From the bean, 5/5.',
+      el: 'Γάλα, ζεσταμένο σωστά. Cappuccino 2.60€, cappuccino latte 2.70€. 5/5.',
+      en: 'Milk, steamed properly. Cappuccino €2.60, cappuccino latte €2.70. 5/5.',
     },
   },
   // Πίσω από τον πάγκο: the team (staff photographed at the shoot).
   {
     id: 'team-01', bare: 'staff-machine',
     caption: {
-      el: 'Η παραγγελία σου, σε καλά χέρια. Κάθε μέρα από τις 07:00.',
-      en: 'Your order, in good hands. Every day from 7am.',
+      el: 'Η παραγγελία σου, ξεκίνησε. Κάθε μέρα από τις 07:00.',
+      en: 'Your order, on its way. Every day from 7am.',
     },
   },
   {
@@ -1070,8 +1049,8 @@ const POSTS = [
   {
     id: 'team-03', bare: 'staff-back',
     caption: {
-      el: 'Ομάδα, σε κάθε βάρδια, από τις 07:00 ως τις 22:00. Πέρνα να πεις μια καλημέρα.',
-      en: 'A team on every shift, from 07:00 to 22:00. Drop by and say good morning.',
+      el: 'Εδώ από τις 07:00 ως τις 22:00. Πέρνα να πεις μια καλημέρα.',
+      en: 'Here from 07:00 to 22:00. Drop by and say good morning.',
     },
   },
   // Η βιτρίνα: pastries. Only items identified for sure get a name and a MENU price.
@@ -1127,10 +1106,10 @@ const POSTS = [
   //     dark ground when it's landscape signage), a type end slide. Slide 1 carries the caption. ──
   {
     id: 'bean-carousel-1',
-    html: () => pro({ img: 'beans-pour', kicker: 'Συρε →', h1: 'Από τον κόκκο<br><em>στο ποτήρι.</em>', sm: true }),
+    html: () => pro({ img: 'beans-pour', kicker: 'Συρε →', h1: 'Πώς γίνεται<br><em>ο καφές σου.</em>', sm: true }),
     caption: {
-      el: 'Από τον κόκκο στο ποτήρι σου: άλεσμα, espresso, γάλα. Σύρε. Ρόδου 68, από τις 07:00.',
-      en: 'From the bean to your cup: grind, espresso, milk. Swipe. Rodou 68, from 7am.',
+      el: 'Πώς γίνεται ο καφές σου: άλεσμα, espresso, γάλα. Σύρε. Ρόδου 68, από τις 07:00.',
+      en: 'How your coffee gets made: grind, espresso, milk. Swipe. Rodou 68, from 7am.',
     },
   },
   { id: 'bean-carousel-2', bare: 'beans-pile', fixed: true },
@@ -1168,16 +1147,16 @@ const POSTS = [
       extra: rows([['Πεϊνιρλί', '2.80€'], ['Κρουασάν', '2.50€'], ['Μπουγάτσα κρέμα', '2.80€'], ['Τυρόπιτα', '1.60€'], ['Σπανακόπιτα', '2.50€'], ['Πίτσα', '2.80€']]) }) },
   {
     id: 'team-carousel-1',
-    html: () => pro({ img: 'staff-profile', kicker: 'Συρε →', h1: 'Μια βάρδια<br><em>στο Blessed.</em>', sm: true }),
+    html: () => pro({ img: 'staff-profile', kicker: 'Συρε →', h1: 'Πίσω από<br><em>τον πάγκο.</em>', sm: true }),
     caption: {
-      el: 'Μια βάρδια στο Blessed, από την πρώτη δόση ως το τελευταίο ποτήρι. Σύρε. Κάθε μέρα 07:00 – 22:00.',
-      en: 'A shift at Blessed, from the first dose to the last cup. Swipe. Every day 07:00 – 22:00.',
+      el: 'Πίσω από τον πάγκο στο Blessed, από τον πρώτο espresso ως το τελευταίο ποτήρι. Σύρε. Κάθε μέρα 07:00 – 22:00.',
+      en: 'Behind the counter at Blessed, from the first espresso to the last cup. Swipe. Every day 07:00 – 22:00.',
     },
   },
   { id: 'team-carousel-2', bare: 'staff-wide', fixed: true },
   { id: 'team-carousel-3', bare: 'apron-blur', fixed: true },
   { id: 'team-carousel-4', html: () => series({ ground: 'cream', tag: 'Είπατε · ★★★★★', cls: 'q',
-      say: '«Πολύ ομαδικά σε <em>όλες τις βάρδιες.</em>»', sub: 'Ninaki Euangelou, Google Maps' }) },
+      say: '«Τα παιδιά είναι <em>καταπληκτικά.</em>»', sub: 'Ninaki Euangelou, Google Maps' }) },
 ];
 
 const TAGS =

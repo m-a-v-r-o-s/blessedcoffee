@@ -264,12 +264,12 @@ const REELS = [
     photo: true,
     seconds: 12,
     back: shots([['beans-macro', 0, 2], ['grinder-pour', 2, 4], ['espresso-splash', 4, 6], ['crema-double', 6, 8], ['milk-close', 8, 10], ['staff-cup', 10, 13]]),
-    front: lines('Απο τον κοκκο', [['Πρώτα,<br><em>ο κόκκος.</em>', 0.3, 2], ['Μετά,<br><em>το άλεσμα.</em>', 2.1, 4], ['Ο <em>espresso.</em>', 4.1, 6],
+    front: lines('Ενα cappuccino', [['Πρώτα,<br><em>ο κόκκος.</em>', 0.3, 2], ['Μετά,<br><em>το άλεσμα.</em>', 2.1, 4], ['Ο <em>espresso.</em>', 4.1, 6],
       ['Η <em>κρέμα.</em>', 6.1, 8], ['Λίγο <em>γάλα.</em>', 8.1, 10], ['Και τέλος,<br><em>ο δικός σου.</em>', 10.1, 99]], ['Ρόδου 68 · από τις 07:00', 10.6]),
     frame: (s, $) => $.photos(s),
     caption: {
-      el: 'Από τον κόκκο στο ποτήρι σου, σε 12 δευτερόλεπτα. Ρόδου 68, από τις 07:00.',
-      en: 'From the bean to your cup, in 12 seconds. Rodou 68, from 7am.',
+      el: 'Ένα cappuccino από την αρχή, σε 12 δευτερόλεπτα. Ρόδου 68, από τις 07:00.',
+      en: 'A cappuccino from the start, in 12 seconds. Rodou 68, from 7am.',
     },
   },
   {
@@ -336,12 +336,12 @@ const REELS = [
     photo: true,
     seconds: 10,
     back: shots([['staff-profile', 0, 2.5], ['staff-wide', 2.5, 5], ['milk-steam', 5, 7.5], ['apron-cup', 7.5, 11]]),
-    front: lines('Πισω απο τον παγκο', [['Η <em>βάρδια.</em>', 0.4, 4.9], ['Με <em>το χέρι.</em>', 5.1, 7.4], ['Για <em>σένα.</em>', 7.6, 99]],
+    front: lines('Πισω απο τον παγκο', [['<em>Καλημέρα.</em>', 0.4, 4.9], ['Κάθε <em>παραγγελία.</em>', 5.1, 7.4], ['Για <em>σένα.</em>', 7.6, 99]],
       ['Κάθε μέρα 07:00 – 22:00', 8.2]),
     frame: (s, $) => $.photos(s),
     caption: {
-      el: 'Πίσω από τον πάγκο, κάθε μέρα 07:00 – 22:00. Ο καφές σου, με το χέρι. Ρόδου 68.',
-      en: 'Behind the counter, every day 07:00 – 22:00. Your coffee, made by hand. Rodou 68.',
+      el: 'Πίσω από τον πάγκο, κάθε μέρα 07:00 – 22:00. Ο καφές σου, φτιαγμένος τη στιγμή. Ρόδου 68.',
+      en: 'Behind the counter, every day 07:00 – 22:00. Your coffee, made to order. Rodou 68.',
     },
   },
 ];
