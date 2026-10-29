@@ -1054,14 +1054,6 @@ const POSTS = [
     },
   },
   {
-    id: 'team-review',
-    html: () => pro({ img: 'staff-smile', kicker: 'Ειπατε · ★★★★★', h1: '«Τα παιδιά είναι<br><em>καταπληκτικά.</em>»', lede: 'Ninaki Euangelou, Google Maps', sm: true }),
-    caption: {
-      el: '"Τα παιδιά είναι καταπληκτικά, πολύ ομαδικά σε όλες τις βάρδιες, εξυπηρετικότατα κ αμεσότατα!" Έγραψε η Ninaki Euangelou στο Google Maps. Ευχαριστούμε!',
-      en: '"The guys are amazing, real teamwork on every shift, so helpful and quick!" From Ninaki Euangelou, via Google Maps. Thank you!',
-    },
-  },
-  {
     id: 'team-02', bare: 'apron-cup',
     caption: {
       el: 'Ένα cappuccino, έρχεται. 2.60€, κάθε μέρα από τις 07:00.',
