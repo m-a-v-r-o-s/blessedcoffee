@@ -152,6 +152,9 @@ const CSS = `
   .card.ph h1 { font-size: 92px; }
   .card.ph > .plate { position: absolute; left: 0; top: 440px; width: 100%; z-index: 0; object-fit: cover; object-position: 50% 0; }
   .card.ph .lede { color: #E4DCD2; }
+  /* Text under the mark instead of low, for shots with a logo in the bottom half. */
+  .card.ph.top { justify-content: flex-start; padding-top: 450px; }
+  .card.ph.top > .shade { background: linear-gradient(180deg, rgba(8,8,8,.92) 0%, rgba(8,8,8,.8) 30%, rgba(8,8,8,0) 50%, rgba(8,8,8,0) 82%, rgba(6,6,6,.85) 100%); }
   .card.ph .kicker, .card.ph h1, .card.ph .lede { text-shadow: 0 1px 14px rgba(0,0,0,.7); }
   /* Summer ground: pale ice-blue, dark type. */
   .card.summer { background: #D7E6E8; color: #0A0A0A; }
@@ -227,7 +230,8 @@ const priceStory = ({ kicker, price, note }) => `<div class="card">
 // 6. Photo story. Any real shop photo, any honest line: the photo can repeat across stories.
 // pos 'plate' shows the shot full-width under the mark instead of cropping its sides, so signage never gets
 // cut; 'plate:<ratio>' also trims the bottom to that ratio (drops a sign the photographer's frame cuts).
-const photoStory = ({ img, kicker, headline, lede = '', pos = 'center' }) => `<div class="card ph">
+// at 'top' puts the type under the mark, for shots with a logo low in the frame.
+const photoStory = ({ img, kicker, headline, lede = '', pos = 'center', at = 'bottom' }) => `<div class="card ph${at === 'top' ? ' top' : ''}">
   ${pos.startsWith('plate') ? `<img class="plate" src="${photo(img)}" style="aspect-ratio:${pos.split(':')[1] || 'auto'}">`
     : `<img class="fill" src="${photo(img)}" style="object-position:${pos}">`}<div class="shade"></div>
   <img class="mark" src="${logo}">
@@ -390,21 +394,21 @@ const STORIES = [
   },
   // ─── Photo stories: the real photos again, new lines. Never 21-35-35 (unlisted happy-hour offer). ──
   ...[
-    ['ph-morning', '21-34-43', 'Απο τις 07:00', 'Ο πρώτος<br><em>της ημέρας.</em>', 'Κάθε μέρα, Ρόδου 68.'],
+    ['ph-morning', '21-34-43', 'Απο τις 07:00', 'Ο πρώτος<br><em>της ημέρας.</em>', 'Κάθε μέρα, Ρόδου 68.', 'top'],
     ['ph-espresso', '21-34-55', 'Espresso', 'Φρέσκο,<br><em>κάθε φορά.</em>', 'Espresso 2€'],
-    ['ph-takeaway', '21-35-16', 'Take away', 'Για τον<br><em>δρόμο.</em>', 'Κάθε μέρα 07:00 – 22:00'],
-    ['ph-find-us', '21-35-58', 'Βρες μας', 'Ρόδου 68,<br><em>Κάτω Πατήσια.</em>', '07:00 – 22:00, κάθε μέρα.'],
-    ['ph-break', '21-36-13', 'Διαλειμμα', 'Πέντε λεπτά;<br><em>Πέρνα.</em>', 'Espresso 2€ · Cappuccino 2.60€'],
-    ['ph-for-you', '21-36-24', 'Η παραγγελια σου', 'Φτιαγμένη<br><em>για σένα.</em>', 'Κάθε φορά από την αρχή.'],
+    ['ph-takeaway', '21-35-16', 'Take away', 'Για τον<br><em>δρόμο.</em>', 'Κάθε μέρα 07:00 – 22:00', 'top'],
+    ['ph-break', '21-36-13', 'Διαλειμμα', 'Πέντε λεπτά;<br><em>Πέρνα.</em>', 'Espresso 2€ · Cappuccino 2.60€', 'top'],
+    ['ph-for-you', '21-36-24', 'Η παραγγελια σου', 'Φτιαγμένη<br><em>για σένα.</em>', 'Κάθε φορά από την αρχή.', 'top'],
     ['ph-grind', '21-36-37', 'Φρεσκο αλεσμα', 'Κάθε δόση,<br><em>φρέσκια.</em>', 'Αλέθεται τη στιγμή.'],
     ['ph-delivery', '21-34-55', 'Delivery', 'Βαριέσαι;<br><em>Ερχόμαστε.</em>', 'e-food · Wolt · Box'],
-    ['ph-christmas', '23-09-29', 'Χριστουγεννα', 'Καλά<br><em>Χριστούγεννα.</em>', 'Από το Blessed, σε όλη τη γειτονιά.'],
-  ].map(([id, t, kicker, headline, lede]) => ({ id, html: () => photoStory({ img: `Screenshot_2026-09-20_${t}.png`, kicker, headline, lede }) })),
+  ].map(([id, t, kicker, headline, lede, at]) => ({ id, html: () => photoStory({ img: `Screenshot_2026-09-20_${t}.png`, kicker, headline, lede, at }) })),
+  // Stock, like the feed greeting: no shop exteriors from the old pre-shoot batch (owner, 2026-10-29).
+  { id: 'ph-christmas', html: () => photoStory({ img: 'christmas-syntagma.jpg', kicker: 'Χριστουγεννα', headline: 'Καλά<br><em>Χριστούγεννα.</em>', lede: 'Από το Blessed, σε όλη τη γειτονιά.', pos: 'plate' }) },
   // ─── Photographer shoot, 2026-10-26 (social/photos/shoot/). ──
   ...[
     ['ps-open', 'storefront-day', 'Καλημερα', 'Ανοίξαμε.<br><em>07:00.</em>', 'Ρόδου 68, Κάτω Πατήσια.', 'plate:2'],
     ['ps-closing', 'shutter-christ-2', 'Ρολο κατω στις 22:00', 'Μέχρι τότε,<br><em>πέρνα.</em>', '', 'plate:1.97'],
-    ['ps-faith', 'shutter-faith', 'Faith over fear', 'Άγχος;<br><em>Καφές.</em>', '', 'plate'],
+    ['ps-faith', 'shutter-faith', 'Ροδου 68', 'Faith<br><em>over fear.</em>', '', 'plate'],
     ['ps-heaven', 'cup-black', 'Take away', 'Ένας<br><em>για τον δρόμο;</em>', 'Από τις 07:00'],
     ['ps-waiting', 'cup-counter-2', 'Σημερα', 'Ο πρώτος<br><em>σε περιμένει.</em>', 'Από τις 07:00'],
     ['ps-pair', 'cup-pair', 'Για δυο', 'Κερνάς<br><em>ή κερνάω;</em>', 'Κάνε tag τον φίλο σου.'],
@@ -415,7 +419,7 @@ const STORIES = [
     ['ps-drop', 'last-drop', 'Espresso', 'Μέχρι την<br><em>τελευταία.</em>', ''],
     ['ps-beans', 'beans-macro', 'Καλημερα', 'Μυρίζει<br><em>καφές.</em>', ''],
     ['ps-hopper', 'beans-hopper', 'Απο νωρις', 'Έτοιμοι<br><em>πριν από σένα.</em>', ''],
-    ['ps-mrs-rose', 'mrs-rose-tins', 'Mrs Rose', 'Ο κλασικός<br><em>μας.</em>', 'Espresso 2€'],
+    ['ps-mrs-rose', 'mrs-rose-tins', '', 'Ο κλασικός μας.<br><em>Espresso 2€.</em>', ''],
     ['ps-guide', 'coffee-guide', 'Ερωτηση', 'Τι πίνεις<br><em>σήμερα;</em>', 'Στείλε μας DM.'],
     ['ps-peinirli', 'vitrine-peinirli', 'Η βιτρινα', 'Πεϊνιρλί<br><em>2.80€.</em>', ''],
     ['ps-pies', 'vitrine-pies', 'Η βιτρινα', 'Τυρόπιτα<br><em>1.60€.</em>', 'Σπανακόπιτα 2.50€'],
@@ -423,9 +427,9 @@ const STORIES = [
     ['ps-sesame', 'bread-sesame', 'Η βιτρινα', 'Μην<br><em>αντισταθείς.</em>', ''],
     ['ps-window', 'vitrine-window', 'Περνας;', 'Ρίξε<br><em>μια ματιά.</em>', 'Ρόδου 68'],
     ['ps-shift', 'staff-machine', 'Πισω απο τον παγκο', 'Η μηχανή<br><em>ζεσταίνεται.</em>', 'Από τις 07:00'],
-    ['ps-smile', 'apron-cup', 'Καλημερα', 'Καλημέρα<br><em>από τον πάγκο.</em>', ''],
-    ['ps-apron', 'apron-cup', 'Σε λιγο', 'Έρχεται<br><em>ο δικός σου.</em>', ''],
-    ['ps-phone', 'staff-jacket', 'Τηλεφωνο', 'Θα μας<br><em>αναγνωρίσεις.</em>', '211 218 1815'],
+    ['ps-smile', 'apron-cup', '', 'Καλημέρα<br><em>από τον πάγκο.</em>', '', 'plate'],
+    ['ps-apron', 'apron-cup', '', 'Έρχεται<br><em>ο δικός σου.</em>', '', 'plate'],
+    ['ps-phone', 'staff-jacket', '', '<em>211 218 1815</em>', 'Θα μας αναγνωρίσεις.'],
     ['ps-inside', 'interior', 'Μεσα', 'Κάτσε<br><em>λίγο.</em>', '07:00 – 22:00'],
     ['ps-street', 'cup-street-left', 'Κανε tag', 'Το ποτήρι σου<br><em>στη γειτονιά.</em>', '@blessedcoffee2024'],
     ['ps-delivery', 'cup-counter', 'Delivery', 'Βαριέσαι;<br><em>Ερχόμαστε.</em>', 'e-food · Wolt · Box'],
@@ -435,15 +439,14 @@ const STORIES = [
   // ─── Round 2: the same photos with new lines, so the rotation runs twice as long before a story
   //     comes back word for word. Ids end in -2. ──
   ...[
-    ['ph-morning-2', '21-34-43', 'Καλημερα', 'Πρώτος καφές,<br><em>πρώτη στάση.</em>', 'Ρόδου 68, από τις 07:00.'],
+    ['ph-morning-2', '21-34-43', 'Καλημερα', 'Πρώτος καφές,<br><em>πρώτη στάση.</em>', 'Ρόδου 68, από τις 07:00.', 'top'],
     ['ph-espresso-2', '21-34-55', 'Espresso · 2€', 'Ένα μικρό,<br><em>για αρχή.</em>', ''],
-    ['ph-takeaway-2', '21-35-16', 'Take away', 'Βιάζεσαι;<br><em>Είναι έτοιμος.</em>', 'Ρόδου 68'],
-    ['ph-find-us-2', '21-35-58', 'Στη γειτονια', 'Ρόδου 68.<br><em>Πέρνα από εδώ.</em>', 'Κάθε μέρα 07:00 – 22:00'],
-    ['ph-break-2', '21-36-13', 'Διαλειμμα', 'Δέκα λεπτά<br><em>δικά σου.</em>', 'Cappuccino 2.60€'],
-    ['ph-for-you-2', '21-36-24', 'Η παραγγελια σου', 'Όπως<br><em>τον πίνεις.</em>', 'Πες μας και τον φτιάχνουμε.'],
+    ['ph-takeaway-2', '21-35-16', 'Take away', 'Βιάζεσαι;<br><em>Είναι έτοιμος.</em>', 'Ρόδου 68', 'top'],
+    ['ph-break-2', '21-36-13', 'Διαλειμμα', 'Δέκα λεπτά<br><em>δικά σου.</em>', 'Cappuccino 2.60€', 'top'],
+    ['ph-for-you-2', '21-36-24', 'Η παραγγελια σου', 'Όπως<br><em>τον πίνεις.</em>', 'Πες μας και τον φτιάχνουμε.', 'top'],
     ['ph-grind-2', '21-36-37', 'Φρεσκο αλεσμα', 'Η μυρωδιά<br><em>φτάνει ως έξω.</em>', 'Ρόδου 68'],
     ['ph-delivery-2', '21-34-55', 'Delivery', 'Μένεις μέσα;<br><em>Τον φέρνουμε.</em>', 'e-food · Wolt · Box'],
-  ].map(([id, t, kicker, headline, lede]) => ({ id, html: () => photoStory({ img: `Screenshot_2026-09-20_${t}.png`, kicker, headline, lede }) })),
+  ].map(([id, t, kicker, headline, lede, at]) => ({ id, html: () => photoStory({ img: `Screenshot_2026-09-20_${t}.png`, kicker, headline, lede, at }) })),
   ...[
     ['ps-open-2', 'storefront-day', 'Ροδου 68', 'Η πόρτα<br><em>είναι ανοιχτή.</em>', 'Από τις 07:00', 'plate:2'],
     ['ps-closing-2', 'shutter-christ-2', 'Ως τις 22:00', 'Τελευταίος καφές;<br><em>Προλαβαίνεις.</em>', '', 'plate:1.97'],
@@ -458,7 +461,7 @@ const STORIES = [
     ['ps-drop-2', 'last-drop', 'Espresso', 'Άλλον<br><em>έναν;</em>', ''],
     ['ps-beans-2', 'beans-macro', 'Mrs Rose · Il Modo', 'Δύο χαρμάνια.<br><em>Ποιο σου πάει;</em>', ''],
     ['ps-hopper-2', 'beans-hopper', 'Καθε μερα', 'Ανοιχτά<br><em>ως τις 22:00.</em>', ''],
-    ['ps-mrs-rose-2', 'mrs-rose-tins', 'Mrs Rose', 'Freddo espresso<br><em>2.40€.</em>', ''],
+    ['ps-mrs-rose-2', 'mrs-rose-tins', '', 'Freddo espresso<br><em>2.40€.</em>', ''],
     ['ps-guide-2', 'coffee-guide', 'Ερωτηση', 'Ελληνικός<br><em>ή freddo;</em>', 'Πες μας στο DM.'],
     ['ps-peinirli-2', 'vitrine-peinirli', 'Πρωινο', 'Πεϊνιρλί<br><em>και καφές.</em>', 'Από τις 07:00'],
     ['ps-pies-2', 'vitrine-pies', 'Η βιτρινα', 'Πίτες<br><em>από 1.60€.</em>', 'Τυρόπιτα · Σπανακόπιτα · Λουκανικόπιτα'],
@@ -467,9 +470,9 @@ const STORIES = [
     ['ps-snack-2', 'snack-cup', 'Sandwiches', 'Για το<br><em>μεσημέρι.</em>', 'Από 2.60€'],
     ['ps-window-2', 'vitrine-window', 'Περνας;', 'Η βιτρίνα<br><em>γέμισε.</em>', 'Ρόδου 68'],
     ['ps-shift-2', 'staff-machine', 'Πισω απο τον παγκο', 'Freddo cappuccino;<br><em>Έρχεται.</em>', '2.60€'],
-    ['ps-smile-2', 'apron-cup', 'Καλημερα', 'Τι θα<br><em>πάρεις;</em>', ''],
-    ['ps-apron-2', 'apron-cup', 'Take away', 'Με καπάκι,<br><em>για τον δρόμο.</em>', ''],
-    ['ps-phone-2', 'staff-jacket', 'Τηλεφωνο', 'Ένα τηλέφωνο<br><em>φτάνει.</em>', '211 218 1815'],
+    ['ps-smile-2', 'apron-cup', '', 'Τι θα<br><em>πάρεις;</em>', '', 'plate'],
+    ['ps-apron-2', 'apron-cup', '', 'Με καπάκι,<br><em>για τον δρόμο.</em>', '', 'plate'],
+    ['ps-phone-2', 'staff-jacket', '', '<em>211 218 1815</em>', 'Ένα τηλέφωνο φτάνει.'],
     ['ps-inside-2', 'interior', 'Μεσα', 'Ζεστά<br><em>εδώ μέσα.</em>', '07:00 – 22:00'],
     ['ps-street-2', 'cup-street-left', 'Κανε tag', 'Πού πάει<br><em>ο καφές σου;</em>', '@blessedcoffee2024'],
     ['ps-delivery-2', 'cup-counter', 'Delivery', 'Από το γραφείο;<br><em>Παράγγειλε.</em>', 'e-food · Wolt · Box'],

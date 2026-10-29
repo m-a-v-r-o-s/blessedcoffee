@@ -335,7 +335,7 @@ const POSTS = [
   {
     id: 'winter-espresso',
     html: () => series({ ground: 'winter', tag: 'Χειμώνας · №01', img: shoot('espresso-steam'),
-      say: 'Κρύο έξω.<br><em>Espresso</em><br>μέσα.',
+      say: 'Κρύο έξω.<br><em>Espresso μέσα.</em>', cls: 'sm', // two lines: a third sat on the cup's logo
       extra: rows([['Espresso', '2€']]),
       sub: 'Ζεστός, από τις 07:00.' }),
     caption: {
@@ -346,7 +346,7 @@ const POSTS = [
   {
     id: 'winter-cappuccino',
     html: () => series({ ground: 'winter', tag: 'Χειμώνας · №02', img: shoot('cappuccino-foam'),
-      say: 'Cappuccino.<br><em>Για τα κρύα<br>πρωινά.</em>',
+      say: 'Cappuccino,<br><em>για το κρύο.</em>', cls: 'sm', // two lines: a third sat on the cup's logo
       extra: rows([['Cappuccino', '2.60€']]),
       sub: 'Πάρ\' τον μαζί σου, σε ζεσταίνει ως τη δουλειά.' }),
     caption: {
@@ -399,7 +399,7 @@ const POSTS = [
         <div class="el" style="margin-top:8px">EST. 2024 · ΚΑΤΩ ΠΑΤΗΣΙΑ</div>
       </div>`),
     caption: {
-      el: 'Μια γεύση παραδείσου σε κάθε φλιτζάνι. Ροδου 68, Κάτω Πατήσια.',
+      el: 'Μια γεύση παραδείσου σε κάθε φλιτζάνι. Ρόδου 68, Κάτω Πατήσια.',
       en: 'A taste of heaven in every cup. Rodou 68, Kato Patisia.',
     },
   },
@@ -412,7 +412,7 @@ const POSTS = [
       sub: 'Martha Grigoriou, Google Maps' }),
     caption: {
       el: '"Ωραίος καφές και κάτι για τη λιγούρα, είναι ό,τι πρέπει, όταν συνοδεύεται από γρήγορη και ευγενική εξυπηρέτηση!" Έγραψε η Martha Grigoriou στο Google Maps.',
-      en: '"Nice coffee and something for cravings, it\'s a must, with fast and polite service." From Martha Grigoriou, via Google Maps.',
+      en: '"Nice coffee and something for the craving, just right when the service is quick and polite!" From Martha Grigoriou, via Google Maps.',
     },
   },
   {
@@ -449,9 +449,9 @@ const POSTS = [
     id: 'review-korleone',
     html: () => series({ ground: 'cream', tag: 'Είπατε · ★★★★★', cls: 'q',
       say: '«Είχα καιρό να απολαύσω <em>έτσι καφέ!</em>»',
-      sub: 'Κορλεόνε Γλύνος, Google Maps' }),
+      sub: 'Κορλεόνε Γλυνός, Google Maps' }),
     caption: {
-      el: '"Συγχαρητήρια, εξαιρετικός καφές παιδιά, μπράβο σας, είχα καιρό να απολαύσω έτσι καφέ! Έτυχε να παραγγείλω μέσω πλατφόρμας και έμεινα πολύ ικανοποιημένος." Έγραψε ο Κορλεόνε Γλύνος στο Google Maps.',
+      el: '"Συγχαρητήρια, εξαιρετικός καφές παιδιά, μπράβο σας, είχα καιρό να απολαύσω έτσι καφέ! Έτυχε να παραγγείλω μέσω πλατφόρμας και έμεινα πολύ ικανοποιημένος." Έγραψε ο Κορλεόνε Γλυνός στο Google Maps.',
       en: '"Congratulations, excellent coffee, well done, it\'s been a while since I enjoyed a coffee like this! I ordered through a delivery app and was very satisfied." From Korleone Glynos, via Google Maps.',
     },
   },
@@ -538,23 +538,6 @@ const POSTS = [
       en: "We're here early. Open every day from 7am.",
     },
   },
-  {
-    id: 'find-us',
-    html: (bg, real) =>
-      shell(`<img class="mark" src="${logo}">
-      <div class="body tight">
-        <div class="kicker">Βρειτε μας / Find us</div>
-        <h1 class="sm">Ρόδου 68,<br><em>Κάτω Πατήσια.</em></h1>
-        <div class="rule"></div>
-        <div class="lede">Αθήνα 104 45</div>
-      </div>`, bg, real),
-    bg: photo('Screenshot_2026-09-20_21-35-58.png'),
-    real: true,
-    caption: {
-      el: 'Ρόδου 68, Κάτω Πατήσια, Αθήνα 104 45. Ελάτε να μας βρείτε.',
-      en: '68 Rodou Street, Kato Patisia, Athens 104 45. Come find us.',
-    },
-  },
   // ─── Real shop photography. No scrim tricks needed, this is the actual product. ──
   {
     id: 'fresh-pour',
@@ -630,17 +613,18 @@ const POSTS = [
     html: (bg, real) =>
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
-        <div class="kicker">Χριστουγεννα στο μαγαζι</div>
+        <div class="kicker">Χριστουγεννα</div>
         <h1>Καλά<br><em>Χριστούγεννα.</em></h1>
         <div class="rule"></div>
         <div class="lede">Από το Blessed, σε όλη τη γειτονιά.</div>
       </div>`, bg, real),
-    // Real photo of the actual shop, decorated, not an AI plate, beats it outright.
-    bg: photo('Screenshot_2026-09-20_23-09-29.png'),
+    // The tree in Syntagma Square, 15 Dec 2020, by George E. Koronaios, CC BY-SA 4.0 (Wikimedia Commons).
+    // Not the shop: no exterior shots from the old pre-shoot batch (owner, 2026-10-29). Credit stays in the caption.
+    bg: photo('christmas-syntagma.jpg'),
     real: true,
     caption: {
       el: 'Καλά Χριστούγεννα από όλους εμάς στο Blessed, σε όλη τη γειτονιά.',
-      en: 'Merry Christmas from all of us at Blessed, to the whole neighbourhood.',
+      en: 'Merry Christmas from all of us at Blessed, to the whole neighbourhood.\n\nΦωτογραφία / Photo: George E. Koronaios, CC BY-SA 4.0, Wikimedia Commons.',
     },
   },
   {
@@ -816,7 +800,6 @@ const POSTS = [
       shell(`<img class="fill" src="${shot('logo-close')}"><div class="fade"></div>
       <img class="mark" src="${logo}">
       <div class="body tight">
-        <div class="idx">01 / 03</div>
         <h1 class="sm">Coffee<br><em>&amp; spirits.</em></h1>
         <div class="lede">Το σήμα μας, από το 2024.</div>
       </div>`, null, false, 'cupground'),
@@ -827,7 +810,6 @@ const POSTS = [
       shell(`<img class="fill" src="${shot('slogan-close')}"><div class="fade"></div>
       <img class="mark" src="${logo}">
       <div class="body tight">
-        <div class="idx">02 / 03</div>
         <h1 class="sm">Γεύση απ' τον<br><em>παράδεισο.</em></h1>
         <div class="lede">Σε κάθε ποτήρι.</div>
       </div>`, null, false, 'cupground'),
@@ -838,7 +820,6 @@ const POSTS = [
       shell(`<img class="fill" src="${shot('partner-close')}"><div class="fade"></div>
       <img class="mark" src="${logo}">
       <div class="body tight">
-        <div class="idx">03 / 03</div>
         <h1 class="sm">Mrs Rose<br><em>Caffè.</em></h1>
         <div class="lede">Ο συνεργάτης μας στον καφέ.</div>
       </div>`, null, false, 'cupground'),
@@ -873,8 +854,8 @@ const POSTS = [
         </div>
       </div>`),
     caption: {
-      el: 'Όλος ο καφές μας, Mrs Rose και Il Modo. Από espresso 1.90€ μέχρι freddo cappuccino 2.60€. Ρόδου 68, κάθε μέρα 07:00 – 22:00.',
-      en: 'Our whole coffee menu, Mrs Rose and Il Modo. From espresso at €1.90 to freddo cappuccino at €2.60. Rodou 68, every day 07:00 – 22:00.',
+      el: 'Όλος ο καφές μας, Mrs Rose και Il Modo, από 1.80€ έως 2.70€. Κράτα το για την επόμενη παραγγελία.',
+      en: 'Our whole coffee menu, Mrs Rose and Il Modo, from €1.80 to €2.70. Save it for your next order.',
     },
   },
   {
@@ -936,8 +917,8 @@ const POSTS = [
   {
     id: 'shop-faith', bare: 'shutter-faith',
     caption: {
-      el: 'Λιγότερο άγχος, περισσότερος καφές. Το λέει και το ρολό μας: faith over fear.',
-      en: 'Less worry, more coffee. Our shutter says it too: faith over fear.',
+      el: 'Το ρολό μας. Faith over fear.',
+      en: 'Our shutter. Faith over fear.',
     },
   },
   {
@@ -1102,7 +1083,7 @@ const POSTS = [
       extra: rows([['Τυρόπιτα', '1.60€'], ['Σπανακόπιτα', '2.50€'], ['Λουκανικόπιτα', '2.50€']]) }),
     caption: {
       el: 'Τυρόπιτα 1.60€, σπανακόπιτα 2.50€, λουκανικόπιτα 2.50€. Διάλεξε, από τις 07:00.',
-      en: 'Cheese pie €1.90, spinach pie €2.50, sausage roll €2.50. Take your pick, from 7am.',
+      en: 'Cheese pie €1.60, spinach pie €2.50, sausage pie €2.50. Take your pick, from 7am.',
     },
   },
   {
@@ -1190,8 +1171,8 @@ const POSTS = [
       say: '«Τα παιδιά είναι <em>καταπληκτικά.</em>»', sub: 'Ninaki Euangelou, Google Maps' }) },
 ];
 
-const TAGS =
-  '#blessedcoffee #katopatisia #athenscoffee #specialtycoffee #coffeeathens #πατησια #καφεσ #athens';
+// Instagram caps posts at 5 hashtags (Dec 2025). Local ones only; nothing the menu doesn't back up.
+const TAGS = '#blessedcoffee #katopatisia #πατησια #athenscoffee #καφες';
 
 // ─── RENDER ──────────────────────────────────────────────────────────────────
 const only = process.argv.slice(2);

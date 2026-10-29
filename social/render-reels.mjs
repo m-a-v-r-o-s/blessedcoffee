@@ -27,7 +27,7 @@ const CONCURRENCY = Number(process.env.REEL_JOBS || 4); // swiftshader is CPU-bo
 const CHROME = process.env.CHROME_PATH || '/home/akos/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome';
 
 const BRAND = { address: 'ΡΟΔΟΥ 68 · ΚΑΤΩ ΠΑΤΗΣΙΑ', site: 'BLESSED.CAFE', ink: '#FAF6F0', gold: '#C9972A', ground: '#0A0A0A', muted: '#8A7060' };
-const TAGS = '#blessedcoffee #katopatisia #athenscoffee #specialtycoffee #coffeeathens #πατησια #καφεσ #athens';
+const TAGS = '#blessedcoffee #katopatisia #πατησια #athenscoffee #καφες'; // IG caps posts at 5 hashtags
 
 const b64 = (p) => readFileSync(p).toString('base64');
 const logo = `data:image/webp;base64,${b64(`${ROOT}/public/blessed-logo.webp`)}`;
@@ -107,9 +107,9 @@ const REELS = [
     bg: 'slat-wall',
     seconds: 12, // seamless: 3 x 4s, hold 2.4s on each panel, 1.6s turn to the next
     front: `<div class="txt">
-      <div id="p0" class="fade"><div class="kicker">01 / 03 · Το σημα</div><h1>Coffee<br><em>&amp; spirits.</em></h1></div>
-      <div id="p1" class="fade" style="position:absolute;left:0;right:0;bottom:0"><div class="kicker">02 / 03 · Το συνθημα</div><h1>Γεύση απ' τον<br><em>παράδεισο.</em></h1></div>
-      <div id="p2" class="fade" style="position:absolute;left:0;right:0;bottom:0"><div class="kicker">03 / 03 · Ο καφες</div><h1>Mrs Rose<br><em>Caffè.</em></h1></div>
+      <div id="p0" class="fade"><div class="kicker">Το σημα</div><h1>Coffee<br><em>&amp; spirits.</em></h1></div>
+      <div id="p1" class="fade" style="position:absolute;left:0;right:0;bottom:0"><div class="kicker">Το συνθημα</div><h1>Γεύση απ' τον<br><em>παράδεισο.</em></h1></div>
+      <div id="p2" class="fade" style="position:absolute;left:0;right:0;bottom:0"><div class="kicker">Ο καφες</div><h1>Mrs Rose<br><em>Caffè.</em></h1></div>
     </div>${foot}`,
     frame: (s, $) => {
       const stops = [$.PANEL.logo, $.PANEL.slogan, $.PANEL.partner, 1];
@@ -281,15 +281,15 @@ const REELS = [
       ['Κάθε μέρα 07:00 – 22:00', 8.2]),
     frame: (s, $) => $.photos(s),
     caption: {
-      el: 'Ρόδου 68, Κάτω Πατήσια. Coffee & spirits, κάθε μέρα 07:00 – 22:00. Κάτσε λίγο.',
-      en: 'Rodou 68, Kato Patisia. Coffee & spirits, every day 07:00 – 22:00. Stay a while.',
+      el: 'Ρόδου 68, Κάτω Πατήσια. Κάθε μέρα 07:00 – 22:00. Κάτσε λίγο.',
+      en: 'Rodou 68, Kato Patisia. Every day 07:00 – 22:00. Stay a while.',
     },
   },
   {
     id: 'reel-vitrine',
     photo: true,
     seconds: 10,
-    back: shots([['vitrine-tall', 0, 2], ['pastry-sesame', 2, 4], ['vitrine-peinirli', 4, 6], ['pie-macro', 6, 8], ['snack-cup', 8, 11]]),
+    back: shots([['vitrine-tall', 0, 2], ['pastry-sesame', 2, 4], ['vitrine-peinirli', 4, 6], ['pie-macro', 6, 8], ['snack-cup', 8, 11, 1, 1.05, 0, true]]), // whole: the cup sits on the edge
     front: lines('Η βιτρινα', [['Κάτι για <em>λιγούρα;</em>', 0.4, 3.9], ['Πεϊνιρλί <em>2.80€.</em>', 4.1, 5.9], ['Μην <em>αντισταθείς.</em>', 6.1, 7.9], ['Πρωινό, <em>λυμένο.</em>', 8.1, 99]],
       ['Από τις 07:00, Ρόδου 68', 8.6]),
     frame: (s, $) => $.photos(s),
@@ -324,18 +324,18 @@ const REELS = [
     photo: true,
     seconds: 7,
     back: shots([['shutter-faith', 0, 8, 1.0, 1.08, 0, true]]),
-    front: lines('Faith over fear', [['Άγχος;<br><em>Καφές.</em>', 1.2, 99]], ['Ρόδου 68, Κάτω Πατήσια', 2.6]),
+    front: lines('Ροδου 68', [['Faith<br><em>over fear.</em>', 1.2, 99]], ['Κάτω Πατήσια', 2.6]),
     frame: (s, $) => $.photos(s),
     caption: {
-      el: 'Λιγότερο άγχος, περισσότερος καφές. Faith over fear, Ρόδου 68.',
-      en: 'Less worry, more coffee. Faith over fear, Rodou 68.',
+      el: 'Το ρολό μας, όπως το βρίσκεις πριν ανοίξουμε. Faith over fear, Ρόδου 68.',
+      en: 'Our shutter, the way you find it before we open. Faith over fear, Rodou 68.',
     },
   },
   {
     id: 'reel-team',
     photo: true,
     seconds: 10,
-    back: shots([['staff-profile', 0, 2.5], ['staff-wide', 2.5, 5], ['milk-steam', 5, 7.5], ['apron-cup', 7.5, 11]]),
+    back: shots([['staff-profile', 0, 2.5], ['staff-wide', 2.5, 5], ['milk-steam', 5, 7.5], ['staff-cup', 7.5, 11]]), // not apron-cup: the mark sat on its logo
     front: lines('Πισω απο τον παγκο', [['<em>Καλημέρα.</em>', 0.4, 4.9], ['Κάθε <em>παραγγελία.</em>', 5.1, 7.4], ['Για <em>σένα.</em>', 7.6, 99]],
       ['Κάθε μέρα 07:00 – 22:00', 8.2]),
     frame: (s, $) => $.photos(s),
