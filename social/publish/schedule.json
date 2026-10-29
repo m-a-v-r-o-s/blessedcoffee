@@ -1,7 +1,8 @@
 {
   "greetings": [
     { "id": "new-year", "date": "01-01" },
-    { "id": "apokries", "date": "easter-49" },
+    { "id": "clean-monday", "date": "easter-48" },
+    { "id": "march-25", "date": "03-25" },
     { "id": "easter", "date": "easter" },
     { "id": "summer", "date": "06-01" },
     { "id": "christmas", "date": "12-25" }

@@ -16,7 +16,8 @@ assert.equal(iso(orthodoxEaster(2028)), '2028-04-16');
 // Greetings go out on their day even when it isn't a posting day, once per year.
 assert.equal(pick('feed', '2026-12-25', cfg()).id, 'christmas'); // a Friday
 assert.equal(pick('feed', '2027-05-02', cfg()).id, 'easter');
-assert.equal(pick('feed', '2027-03-14', cfg()).id, 'apokries'); // Sunday before Clean Monday 2027
+assert.equal(pick('feed', '2027-03-15', cfg()).id, 'clean-monday'); // 48 days before Easter 2027
+assert.equal(pick('feed', '2027-03-25', cfg()).id, 'march-25');
 assert.equal(pick('feed', '2026-12-25', cfg({ greetings: { christmas: 2026 } })), null);
 
 // Off days post nothing; rotation days advance the cursor.

@@ -672,11 +672,12 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Καλή Ανάσταση, γειτονιά.</div>
       </div>`, bg, real),
-    bg: shoot('slat-wall'),
+    // Candle at the Resurrection service, by Cyan Star, CC BY-SA 4.0 (Wikimedia Commons). Credit stays in the caption.
+    bg: photo('easter-candle.jpg'),
     real: true,
     caption: {
       el: 'Καλό Πάσχα και καλή Ανάσταση, από όλους εμάς στο Blessed.',
-      en: 'Happy Easter from everyone at Blessed.',
+      en: 'Happy Easter from everyone at Blessed.\n\nΦωτογραφία / Photo: Cyan Star, CC BY-SA 4.0, Wikimedia Commons.',
     },
   },
   {
@@ -689,7 +690,8 @@ const POSTS = [
         <div class="rule"></div>
         <div class="lede">Από το Blessed, σε όλη τη γειτονιά.</div>
       </div>`, bg, real),
-    bg: shoot('cup-counter-2'),
+    // Beach at Chiliadou, Euboea, by Jebulon, CC0 (Wikimedia Commons).
+    bg: photo('summer-boat.jpg'),
     real: true,
     caption: {
       el: 'Καλό καλοκαίρι από όλους εμάς στο Blessed, σε όλη τη γειτονιά.',
@@ -697,12 +699,39 @@ const POSTS = [
     },
   },
   {
-    id: 'apokries',
-    // The storefront, whole, as a full-width plate (not the Faith over fear shutter).
-    html: () => pro({ img: 'storefront-glass', plate: true, kicker: 'Αποκριες', h1: 'Καλές<br><em>Απόκριες.</em>', lede: 'Με κέφι, στη γειτονιά μας.', sm: true }),
+    id: 'clean-monday',
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">Καθαρα Δευτερα</div>
+        <h1 class="sm">Καλή<br><em>Σαρακοστή.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Καλό πέταγμα στους χαρταετούς.</div>
+      </div>`, bg, real),
+    // Kites at the Piraeus coast on Clean Monday, by Ellywa, CC BY-SA 4.0 (Wikimedia Commons). Credit stays in the caption.
+    bg: photo('clean-monday-kites.jpg'),
+    real: true,
     caption: {
-      el: 'Καλές Απόκριες από όλους εμάς στο Blessed.',
-      en: 'Happy Apokries (Greek Carnival season) from everyone at Blessed.',
+      el: 'Καλή Καθαρά Δευτέρα και καλή Σαρακοστή, από όλους εμάς στο Blessed.',
+      en: 'Happy Clean Monday and a good Lent, from everyone at Blessed.\n\nΦωτογραφία / Photo: Ellywa, CC BY-SA 4.0, Wikimedia Commons.',
+    },
+  },
+  {
+    id: 'march-25',
+    html: (bg, real) =>
+      shell(`<img class="mark" src="${logo}">
+      <div class="body tight">
+        <div class="kicker">25η Μαρτιου</div>
+        <h1 class="sm">Χρόνια πολλά,<br><em>Ελλάδα.</em></h1>
+        <div class="rule"></div>
+        <div class="lede">Και χρόνια πολλά σε όσους γιορτάζουν.</div>
+      </div>`, bg, real),
+    // The flag on the Acropolis, by Jebulon, CC0 (Wikimedia Commons).
+    bg: photo('greek-flag.jpg'),
+    real: true,
+    caption: {
+      el: 'Χρόνια πολλά, Ελλάδα. Και χρόνια πολλά σε όσους γιορτάζουν, από όλους εμάς στο Blessed.',
+      en: 'Happy Independence Day, Greece, and happy name day to everyone celebrating, from everyone at Blessed.',
     },
   },
   // ─── The 3D cup (social/cup/), built from real photos of the real cup. ─────────
