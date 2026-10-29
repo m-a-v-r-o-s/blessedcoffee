@@ -46,17 +46,27 @@ assert.equal(pick('story', '2026-10-01', cfg(), 'evening').id, stories.evening[0
 const am = pick('story', '2026-10-01', cfg({ storyCursor: { evening: 5 } }));
 assert.deepEqual(am.next.storyCursor, { morning: 1, evening: 5 });
 assert.equal(pick('story', '2026-10-01', cfg({ storyCursor: { morning: stories.morning.length } })).id, stories.morning[0]);
-assert.equal(pick('story', '2026-12-10', cfg({ storyCursor: { evening: stories.evening.length + winter.stories.length } }), 'evening').id, 'ph-christmas');
+assert.equal(pick('story', '2026-12-10', cfg({ storyCursor: { morning: stories.morning.length + winter.stories.morning.length } })).id, 'ph-christmas');
 const FOOD = /^ps-(peinirli|pies|craving|sesame|snack|window)(-2)?$/;
 for (const id of stories.evening) assert.ok(!FOOD.test(id), `food story in the evening: ${id}`);
-assert.equal(stories.morning.indexOf('story-quiz-espresso'), stories.evening.indexOf('story-quiz-answer'));
+// Quiz: question in the evening, answer the next morning.
+assert.equal(stories.evening.indexOf('story-quiz-espresso') + 1, stories.morning.indexOf('story-quiz-answer'));
+// Same length, so each day's pair stays the same every cycle; and a day's two stories never share a look.
+assert.equal(stories.morning.length, stories.evening.length);
+const look = (id) => { const b = id.replace(/-2$/, '');
+  return b.startsWith('ph-') ? 'ph' : b.startsWith('story-') ? 'cup3d' : FOOD.test(b) ? 'food'
+    : ['open-hours', 'sunday-open', 'espresso-price', 'order-delivery'].includes(b) || b.startsWith('reformat-') ? 'card'
+    : ['ps-open', 'ps-closing', 'ps-faith', 'ps-inside', 'ps-guide'].includes(b) ? 'place'
+    : ['ps-shift', 'ps-smile', 'ps-apron', 'ps-phone'].includes(b) ? 'staff'
+    : ['ps-heaven', 'ps-waiting', 'ps-pair', 'ps-street', 'ps-delivery'].includes(b) ? 'cup' : 'coffee'; };
+stories.morning.forEach((m, k) => assert.notEqual(look(m), look(stories.evening[k]), `same look on day ${k}: ${m} / ${stories.evening[k]}`));
 
 // Every scheduled id resolves to a real file.
 const has = (id) => ['library', 'library-reels'].some((d) => existsSync(new URL(`./${d}/${id}.${d === 'library' ? 'jpg' : 'mp4'}`, import.meta.url)))
   || existsSync(new URL(`./library/${id}-1.jpg`, import.meta.url));
 const { greetings, seasons } = read('schedule.json');
 for (const id of [...read('queue.json'), ...greetings.map((g) => g.id), ...Object.values(seasons).flatMap((s) => s.feed)]) assert.ok(has(id), `missing feed media: ${id}`);
-for (const id of [...stories.morning, ...stories.evening, ...Object.values(seasons).flatMap((s) => s.stories)])
+for (const id of [...stories.morning, ...stories.evening, ...Object.values(seasons).flatMap((s) => [...s.stories.morning, ...s.stories.evening])])
   assert.ok(existsSync(new URL(`./library-stories/${id}.jpg`, import.meta.url)), `missing story: ${id}`);
 
 console.log('publish: all checks passed');

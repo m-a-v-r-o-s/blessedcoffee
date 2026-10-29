@@ -9,7 +9,7 @@
 //   schedule.json  greetings (fixed "MM-DD", or "easter" / "easter±N" for Orthodox Easter),
 //                  seasons (months, extra feed posts and stories), and the story rotations: one for
 //                  the morning run, one for the evening run (no food in the evening: it sells out
-//                  by noon). Seasonal stories join the evening rotation.
+//                  by noon). A season adds one list to each rotation.
 //   state.json     cursors plus what already went out, written back by the workflow.
 //
 // Required env: IG_ACCESS_TOKEN, IG_USER_ID, GITHUB_REPOSITORY (set in Actions).
@@ -59,7 +59,7 @@ export function pick(mode, today, { queue, schedule, state }, slot = 'morning') 
   const next = structuredClone(state);
 
   if (mode === 'story') {
-    const pool = [...schedule.stories[slot], ...(slot === 'evening' ? seasons.flatMap(([, s]) => s.stories) : [])];
+    const pool = [...schedule.stories[slot], ...seasons.flatMap(([, s]) => s.stories[slot])];
     const cursor = state.storyCursor?.[slot] ?? 0;
     next.storyCursor = { ...state.storyCursor, [slot]: (cursor + 1) % pool.length };
     return { id: pool[cursor % pool.length], next };

@@ -271,6 +271,12 @@ const STORIES = [
   },
   { id: 'reformat-review-martha', html: () => reformatStory('review-martha.jpg') },
   { id: 'reformat-tagline', html: () => reformatStory('tagline.jpg') },
+  // Seasonal pairs: each season gives the morning and the evening rotation one story each.
+  { id: 'reformat-summer-freddo-cappuccino', html: () => reformatStory('summer-freddo-cappuccino.jpg') },
+  {
+    id: 'story-holidays',
+    html: () => textAnnouncementStory({ kicker: 'Χριστουγεννα', headline: 'Καλές<br><em>γιορτές.</em>', lede: 'Από όλους εμάς στο Blessed.' }),
+  },
   // ─── The 3D cup (social/cup/). Text stays between y=250 and y=1580, clear of IG's chrome. ──
   {
     id: 'story-cup-today',
@@ -416,7 +422,6 @@ const STORIES = [
     ['ps-pies', 'vitrine-pies', 'Η βιτρινα', 'Τυρόπιτα<br><em>1.60€.</em>', 'Σπανακόπιτα 2.50€'],
     ['ps-craving', 'pastry-sesame', 'Λιγουρα', 'Πείνασες;<br><em>Πέρνα.</em>', 'Ρόδου 68'],
     ['ps-sesame', 'bread-sesame', 'Η βιτρινα', 'Μην<br><em>αντισταθείς.</em>', ''],
-    ['ps-snack', 'snack-cup', 'Πρωινο', 'Πρωινό;<br><em>Τσεκ.</em>', 'Από τις 07:00'],
     ['ps-window', 'vitrine-window', 'Περνας;', 'Ρίξε<br><em>μια ματιά.</em>', 'Ρόδου 68'],
     ['ps-shift', 'staff-machine', 'Πισω απο τον παγκο', 'Η μηχανή<br><em>ζεσταίνεται.</em>', 'Από τις 07:00'],
     ['ps-smile', 'apron-cup', 'Καλημερα', 'Καλημέρα<br><em>από τον πάγκο.</em>', ''],
