@@ -412,7 +412,7 @@ const STORIES = [
     ['ps-hopper', 'beans-hopper', 'Απο νωρις', 'Έτοιμοι<br><em>πριν από σένα.</em>', ''],
     ['ps-mrs-rose', 'mrs-rose-tins', 'Mrs Rose', 'Ο κλασικός<br><em>μας.</em>', 'Espresso 2€'],
     ['ps-guide', 'coffee-guide', 'Ερωτηση', 'Τι πίνεις<br><em>σήμερα;</em>', 'Στείλε μας DM.'],
-    ['ps-peinirli', 'vitrine-peinirli', 'Το καραβακι', 'Πεϊνιρλί<br><em>2.80€.</em>', ''],
+    ['ps-peinirli', 'vitrine-peinirli', 'Η βιτρινα', 'Πεϊνιρλί<br><em>2.80€.</em>', ''],
     ['ps-pies', 'vitrine-pies', 'Η βιτρινα', 'Τυρόπιτα<br><em>1.60€.</em>', 'Σπανακόπιτα 2.50€'],
     ['ps-craving', 'pastry-sesame', 'Λιγουρα', 'Πείνασες;<br><em>Πέρνα.</em>', 'Ρόδου 68'],
     ['ps-sesame', 'bread-sesame', 'Η βιτρινα', 'Μην<br><em>αντισταθείς.</em>', ''],

@@ -1078,11 +1078,11 @@ const POSTS = [
   {
     id: 'vitrine-peinirli',
     html: () => series({ ground: 'black', tag: 'Στο μενού · Πεϊνιρλί', img: shoot('vitrine-peinirli'),
-      say: 'Το καραβάκι<br><em>της βιτρίνας.</em>', cls: 'sm',
+      say: 'Πεϊνιρλί,<br><em>ζεστό.</em>', cls: 'sm',
       extra: rows([['Πεϊνιρλί', '2.80€'], ['Κρουασάν', '2.50€']]) }),
     caption: {
-      el: 'Το καραβάκι της βιτρίνας: πεϊνιρλί 2.80€. Και κρουασάν 2.50€, για όσους δεν θέλουν να ταξιδέψουν.',
-      en: 'The little boat in the window: peinirli €2.80. And croissants at €2.50 for anyone not in the mood to sail.',
+      el: 'Πεϊνιρλί 2.80€, κρουασάν 2.50€. Φρέσκα στη βιτρίνα από τις 07:00.',
+      en: 'Peinirli €2.80, croissant €2.50. Fresh in the window from 7am.',
     },
   },
   {
