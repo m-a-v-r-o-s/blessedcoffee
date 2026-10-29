@@ -31,13 +31,13 @@ const cols = (sec) => (Array.isArray(sec.cols) ? sec.cols : sec.cols?.[lang]);
   </section>
 
   <nav class="chips" aria-label={t.jumpTo}>
-    <div class="wrap">{MENU.map((s) => <a href={`#${s.id}`}>{s.title[lang]}</a>)}</div>
+    <div class="wrap">{MENU.map((s) => <a href={`#${s.id}`} data-only={s.only}>{s.title[lang]}</a>)}</div>
   </nav>
 
   <div class="paper band">
     <div class="wrap sections">
       {MENU.map((sec) => (
-        <section id={sec.id} class="sec" aria-labelledby={`${sec.id}-h`}>
+        <section id={sec.id} class="sec" aria-labelledby={`${sec.id}-h`} data-only={sec.only}>
           <h2 id={`${sec.id}-h`} class="display">{sec.title[lang]}</h2>
           <table>
             {cols(sec) && (
@@ -52,6 +52,7 @@ const cols = (sec) => (Array.isArray(sec.cols) ? sec.cols : sec.cols?.[lang]);
               ))}
             </tbody>
           </table>
+          {sec.note && <p class="addons">{sec.note[lang]}</p>}
         </section>
       ))}
     </div>
@@ -84,5 +85,6 @@ const cols = (sec) => (Array.isArray(sec.cols) ? sec.cols : sec.cols?.[lang]);
   th, td { padding: 11px 0; border-bottom: 1px solid var(--line-paper); vertical-align: baseline; }
   tbody th { text-align: left; font-weight: 500; padding-right: 16px; }
   thead th { font: 500 12px/1.2 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--on-paper-muted); text-align: right; padding-top: 0; }
+  .addons { margin-top: 12px; font-size: 14px; color: var(--on-paper-muted); }
   td { text-align: right; white-space: nowrap; font-weight: 500; padding-left: 16px; width: 1%; }
 </style>

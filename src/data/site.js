@@ -62,14 +62,22 @@ export const directions = (s) => `https://www.google.com/maps/search/?api=1&quer
 export const price = (n) => (n == null ? '' : `${n.toFixed(2)}€`);
 
 // Menu. Rows are [name, price] or [name, price, price] when the section has two price columns.
-// TODO: confirm Kamatero uses the same menu and prices.
+// only: shop id, the section is shown for that shop only (hidden by the shop switch).
 export const MENU = [
   {
-    id: 'coffee', title: { el: 'Καφές', en: 'Coffee' }, cols: ['Mrs Rose', 'Dolce'],
+    id: 'coffee', title: { el: 'Καφές', en: 'Coffee' }, cols: ['Mrs Rose', 'Il Modo'],
     items: [
-      ['Freddo Espresso', 2.3, 2.2], ['Freddo Cappuccino', 2.6, 2.5], ['Cappuccino Latte', 2.6, 2.5],
-      ['Cappuccino', 2.6, 2.5], ['Espresso', 1.8, 1.7], ['Macchiato', 2.1, 2.1], ['Frappe', 1.8, null],
-      ['NES', 1.8, null], ['Φίλτρου', 2, null], ['Ελληνικός', 1.8, null], ['Americano', 2, null],
+      ['Freddo Espresso', 2.4, 2.3], ['Freddo Cappuccino', 2.6, 2.5], ['Cappuccino', 2.6, 2.5],
+      ['Espresso', 2, 1.9], ['Cappuccino Latte', 2.7, 2.6], ['Macchiato', 2.1, 2], ['NES', 1.8, null],
+      ['Frappe', 1.8, null], ['Φίλτρου', 2, null], ['Ελληνικός', 1.8, null], ['Americano', 2, null],
+    ],
+  },
+  {
+    id: 'hot', title: { el: 'Ροφήματα', en: 'Hot drinks & juice' },
+    note: { el: 'Σιρόπια +0.30€, κρέμα +0.60€, σαντιγί +0.80€', en: 'Syrups +€0.30, cream +€0.60, whipped cream +€0.80' },
+    items: [
+      ['Φυσικός χυμός', 3], ['Σοκολάτα λευκή', 2.8], ['Σοκολάτα γάλακτος', 2.6], ['Σοκολάτα premium', 2.5],
+      ['Σοκολάτα stevia', 2.5], ['Σοκολάτα πραλίνα', 2.6], ['Τσάι, όλες οι γεύσεις', 1.5],
     ],
   },
   {
@@ -81,11 +89,11 @@ export const MENU = [
     ],
   },
   {
-    id: 'sandwiches', title: { el: 'Sandwiches', en: 'Sandwiches' },
+    id: 'sandwiches', title: { el: 'Sandwiches', en: 'Sandwiches' }, only: 'patisia',
     items: [
       ['Γαλλική μπαγκέτα φιλέτο κοτόπουλο', 2.9], ['Γαλλική μπαγκέτα γαλοπούλα', 2.6],
-      ['Μπαγκέτα σικάλεως γαλοπούλα', 2.6], ['Βιεννέζικο με ζαμπόν', 2.9], ['Αραβική με ζαμπόν', 2.7],
-      ['Αραβική με γαλοπούλα', 2.7], ['Αραβική με κοτόπουλο', 2.9], ['Χάμπουργκερ με μπιφτέκι', 3],
+      ['Σικάλεως με γαλοπούλα', 2.6], ['Βιεννέζικο με ζαμπόν', 2.9], ['Αραβική πίτα με ζαμπόν', 2.7],
+      ['Αραβική με γαλοπούλα', 2.7], ['Αραβική με κοτόπουλο', 2.9], ['Hamburger με μπιφτέκι', 3],
       ['Τριπλό τοστ σικάλεως', 3],
     ],
   },
@@ -96,16 +104,10 @@ export const MENU = [
   {
     id: 'snacks', title: { el: 'Γλυκά snacks (Red Almond)', en: 'Sweet snacks (Red Almond)' },
     items: [
-      ['Τάρτα Cookies 100γρ', 2.7], ['Τάρτα Banoffee 80γρ', 2.7], ['Τάρτα Πραλίνα Φουντουκιού 100γρ', 2.7],
-      ['Μπάρα Ενέργειας με Καρύδι & Φρούτα 60γρ', 2.5], ['Μπάρα Σοκολάτας με Φουντούκια 60γρ', 2.5],
-      ['Mini Soft Cookies Βανίλια με Κομμάτια Σοκολάτας 100γρ', 2.7], ['Mini Brownies Σοκολάτα 100γρ', 2.7],
+      ['Mini Soft Cookies Βανίλια 100γρ', 2.7], ['Mini Brownies Σοκολάτα 100γρ', 2.7],
       ['Mini Γκοφρετάκια 100γρ', 2.7], ['Mini Γκοφρετάκια Φράουλα 100γρ', 2.7],
       ['Κριτσινοκούλουρο Ηλιόσπορος 100γρ', 2.7], ['Κριτσινάκι με Επικάλυψη Σοκολάτας', 2.7],
     ],
-  },
-  {
-    id: 'protein', title: { el: 'Protein bars', en: 'Protein bars' },
-    items: [['Σοκολάτα Γάλακτος 40γρ', 1.8], ['Σοκολάτα - Μπισκότο 40γρ', 1.8], ['Μαύρη Σοκολάτα 40γρ', 1.8]],
   },
   {
     id: 'drinks', title: { el: 'Αναψυκτικά', en: 'Soft drinks' },

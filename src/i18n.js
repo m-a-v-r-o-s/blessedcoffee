@@ -38,7 +38,7 @@ export const T = {
     beanEyebrow: 'Στο μπαρ',
     beanTitle: 'Από τον κόκκο στο ποτήρι.',
     bean: [
-      ['Κόκκος', 'Διάλεξε Mrs Rose ή Dolce.'],
+      ['Κόκκος', 'Διάλεξε Mrs Rose ή Il Modo.'],
       ['Άλεσμα', 'Αλέθεται στο μπαρ.'],
       ['Εκχύλιση', 'Διπλό espresso, με πλούσια κρέμα.'],
       ['Γάλα', 'Αφρόγαλα για cappuccino και latte.'],
@@ -61,7 +61,7 @@ export const T = {
     orderVia: 'Παράγγειλε μέσω',
     menuTitle: 'Μενού',
     menuSub: 'Τιμές σε ευρώ, με ΦΠΑ.',
-    menuKamateroNote: 'Το μενού και οι τιμές του Καματερού ανεβαίνουν σύντομα. Προς το παρόν βλέπεις του καταστήματος στα Πατήσια.',
+    menuKamateroNote: 'Στο Καματερό ίδιο μενού και τιμές, χωρίς τα sandwiches. Περισσότερα φαγητά έρχονται σύντομα.',
     jumpTo: 'Κατηγορίες',
     gallery: 'Φωτογραφίες',
     mapLoad: 'Εμφάνιση χάρτη',
@@ -96,7 +96,7 @@ export const T = {
     skip: 'Μετάβαση στο περιεχόμενο',
     meta: {
       home: ['Blessed Coffee | Καφετέρια σε Πατήσια και Καματερό', 'Καφές, σφολιάτες, sandwiches και cocktails στα Κάτω Πατήσια (Ρόδου 68) και στο Καματερό (Κωστή Παλαμά 17Α). Delivery από e-food, Wolt και Box.'],
-      menu: ['Μενού και τιμές | Blessed Coffee', 'Espresso 1.80€, freddo espresso 2.30€, cappuccino 2.60€, σφολιάτες, sandwiches, γλυκά, μπύρες και cocktails. Όλο το μενού του Blessed Coffee.'],
+      menu: ['Μενού και τιμές | Blessed Coffee', 'Espresso 2.00€, freddo espresso 2.40€, cappuccino 2.60€, σφολιάτες, sandwiches, γλυκά, μπύρες και cocktails. Όλο το μενού του Blessed Coffee.'],
       patisia: ['Blessed Coffee 2024 | Καφέ στη Ρόδου 68, Κάτω Πατήσια', 'Ανοιχτά κάθε μέρα 07:00 – 22:00. Καφές, σφολιάτες, cocktails και delivery από e-food, Wolt και Box. Τηλ. 211 218 1815.'],
       kamatero: ['Blessed Coffee Kamatero | Καφέ στην Κωστή Παλαμά 17Α, Καματερό', 'Το νέο Blessed Coffee στο Καματερό. Καφές, σφολιάτες και γλυκά στην Κωστή Παλαμά 17Α. Τηλ. 210 238 8812.'],
       notfound: ['Η σελίδα δεν βρέθηκε | Blessed Coffee', 'Αυτή η σελίδα δεν υπάρχει.'],
@@ -137,7 +137,7 @@ export const T = {
     beanEyebrow: 'At the bar',
     beanTitle: 'From bean to cup.',
     bean: [
-      ['Bean', 'Pick Mrs Rose or Dolce.'],
+      ['Bean', 'Pick Mrs Rose or Il Modo.'],
       ['Grind', 'Ground at the bar.'],
       ['Extraction', 'A double shot with thick crema.'],
       ['Milk', 'Steamed milk for cappuccino and latte.'],
@@ -160,7 +160,7 @@ export const T = {
     orderVia: 'Order via',
     menuTitle: 'Menu',
     menuSub: 'Prices in euros, VAT included.',
-    menuKamateroNote: 'The Kamatero menu and prices are coming soon. For now you are seeing the Patisia menu.',
+    menuKamateroNote: 'Kamatero has the same menu and prices, minus the sandwiches. More food is coming soon.',
     jumpTo: 'Categories',
     gallery: 'Photos',
     mapLoad: 'Show map',
@@ -195,7 +195,7 @@ export const T = {
     skip: 'Skip to content',
     meta: {
       home: ['Blessed Coffee & Spirits | Cafe in Patisia and Kamatero, Athens', 'Coffee, pastries, sandwiches and cocktails in Kato Patisia (Rodou 68) and Kamatero (Kosti Palama 17A), Athens. Delivery via e-food, Wolt and Box.'],
-      menu: ['Menu and prices | Blessed Coffee Athens', 'Espresso €1.80, freddo espresso €2.30, cappuccino €2.60, Greek pastries, sandwiches, desserts, beer and cocktails. The full Blessed Coffee menu.'],
+      menu: ['Menu and prices | Blessed Coffee Athens', 'Espresso €2.00, freddo espresso €2.40, cappuccino €2.60, Greek pastries, sandwiches, desserts, beer and cocktails. The full Blessed Coffee menu.'],
       patisia: ['Blessed Coffee 2024 | Cafe at Rodou 68, Kato Patisia, Athens', 'Open every day 07:00 – 22:00. Coffee, pastries, cocktails and delivery via e-food, Wolt and Box. Phone 211 218 1815.'],
       kamatero: ['Blessed Coffee Kamatero | Cafe at Kosti Palama 17A, Kamatero', 'The new Blessed Coffee in Kamatero, Athens. Coffee, pastries and desserts at Kosti Palama 17A. Phone 210 238 8812.'],
       notfound: ['Page not found | Blessed Coffee', 'This page does not exist.'],
