@@ -8,7 +8,7 @@
     { "id": "christmas", "date": "12-25" }
   ],
   "seasons": {
-    "summer": { "months": [6, 7, 8], "feed": ["summer-freddo", "summer-freddo-cappuccino"], "stories": { "morning": ["summer-freddo"], "evening": ["reformat-summer-freddo-cappuccino"] } },
+    "summer": { "months": [6, 7, 8], "feed": ["summer-freddo", "summer-freddo-cappuccino"], "stories": { "morning": ["summer-freddo"], "evening": ["ps-summer"] } },
     "winter": { "months": [12, 1, 2], "feed": ["winter-espresso", "winter-cappuccino"], "stories": { "morning": ["ps-winter-steam"], "evening": ["winter-hot"] } },
     "december": { "months": [12], "feed": [], "stories": { "morning": ["ph-christmas"], "evening": ["story-holidays"] } }
   },

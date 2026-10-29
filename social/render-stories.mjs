@@ -272,7 +272,6 @@ const STORIES = [
   { id: 'reformat-review-martha', html: () => reformatStory('review-martha.jpg') },
   { id: 'reformat-tagline', html: () => reformatStory('tagline.jpg') },
   // Seasonal pairs: each season gives the morning and the evening rotation one story each.
-  { id: 'reformat-summer-freddo-cappuccino', html: () => reformatStory('summer-freddo-cappuccino.jpg') },
   {
     id: 'story-holidays',
     html: () => textAnnouncementStory({ kicker: 'Χριστουγεννα', headline: 'Καλές<br><em>γιορτές.</em>', lede: 'Από όλους εμάς στο Blessed.' }),
@@ -430,6 +429,7 @@ const STORIES = [
     ['ps-inside', 'interior', 'Μεσα', 'Κάτσε<br><em>λίγο.</em>', '07:00 – 22:00'],
     ['ps-street', 'cup-street-left', 'Κανε tag', 'Το ποτήρι σου<br><em>στη γειτονιά.</em>', '@blessedcoffee2024'],
     ['ps-delivery', 'cup-counter', 'Delivery', 'Βαριέσαι;<br><em>Ερχόμαστε.</em>', 'e-food · Wolt · Box'],
+    ['ps-summer', 'cup-street-left', 'Καλοκαιρι', 'Freddo<br><em>για τον δρόμο.</em>', 'Freddo espresso 2.40€'],
     ['ps-winter-steam', 'espresso-steam', 'Espresso · 2€', 'Κρύο;<br><em>Όχι εδώ.</em>', ''],
   ].map(([id, img, kicker, headline, lede, pos]) => ({ id, html: () => photoStory({ img: `shoot/${img}.jpg`, kicker, headline, lede, pos }) })),
   // ─── Round 2: the same photos with new lines, so the rotation runs twice as long before a story
