@@ -270,7 +270,7 @@ const STORIES = [
       priceStory({
         kicker: 'Espresso',
         price: '2.00',
-        note: 'Freddo espresso 2.40€ · Freddo cappuccino 2.60€',
+        note: 'Freddo espresso 2.40€<br>Cappuccino 2.60€<br>Freddo cappuccino 2.60€',
       }),
   },
   { id: 'reformat-review-martha', html: () => reformatStory('review-martha.jpg') },
@@ -355,12 +355,14 @@ const STORIES = [
       ${backdrop('drip-close')}
       <img class="shot" src="${shot('front')}" style="width:860px;left:110px;top:100px">
       <div class="over">
-        <div class="kicker">Ζεστος καφες</div>
+        <div class="kicker">Ο καφες μας</div>
         <div class="rows" style="gap:18px;margin-top:30px">
           <div class="row"><span class="k">Espresso</span><span class="dots"></span><span class="v">2€</span></div>
           <div class="row"><span class="k">Americano</span><span class="dots"></span><span class="v">2€</span></div>
           <div class="row"><span class="k">Macchiato</span><span class="dots"></span><span class="v">2.10€</span></div>
           <div class="row"><span class="k">Cappuccino</span><span class="dots"></span><span class="v">2.60€</span></div>
+          <div class="row"><span class="k">Freddo espresso</span><span class="dots"></span><span class="v">2.40€</span></div>
+          <div class="row"><span class="k">Freddo cappuccino</span><span class="dots"></span><span class="v">2.60€</span></div>
         </div>
       </div>
       ${foot()}
@@ -373,7 +375,7 @@ const STORIES = [
       <img class="mark" src="${logo}">
       <div class="kicker">Καλοκαιρι</div>
       <h1>Καύσωνας;<br><em>Freddo.</em></h1>
-      <div class="lede">Freddo espresso 2.40€<br>Freddo cappuccino 2.60€</div>
+      <div class="lede">Freddo espresso 2.40€<br>Freddo cappuccino 2.60€<br>Espresso 2€<br>Cappuccino 2.60€</div>
       ${foot()}
     </div>`,
   },
@@ -383,7 +385,7 @@ const STORIES = [
       <img class="mark" src="${logo}">
       <div class="kicker">Χειμωνας</div>
       <h1>Κρύο έξω.<br><em>Ζεστός</em> μέσα.</h1>
-      <div class="lede">Espresso 2€<br>Cappuccino 2.60€</div>
+      <div class="lede">Espresso 2€<br>Freddo espresso 2.40€<br>Cappuccino 2.60€<br>Freddo cappuccino 2.60€</div>
       ${foot()}
     </div>`,
   },
@@ -392,7 +394,7 @@ const STORIES = [
     ['ph-morning', '21-34-43', 'Απο τις 07:00', 'Ο πρώτος<br><em>της ημέρας.</em>', 'Κάθε μέρα, Ρόδου 68.', 'top'],
     ['ph-espresso', '21-34-55', 'Espresso', 'Φρέσκο,<br><em>κάθε φορά.</em>', 'Espresso 2€'],
     ['ph-takeaway', '21-35-16', 'Take away', 'Για τον<br><em>δρόμο.</em>', 'Κάθε μέρα 07:00 – 22:00', 'top'],
-    ['ph-break', '21-36-13', 'Διαλειμμα', 'Πέντε λεπτά;<br><em>Πέρνα.</em>', 'Espresso 2€ · Cappuccino 2.60€', 'top'],
+    ['ph-break', '21-36-13', 'Διαλειμμα', 'Πέντε λεπτά;<br><em>Πέρνα.</em>', 'Espresso 2€', 'top'],
     ['ph-for-you', '21-36-24', 'Η παραγγελια σου', 'Φτιαγμένη<br><em>για σένα.</em>', 'Κάθε φορά από την αρχή.', 'top'],
     ['ph-grind', '21-36-37', 'Φρεσκο αλεσμα', 'Κάθε δόση,<br><em>φρέσκια.</em>', 'Αλέθεται τη στιγμή.'],
     ['ph-delivery', '21-34-55', 'Delivery', 'Βαριέσαι;<br><em>Ερχόμαστε.</em>', 'e-food · Wolt · Box'],
@@ -447,7 +449,7 @@ const STORIES = [
     ['ps-heaven-2', 'cup-black', 'Take away', 'Στον δρόμο<br><em>για τη δουλειά.</em>', 'Από τις 07:00'],
     ['ps-waiting-2', 'cup-counter-2', 'Σημερα', 'Μέτριο, σκέτο<br><em>ή γλυκό;</em>', ''],
     ['ps-pair-2', 'cup-pair', 'Για δυο', 'Φέρε<br><em>παρέα.</em>', 'Ρόδου 68'],
-    ['ps-foam-2', 'foam-macro', 'Cappuccino', 'Ζεστό<br><em>ή freddo;</em>', '2.60€ και τα δύο'],
+    ['ps-foam-2', 'foam-macro', 'Cappuccino', 'Ζεστό<br><em>ή freddo;</em>', 'Espresso 2€<br>Freddo espresso 2.40€<br>Cappuccino 2.60€<br>Freddo cappuccino 2.60€'],
     ['ps-latte-2', 'milk-steam', 'Cappuccino latte · 2.70€', 'Για το<br><em>κρύο πρωινό.</em>', ''],
     ['ps-splash-2', 'espresso-splash', 'Espresso', 'Γρήγορος<br><em>και δυνατός.</em>', '2€'],
     ['ps-crema-2', 'crema-double-2', 'Espresso', 'Σκέτος<br><em>ή με ζάχαρη;</em>', ''],

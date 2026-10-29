@@ -209,6 +209,8 @@ const shell = (inner, bg, real, cls = '') => `<div class="card ${cls}">
 </div>`;
 
 // Series card. ground: gold (07:00), cream (Είπατε, reviews), black (Στο μενού).
+// Whenever one of these is priced next to any other product, all four show (owner, 2026-10-30).
+const COFFEE = [['Espresso', '2€'], ['Freddo espresso', '2.40€'], ['Cappuccino', '2.60€'], ['Freddo cappuccino', '2.60€']];
 const rows = (items) => `<div class="rows">${items.map(([k, v]) =>
   `<div class="row"><span class="k">${k}</span><span class="dots"></span><span class="v">${v}</span></div>`).join('')}</div>`;
 // Photographer shots land in social/photos/shoot/<id>.jpg; until then the card renders text-only.
@@ -281,10 +283,10 @@ const POSTS = [
     id: '0700-breakfast',
     html: () => series({ ground: 'gold', tag: '07:00 · №04',
       say: 'Μπουγάτσα<br>και freddo.<br><em>Πρωινό.</em>',
-      extra: rows([['Μπουγάτσα κρέμα', '2.80€'], ['Freddo espresso', '2.40€']]) }),
+      extra: rows([['Μπουγάτσα κρέμα', '2.80€'], ...COFFEE]) }),
     caption: {
-      el: `Μπουγάτσα κρέμα 2.80€ και freddo espresso 2.40€. Το πρωινό, λυμένο. Από τις 07:00. ${TAG_US.el}`,
-      en: `Cream bougatsa €2.80 and a freddo espresso €2.40. Breakfast, sorted. From 7am. ${TAG_US.en}`,
+      el: `Μπουγάτσα κρέμα 2.80€, espresso 2€, freddo espresso 2.40€, cappuccino 2.60€, freddo cappuccino 2.60€. Το πρωινό, λυμένο. Από τις 07:00. ${TAG_US.el}`,
+      en: `Cream bougatsa €2.80, espresso €2, freddo espresso €2.40, cappuccino €2.60, freddo cappuccino €2.60. Breakfast, sorted. From 7am. ${TAG_US.en}`,
     },
   },
   {
@@ -314,11 +316,11 @@ const POSTS = [
     id: 'summer-freddo',
     html: () => series({ ground: 'summer', tag: 'Καλοκαίρι · №01', img: shoot('summer-freddo'),
       say: 'Καύσωνας;<br><em>Freddo.</em>',
-      extra: rows([['Freddo espresso', '2.40€'], ['Freddo cappuccino', '2.60€']]),
+      extra: rows(COFFEE),
       sub: 'Με πολύ πάγο, από τις 07:00.' }),
     caption: {
-      el: `Καύσωνας; Freddo. Freddo espresso 2.40€, freddo cappuccino 2.60€, με πολύ πάγο. Ρόδου 68, κάθε μέρα από τις 07:00. ${TAG_US.el}`,
-      en: `Heatwave? Freddo. Freddo espresso €2.40, freddo cappuccino €2.60, plenty of ice. Rodou 68, every day from 7am. ${TAG_US.en}`,
+      el: `Καύσωνας; Freddo. Freddo espresso 2.40€, freddo cappuccino 2.60€, με πολύ πάγο. Espresso 2€, cappuccino 2.60€. Ρόδου 68, κάθε μέρα από τις 07:00. ${TAG_US.el}`,
+      en: `Heatwave? Freddo. Freddo espresso €2.40, freddo cappuccino €2.60, plenty of ice. Espresso €2, cappuccino €2.60. Rodou 68, every day from 7am. ${TAG_US.en}`,
     },
   },
   {
@@ -369,11 +371,11 @@ const POSTS = [
     id: 'espresso-price',
     html: () => series({ ground: 'black', tag: 'Στο μενού · Espresso',
       say: 'Espresso.<br><em>2€.</em>',
-      extra: rows([['Freddo espresso', '2.40€'], ['Freddo cappuccino', '2.60€']]),
+      extra: rows([['Freddo espresso', '2.40€'], ['Cappuccino', '2.60€'], ['Freddo cappuccino', '2.60€']]),
       sub: 'Αυτό. Δεν έχουμε κάτι άλλο να πούμε.' }),
     caption: {
-      el: 'Espresso 2€. Freddo espresso 2.40€. Freddo cappuccino 2.60€. Στα Κάτω Πατήσια, κάθε μέρα από τις 07:00.',
-      en: 'Espresso €2. Freddo espresso €2.40. Freddo cappuccino €2.60. Kato Patisia, every day from 7am.',
+      el: 'Espresso 2€. Freddo espresso 2.40€. Cappuccino 2.60€. Freddo cappuccino 2.60€. Στα Κάτω Πατήσια, κάθε μέρα από τις 07:00.',
+      en: 'Espresso €2. Freddo espresso €2.40. Cappuccino €2.60. Freddo cappuccino €2.60. Kato Patisia, every day from 7am.',
     },
   },
   {
@@ -762,20 +764,22 @@ const POSTS = [
       shell(`${backdrop('crema-double-2')}<img class="shot" src="${shot('front')}" style="width:940px;left:420px;top:40px">
       <img class="mark" src="${logo}">
       <div class="body tight" style="max-width:560px">
-        <div class="kicker">Ζεστος καφες</div>
+        <div class="kicker">Ο καφες μας</div>
         <div class="rows" style="gap:14px;margin-top:10px">
           <div class="row"><span class="k">Espresso</span><span class="dots"></span><span class="v">2€</span></div>
           <div class="row"><span class="k">Americano</span><span class="dots"></span><span class="v">2€</span></div>
           <div class="row"><span class="k">Macchiato</span><span class="dots"></span><span class="v">2.10€</span></div>
           <div class="row"><span class="k">Cappuccino</span><span class="dots"></span><span class="v">2.60€</span></div>
           <div class="row"><span class="k">Capp. Latte</span><span class="dots"></span><span class="v">2.70€</span></div>
+          <div class="row"><span class="k">Freddo espr.</span><span class="dots"></span><span class="v">2.40€</span></div>
+          <div class="row"><span class="k">Freddo capp.</span><span class="dots"></span><span class="v">2.60€</span></div>
         </div>
         <div class="rule" style="margin-top:14px"></div>
         <div class="el">Σε ποτήρι που κρατάει ζεστό τον δρόμο.</div>
       </div>`, null, false, 'cupground'),
     caption: {
-      el: 'Espresso 2€, americano 2€, macchiato 2.10€, cappuccino 2.60€, cappuccino latte 2.70€. Στη Ρόδου 68, κάθε μέρα από τις 07:00.',
-      en: 'Espresso €2, americano €2, macchiato €2.10, cappuccino €2.60, cappuccino latte €2.70. Rodou 68, every day from 7am.',
+      el: 'Espresso 2€, americano 2€, macchiato 2.10€, cappuccino 2.60€, cappuccino latte 2.70€, freddo espresso 2.40€, freddo cappuccino 2.60€. Στη Ρόδου 68, κάθε μέρα από τις 07:00.',
+      en: 'Espresso €2, americano €2, macchiato €2.10, cappuccino €2.60, cappuccino latte €2.70, freddo espresso €2.40, freddo cappuccino €2.60. Rodou 68, every day from 7am.',
     },
   },
   // Carousel: cover, one slide per label panel, then where and when. Publish as one post, in order.
@@ -948,10 +952,10 @@ const POSTS = [
     id: 'menu-mrs-rose',
     html: () => series({ ground: 'black', tag: 'Στο μενού · Mrs Rose', img: shoot('mrs-rose-tins'),
       say: 'Ο κλασικός<br><em>μας.</em>',
-      extra: rows([['Espresso', '2€'], ['Freddo espresso', '2.40€'], ['Cappuccino', '2.60€']]) }),
+      extra: rows(COFFEE) }),
     caption: {
-      el: 'Mrs Rose Caffè, ο κλασικός μας. Espresso 2€, freddo espresso 2.40€, cappuccino 2.60€. Ρόδου 68, από τις 07:00.',
-      en: 'Mrs Rose Caffè, our classic. Espresso €2, freddo espresso €2.40, cappuccino €2.60. Rodou 68, from 7am.',
+      el: 'Mrs Rose Caffè, ο κλασικός μας. Espresso 2€, freddo espresso 2.40€, cappuccino 2.60€, freddo cappuccino 2.60€. Ρόδου 68, από τις 07:00.',
+      en: 'Mrs Rose Caffè, our classic. Espresso €2, freddo espresso €2.40, cappuccino €2.60, freddo cappuccino €2.60. Rodou 68, from 7am.',
     },
   },
   // Το ποτήρι
@@ -1032,8 +1036,8 @@ const POSTS = [
   {
     id: 'bean-05', bare: 'milk-steam',
     caption: {
-      el: 'Γάλα, ζεσταμένο σωστά. Cappuccino 2.60€, cappuccino latte 2.70€.',
-      en: 'Milk, steamed properly. Cappuccino €2.60, cappuccino latte €2.70.',
+      el: 'Γάλα, ζεσταμένο σωστά. Cappuccino 2.60€, cappuccino latte 2.70€, espresso 2€, freddo espresso 2.40€, freddo cappuccino 2.60€.',
+      en: 'Milk, steamed properly. Cappuccino €2.60, cappuccino latte €2.70, espresso €2, freddo espresso €2.40, freddo cappuccino €2.60.',
     },
   },
   // Πίσω από τον πάγκο: the team (staff photographed at the shoot).
@@ -1131,7 +1135,7 @@ const POSTS = [
   { id: 'bean-carousel-6', bare: 'staff-cup', fixed: true },
   { id: 'bean-carousel-7', html: () => series({ ground: 'black', tag: 'Στο μενού', img: shoot('last-drop'),
       say: 'Μέχρι την<br><em>τελευταία.</em>', cls: 'sm',
-      extra: rows([['Espresso', '2€'], ['Freddo espresso', '2.40€'], ['Cappuccino', '2.60€']]) }) },
+      extra: rows(COFFEE) }) },
   {
     id: 'shop-carousel-1',
     html: () => series({ ground: 'black', tag: 'Συρε →', say: 'Ρόδου 68.<br><em>Πάμε μια βόλτα.</em>', cls: 'sm' }),
