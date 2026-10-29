@@ -647,17 +647,19 @@ const POSTS = [
     id: 'new-year',
     html: (bg, real) =>
       shell(`<img class="mark" src="${logo}">
-      <div class="body tight">
+      <div class="body tight" style="justify-content:flex-start;padding-top:60px">
         <div class="kicker">Πρωτοχρονια</div>
         <h1 class="sm">Καλή<br><em>Χρονιά.</em></h1>
         <div class="rule"></div>
         <div class="lede">Ευχές από όλους εμάς στο Blessed.</div>
       </div>`, bg, real),
-    bg: shoot('interior'),
+    // Fireworks over the Acropolis, 1 Jan 2018, by Γρηγόριος Αγγελίδης, CC BY-SA 4.0 (Wikimedia Commons,
+    // File:Ακροπολις Πρωτοχρονια 1.jpg). The licence needs the credit line in the caption.
+    bg: photo('acropolis-fireworks.jpg'),
     real: true,
     caption: {
       el: 'Καλή χρονιά από όλους εμάς στο Blessed. Ό,τι καλύτερο για σένα και τους δικούς σου.',
-      en: 'Happy New Year from everyone at Blessed. All the best to you and yours.',
+      en: 'Happy New Year from everyone at Blessed. All the best to you and yours.\n\nΦωτογραφία / Photo: Γρηγόριος Αγγελίδης, CC BY-SA 4.0, Wikimedia Commons.',
     },
   },
   {
