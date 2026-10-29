@@ -7,7 +7,7 @@
 // (social/cup/cup.html in an iframe, driven through its window.pose), and a type layer in
 // front. frame(s, $) poses everything for time s (seconds); every frame is a screenshot, then
 // ffmpeg. Same BRAND tokens and no-invented-facts rule as render.mjs: every price, time and
-// name below is in src/App.jsx. Output is silent: add trending audio in the IG app.
+// name below is in src/App.jsx. Sound: social/reel-audio.py writes each reel's own track, muxed in here.
 
 import { chromium } from 'playwright-core';
 import { execFileSync } from 'node:child_process';
@@ -417,8 +417,10 @@ W.save(sys.argv[2], quality=85)`, dir, `${TMP}/${reel.id}-peek.jpg`]);
     console.log(`peek ${TMP}/${reel.id}-peek.jpg`);
     return;
   }
-  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', `${dir}/%04d.jpg`,
-    '-c:v', 'libx264', '-crf', '18', '-preset', 'slow', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', `${OUT}/${reel.id}.mp4`]);
+  execFileSync('python3', [`${ROOT}/social/reel-audio.py`, dir, reel.id]);
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', `${dir}/%04d.jpg`, '-i', `${dir}/${reel.id}.wav`,
+    '-c:v', 'libx264', '-crf', '18', '-preset', 'slow', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k', '-shortest',
+    '-movflags', '+faststart', `${OUT}/${reel.id}.mp4`]);
   writeFileSync(`${OUT}/${reel.id}.txt`, `${reel.caption.el}\n\n${reel.caption.en}\n\n${TAGS}\n`);
   rmSync(dir, { recursive: true, force: true });
   console.log(`rendered ${reel.id} (${reel.seconds}s)`);
