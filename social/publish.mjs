@@ -58,6 +58,13 @@ export function pick(mode, today, { queue, schedule, state }, slot = 'morning') 
   const seasonKey = (name) => `${name}-${month <= 2 ? year - 1 : year}`;
   const next = structuredClone(state);
 
+  // One post per slot per day, so a late GitHub cron and an external trigger can both fire safely.
+  const key = mode === 'story' ? `story-${slot}` : 'feed';
+  if (state.posted?.[key] === today) return null;
+  const done = (r) => r && { ...r, next: { ...r.next, posted: { ...state.posted, [key]: today } } };
+  return done(choose());
+
+  function choose() {
   if (mode === 'story') {
     const pool = [...schedule.stories[slot], ...seasons.flatMap(([, s]) => s.stories[slot])];
     const cursor = state.storyCursor?.[slot] ?? 0;
@@ -85,6 +92,7 @@ export function pick(mode, today, { queue, schedule, state }, slot = 'morning') 
   const cursor = state.cursor ?? 0;
   next.cursor = (cursor + 1) % queue.length;
   return { id: queue[cursor % queue.length], next };
+  }
 }
 
 // ─── Instagram ───────────────────────────────────────────────────────────────
@@ -102,7 +110,7 @@ async function main() {
   // The workflow sets SLOT; a manual run goes by the clock.
   const slot = process.env.SLOT || (new Date().getUTCHours() < 12 ? 'morning' : 'evening');
   const choice = pick(mode, today, { queue: read('queue.json'), schedule: read('schedule.json'), state }, slot);
-  if (!choice) return console.log(`${today}: no feed post today.`);
+  if (!choice) return console.log(`${today}${mode === 'story' ? ` ${slot}` : ''}: nothing to post (no feed day, or already posted).`);
 
   const { id } = choice;
   const url = (path) => `https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/social/${path}`;

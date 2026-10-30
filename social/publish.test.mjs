@@ -70,3 +70,9 @@ for (const id of [...stories.morning, ...stories.evening, ...Object.values(seaso
   assert.ok(existsSync(new URL(`./library-stories/${id}.jpg`, import.meta.url)), `missing story: ${id}`);
 
 console.log('publish: all checks passed');
+
+// A slot posts once per day: a second run the same day does nothing, the next day posts again.
+const d1 = pick('story', '2026-10-31', cfg(), 'morning');
+assert.equal(pick('story', '2026-10-31', cfg(d1.next), 'morning'), null);
+assert.ok(pick('story', '2026-10-31', cfg(d1.next), 'evening'));
+assert.ok(pick('story', '2026-11-01', cfg(d1.next), 'morning'));
