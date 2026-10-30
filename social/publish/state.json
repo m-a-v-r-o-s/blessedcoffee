@@ -1,3 +1,6 @@
 {
-  "cursor": 0
+  "cursor": 0,
+  "storyCursor": {
+    "morning": 1
+  }
 }
