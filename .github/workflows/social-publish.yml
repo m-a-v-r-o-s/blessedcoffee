@@ -6,11 +6,12 @@ name: Social media publish
 
 on:
   schedule:
-    # Feed: 06:00 UTC (08:00-09:00 Athens depending on DST).
-    - cron: '0 6 * * *'
-    # Stories: 05:30 and 15:30 UTC (morning and late afternoon in Athens).
-    - cron: '30 5 * * *'
-    - cron: '30 15 * * *'
+    # Off the :00/:30 marks, where GitHub delays scheduled runs the most (6h seen).
+    # Feed: 06:07 UTC (08:07-09:07 Athens depending on DST).
+    - cron: '7 6 * * *'
+    # Stories: 05:23 and 15:23 UTC (morning and late afternoon in Athens).
+    - cron: '23 5 * * *'
+    - cron: '23 15 * * *'
   workflow_dispatch:
     inputs:
       mode:
@@ -44,8 +45,8 @@ jobs:
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
-          MODE: ${{ github.event.inputs.mode || (github.event.schedule == '0 6 * * *' && 'feed' || 'story') }}
-          SLOT: ${{ github.event.schedule == '30 5 * * *' && 'morning' || (github.event.schedule == '30 15 * * *' && 'evening' || '') }}
+          MODE: ${{ github.event.inputs.mode || (github.event.schedule == '7 6 * * *' && 'feed' || 'story') }}
+          SLOT: ${{ github.event.schedule == '23 5 * * *' && 'morning' || (github.event.schedule == '23 15 * * *' && 'evening' || '') }}
         run: node social/publish.mjs "$MODE"
 
       - name: Commit updated state
