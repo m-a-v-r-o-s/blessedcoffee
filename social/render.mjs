@@ -897,8 +897,8 @@ const POSTS = [
     bg: photo('Screenshot_2026-09-20_21-36-37.png'),
     real: true,
     caption: {
-      el: 'Αλέθεται τη στιγμή. Φρέσκος καφές, κάθε μέρα από τις 07:00.',
-      en: 'Ground on the spot. Fresh coffee, every day from 7am.',
+      el: 'Φρέσκος καφές, κάθε μέρα από τις 07:00.',
+      en: 'Fresh coffee, every day from 7am.',
     },
   },
   // ─── Photographer shoot, 2026-10-26 (social/photos/shoot/). One shot per feed post. Strong shots

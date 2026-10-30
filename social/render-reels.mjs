@@ -290,7 +290,7 @@ const REELS = [
     photo: true,
     seconds: 10,
     back: shots([['vitrine-tall', 0, 2], ['pastry-sesame', 2, 4], ['vitrine-peinirli', 4, 6], ['pie-macro', 6, 8], ['snack-cup', 8, 11, 1, 1.05, 0, true]]), // whole: the cup sits on the edge
-    front: lines('Η βιτρινα', [['Κάτι για <em>λιγούρα;</em>', 0.4, 3.9], ['Πεϊνιρλί <em>2.80€.</em>', 4.1, 5.9], ['Τυρόπιτα <em>1.60€.</em>', 6.1, 7.9], ['Και ένας <em>καφές.</em>', 8.1, 99]],
+    front: lines('Η βιτρινα', [['Κάτι για <em>λιγούρα;</em>', 0.4, 3.9], ['Πεϊνιρλί <em>2.80€.</em>', 4.1, 5.9], ['Μην <em>αντισταθείς.</em>', 6.1, 7.9], ['Και ένας <em>καφές.</em>', 8.1, 99]],
       ['Από τις 07:00, Ρόδου 68', 8.6]),
     frame: (s, $) => $.photos(s),
     caption: {
