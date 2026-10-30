@@ -520,11 +520,11 @@ const POSTS = [
         <div class="kicker">Γειτονια</div>
         <h1 class="sm">Κάτω<br><em>Πατήσια.</em></h1>
         <div class="rule"></div>
-        <div class="lede">Η γωνία μας, Ρόδου 68.</div>
+        <div class="lede">Ρόδου 68.</div>
       </div>`, bg, real),
     caption: {
-      el: 'Η γωνία μας στα Κάτω Πατήσια. Ρόδου 68, κάθε μέρα 07:00 – 22:00.',
-      en: 'Our corner of Kato Patisia. Rodou 68, every day 07:00 – 22:00.',
+      el: 'Ρόδου 68, Κάτω Πατήσια. Κάθε μέρα 07:00 – 22:00.',
+      en: 'Rodou 68, Kato Patisia. Every day 07:00 – 22:00.',
     },
   },
   {
@@ -533,13 +533,13 @@ const POSTS = [
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">07:00</div>
-        <h1 class="sm">Από νωρίς,<br><em>είμαστε εδώ.</em></h1>
+        <h1 class="sm">Ανοίγουμε<br><em>στις 07:00.</em></h1>
         <div class="rule"></div>
         <div class="lede">Ανοιχτά κάθε μέρα από τις 07:00.</div>
       </div>`, bg, real),
     caption: {
-      el: 'Από νωρίς, είμαστε εδώ. Ανοιχτά κάθε μέρα από τις 07:00.',
-      en: "We're here early. Open every day from 7am.",
+      el: 'Ανοίγουμε στις 07:00, κάθε μέρα.',
+      en: 'We open at 7am, every day.',
     },
   },
   // ─── Real shop photography. No scrim tricks needed, this is the actual product. ──
@@ -549,15 +549,15 @@ const POSTS = [
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">Espresso</div>
-        <h1>Φρέσκος.<br><em>Πάντα.</em></h1>
+        <h1>Espresso<br><em>2€.</em></h1>
         <div class="rule"></div>
-        <div class="lede">Ένα σωστό espresso δεν βιάζεται.</div>
+        <div class="lede">Φρέσκος, κάθε φορά.</div>
       </div>`, bg, real),
     bg: photo('Screenshot_2026-09-20_21-36-13.png'),
     real: true,
     caption: {
-      el: 'Ένα σωστό espresso δεν βιάζεται. Φρέσκος, κάθε φορά.',
-      en: 'A proper espresso is never rushed. Fresh, every time.',
+      el: 'Espresso 2€, φρέσκος κάθε φορά.',
+      en: 'Espresso €2, fresh every time.',
     },
   },
   {
@@ -565,16 +565,16 @@ const POSTS = [
     html: (bg, real) =>
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
-        <div class="kicker">Η τεχνη του καφε</div>
-        <h1>Με<br><em>προσοχή.</em></h1>
+        <div class="kicker">Cappuccino</div>
+        <h1>Cappuccino<br><em>2.60€.</em></h1>
         <div class="rule"></div>
-        <div class="lede">Κάθε φλιτζάνι, ένα ένα.</div>
+        <div class="lede">Με φρέσκο γάλα.</div>
       </div>`, bg, real),
     bg: photo('Screenshot_2026-09-20_21-34-43.png'),
     real: true,
     caption: {
-      el: 'Κάθε φλιτζάνι, ένα ένα, με προσοχή.',
-      en: 'Every cup, one at a time, with care.',
+      el: 'Cappuccino 2.60€, με φρέσκο γάλα. Ρόδου 68, από τις 07:00.',
+      en: 'Cappuccino €2.60, with fresh milk. Rodou 68, from 7am.',
     },
   },
   {
@@ -582,16 +582,16 @@ const POSTS = [
     html: (bg, real) =>
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
-        <div class="kicker">Χειροποιητο</div>
-        <h1 class="sm">Σταγόνα<br><em>σταγόνα.</em></h1>
+        <div class="kicker">Espresso</div>
+        <h1 class="sm">Ένας espresso<br><em>και φεύγεις;</em></h1>
         <div class="rule"></div>
-        <div class="lede">Καφές, όχι βιομηχανία.</div>
+        <div class="lede">2€, από τις 07:00.</div>
       </div>`, bg, real),
     bg: photo('Screenshot_2026-09-20_21-34-55.png'),
     real: true,
     caption: {
-      el: 'Σταγόνα σταγόνα. Καφές, όχι βιομηχανία.',
-      en: 'Drop by drop. Coffee, not a production line.',
+      el: 'Ένας espresso και φεύγεις; 2€, Ρόδου 68, από τις 07:00.',
+      en: 'An espresso and off you go? €2, Rodou 68, from 7am.',
     },
   },
   {
@@ -600,9 +600,9 @@ const POSTS = [
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">Καθε παραγγελια</div>
-        <h1 class="sm">Φτιαγμένη<br><em>τη στιγμή.</em></h1>
+        <h1 class="sm">Φτιάχνεται<br><em>όταν τη ζητάς.</em></h1>
         <div class="rule"></div>
-        <div class="lede">Όχι κουμπί, όχι μηχανή που αποφασίζει.</div>
+        <div class="lede">Ρόδου 68, από τις 07:00.</div>
       </div>`, bg, real),
     bg: photo('Screenshot_2026-09-20_21-36-24.png'),
     real: true,
@@ -753,11 +753,11 @@ const POSTS = [
       <img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">Απο πανω</div>
-        <h1 class="sm">Κλείσε το καπάκι.<br><em>Φύγαμε.</em></h1>
+        <h1 class="sm">Με καπάκι,<br><em>για τον δρόμο.</em></h1>
       </div>`, null, false, 'cupground'),
     caption: {
-      el: `Κλείσε το καπάκι, φύγαμε. Ο καφές σου, έτοιμος για το δρόμο. Ρόδου 68, κάθε μέρα 07:00 – 22:00. ${TAG_US.el}`,
-      en: `Snap the lid on and go. Your coffee, ready for the road. Rodou 68, every day 07:00 – 22:00. ${TAG_US.en}`,
+      el: `Με καπάκι, για τον δρόμο. Ρόδου 68, κάθε μέρα 07:00 – 22:00. ${TAG_US.el}`,
+      en: `With a lid, for the road. Rodou 68, every day 07:00 – 22:00. ${TAG_US.en}`,
     },
   },
   {
@@ -871,15 +871,15 @@ const POSTS = [
       <img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">Απο τη μηχανη</div>
-        <h1 class="sm">Κατευθείαν<br><em>σε σένα.</em></h1>
+        <h1 class="sm">Espresso<br><em>2€.</em></h1>
         <div class="rule"></div>
-        <div class="lede">Espresso 2€, για εδώ ή για το δρόμο.</div>
+        <div class="lede">Για εδώ ή για το δρόμο.</div>
       </div>`, bg, real),
     bg: photo('Screenshot_2026-09-20_21-35-16.png'),
     real: true,
     caption: {
-      el: 'Από τη μηχανή, κατευθείαν σε σένα. Espresso 2€, για εδώ ή για το δρόμο.',
-      en: 'Straight from the machine to you. Espresso €2, for here or to go.',
+      el: 'Espresso 2€, για εδώ ή για το δρόμο.',
+      en: 'Espresso €2, for here or to go.',
     },
   },
   {
@@ -891,14 +891,14 @@ const POSTS = [
         <div class="kicker">Φρεσκο αλεσμα</div>
         <h1 class="sm">Αλέθεται<br><em>τη στιγμή.</em></h1>
         <div class="rule"></div>
-        <div class="lede">Φρέσκος καφές, φτιαγμένος με μεράκι.</div>
+        <div class="lede">Φρέσκος καφές, κάθε μέρα από τις 07:00.</div>
       </div>`, bg, real),
     // Not 21-35-35: its chalkboard shows a happy-hour offer that isn't on the site.
     bg: photo('Screenshot_2026-09-20_21-36-37.png'),
     real: true,
     caption: {
-      el: 'Αλέθεται τη στιγμή. Φρέσκος καφές, φτιαγμένος με μεράκι, κάθε μέρα από τις 07:00.',
-      en: 'Ground on the spot. Fresh coffee, made with love, every day from 7am.',
+      el: 'Αλέθεται τη στιγμή. Φρέσκος καφές, κάθε μέρα από τις 07:00.',
+      en: 'Ground on the spot. Fresh coffee, every day from 7am.',
     },
   },
   // ─── Photographer shoot, 2026-10-26 (social/photos/shoot/). One shot per feed post. Strong shots
@@ -1140,15 +1140,15 @@ const POSTS = [
       extra: rows(COFFEE) }) },
   {
     id: 'shop-carousel-1',
-    html: () => series({ ground: 'black', tag: 'Συρε →', say: 'Ρόδου 68.<br><em>Πάμε μια βόλτα.</em>', cls: 'sm' }),
+    html: () => series({ ground: 'black', tag: 'Συρε →', say: 'Ρόδου 68.<br><em>Δες το μαγαζί.</em>', cls: 'sm' }),
     caption: {
-      el: 'Ρόδου 68, πάμε μια βόλτα. Σύρε, και μετά πέρνα από κοντά: κάθε μέρα 07:00 – 22:00.',
-      en: 'Rodou 68, a quick tour. Swipe, then come see it in person: every day 07:00 – 22:00.',
+      el: 'Το μαγαζί στη Ρόδου 68. Σύρε για φωτογραφίες. Ανοιχτά κάθε μέρα 07:00 – 22:00.',
+      en: 'The shop at Rodou 68. Swipe for photos. Open every day 07:00 – 22:00.',
     },
   },
   { id: 'shop-carousel-2', bare: 'beans-hopper', fixed: true },
   { id: 'shop-carousel-3', bare: 'drip-close', fixed: true },
-  { id: 'shop-carousel-4', html: () => series({ ground: 'gold', tag: '07:00', say: 'Τα λέμε<br><em>από κοντά.</em>',
+  { id: 'shop-carousel-4', html: () => series({ ground: 'gold', tag: '07:00', say: 'Σε<br><em>περιμένουμε.</em>',
       sub: 'Ρόδου 68, Κάτω Πατήσια. Κάθε μέρα 07:00 – 22:00.' }) },
   {
     id: 'vitrine-carousel-1',

@@ -277,7 +277,7 @@ const REELS = [
     photo: true,
     seconds: 10,
     back: shots([['storefront-leaves', 0, 2.5, 1, 1.05, 0, true], ['storefront-glass', 2.5, 5, 1, 1.05, 0, true], ['sign-round', 5, 7.5, 1, 1.05, 0, true], ['interior', 7.5, 11]]),
-    front: lines('Ροδου 68', [['Η γωνιά σου<br><em>στα Πατήσια.</em>', 0.4, 4.9], ['Από <em>το 2024.</em>', 5.1, 7.4], ['Κάτσε <em>λίγο.</em>', 7.6, 99]],
+    front: lines('Ροδου 68', [['Ανοιχτά<br><em>κάθε μέρα.</em>', 0.4, 4.9], ['Από <em>το 2024.</em>', 5.1, 7.4], ['Κάτσε <em>λίγο.</em>', 7.6, 99]],
       ['Κάθε μέρα 07:00 – 22:00', 8.2]),
     frame: (s, $) => $.photos(s),
     caption: {
@@ -290,7 +290,7 @@ const REELS = [
     photo: true,
     seconds: 10,
     back: shots([['vitrine-tall', 0, 2], ['pastry-sesame', 2, 4], ['vitrine-peinirli', 4, 6], ['pie-macro', 6, 8], ['snack-cup', 8, 11, 1, 1.05, 0, true]]), // whole: the cup sits on the edge
-    front: lines('Η βιτρινα', [['Κάτι για <em>λιγούρα;</em>', 0.4, 3.9], ['Πεϊνιρλί <em>2.80€.</em>', 4.1, 5.9], ['Μην <em>αντισταθείς.</em>', 6.1, 7.9], ['Πρωινό, <em>λυμένο.</em>', 8.1, 99]],
+    front: lines('Η βιτρινα', [['Κάτι για <em>λιγούρα;</em>', 0.4, 3.9], ['Πεϊνιρλί <em>2.80€.</em>', 4.1, 5.9], ['Τυρόπιτα <em>1.60€.</em>', 6.1, 7.9], ['Και ένας <em>καφές.</em>', 8.1, 99]],
       ['Από τις 07:00, Ρόδου 68', 8.6]),
     frame: (s, $) => $.photos(s),
     caption: {
@@ -336,7 +336,7 @@ const REELS = [
     photo: true,
     seconds: 10,
     back: shots([['staff-profile', 0, 2.5], ['staff-wide', 2.5, 5], ['milk-steam', 5, 7.5], ['staff-cup', 7.5, 11]]), // not apron-cup: the mark sat on its logo
-    front: lines('Πισω απο τον παγκο', [['<em>Καλημέρα.</em>', 0.4, 4.9], ['Κάθε <em>παραγγελία.</em>', 5.1, 7.4], ['Για <em>σένα.</em>', 7.6, 99]],
+    front: lines('Πισω απο τον παγκο', [['<em>Καλημέρα.</em>', 0.4, 4.9], ['Τι θα <em>πάρεις;</em>', 5.1, 7.4], ['Ρόδου <em>68.</em>', 7.6, 99]],
       ['Κάθε μέρα 07:00 – 22:00', 8.2]),
     frame: (s, $) => $.photos(s),
     caption: {
