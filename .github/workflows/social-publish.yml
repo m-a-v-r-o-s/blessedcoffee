@@ -19,6 +19,11 @@ on:
         type: choice
         options: [feed, story]
         default: feed
+      slot:
+        description: story slot (blank = by the clock)
+        type: choice
+        options: ['', morning, evening]
+        default: ''
 
 permissions:
   contents: write
@@ -46,7 +51,7 @@ jobs:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           MODE: ${{ github.event.inputs.mode || (github.event.schedule == '7 6 * * *' && 'feed' || 'story') }}
-          SLOT: ${{ github.event.schedule == '23 5 * * *' && 'morning' || (github.event.schedule == '23 15 * * *' && 'evening' || '') }}
+          SLOT: ${{ github.event.inputs.slot || (github.event.schedule == '23 5 * * *' && 'morning' || (github.event.schedule == '23 15 * * *' && 'evening' || '')) }}
         run: node social/publish.mjs "$MODE"
 
       - name: Commit updated state
