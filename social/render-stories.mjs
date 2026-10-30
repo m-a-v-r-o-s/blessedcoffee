@@ -402,8 +402,8 @@ const STORIES = [
   // ─── Photographer shoot, 2026-10-26 (social/photos/shoot/). ──
   ...[
     ['ps-open', 'storefront-day', 'Καλημερα', 'Ανοίξαμε.<br><em>07:00.</em>', 'Ρόδου 68, Κάτω Πατήσια.', 'plate:2'],
-    ['ps-closing', 'shutter-christ-2', 'Ροδου 68', 'Έτσι θα<br><em>μας βρεις.</em>', 'Κάτω Πατήσια', 'plate:1.97'],
-    ['ps-faith', 'shutter-faith', 'Το μαγαζι', 'Ρόδου 68,<br><em>Κάτω Πατήσια.</em>', '', 'plate'],
+    ['ps-closing', 'shutter-christ-2', 'Διευθυνση', 'Θα μας βρεις<br><em>Ρόδου 68.</em>', 'Κάτω Πατήσια', 'plate:1.97'],
+    ['ps-faith', 'shutter-faith', 'Ροδου 68', 'Faith<br><em>over fear.</em>', '', 'plate'],
     ['ps-heaven', 'cup-black', 'Take away', 'Ένας<br><em>για τον δρόμο;</em>', 'Από τις 07:00'],
     ['ps-waiting', 'cup-counter-2', 'Σημερα', 'Έχεις πιει<br><em>καφέ ακόμα;</em>', 'Από τις 07:00'],
     ['ps-pair', 'cup-pair', 'Για δυο', 'Κερνάς<br><em>ή κερνάω;</em>', 'Κάνε tag τον φίλο σου.'],
@@ -413,15 +413,15 @@ const STORIES = [
     ['ps-crema', 'crema-double-2', 'Espresso', 'Ένας espresso<br><em>και φεύγεις;</em>', ''],
     ['ps-drop', 'last-drop', 'Espresso', 'Δεύτερος<br><em>καφές;</em>', 'Espresso 2€'],
     ['ps-beans', 'beans-macro', 'Καλημερα', 'Καλημέρα.<br><em>Έναν καφέ;</em>', ''],
-    ['ps-hopper', 'beans-hopper', 'Καθε μερα', 'Πρωί, μεσημέρι<br><em>ή βράδυ.</em>', '07:00 – 22:00'],
+    ['ps-hopper', 'beans-hopper', 'Καθε μερα', 'Σε περιμένουμε<br><em>πρωί, μεσημέρι<br>ή βράδυ.</em>', '07:00 – 22:00'],
     ['ps-mrs-rose', 'mrs-rose-tins', '', 'Ο κλασικός μας.<br><em>Espresso 2€.</em>', ''],
     ['ps-guide', 'coffee-guide', 'Ερωτηση', 'Τι πίνεις<br><em>σήμερα;</em>', 'Στείλε μας DM.'],
     ['ps-peinirli', 'vitrine-peinirli', 'Η βιτρινα', 'Πεϊνιρλί<br><em>2.80€.</em>', ''],
     ['ps-pies', 'vitrine-pies', 'Η βιτρινα', 'Τυρόπιτα<br><em>1.60€.</em>', 'Σπανακόπιτα 2.50€'],
     ['ps-craving', 'pastry-sesame', 'Λιγουρα', 'Πείνασες;<br><em>Δες τη βιτρίνα.</em>', 'Ρόδου 68'],
     ['ps-sesame', 'bread-sesame', 'Η βιτρινα', 'Κάτι να<br><em>τσιμπήσεις;</em>', ''],
-    ['ps-window', 'vitrine-window', 'Περνας;', 'Τι έχει η βιτρίνα<br><em>σήμερα;</em>', 'Ρόδου 68'],
-    ['ps-shift', 'staff-machine', 'Πισω απο τον παγκο', 'Ο καφές σου<br><em>φτιάχνεται εδώ.</em>', 'Από τις 07:00'],
+    ['ps-window', 'vitrine-window', 'Περνας;', 'Τι θα τσιμπήσουμε<br><em>σήμερα;</em>', 'Ρόδου 68'],
+    ['ps-shift', 'staff-machine', 'Πισω απο τον παγκο', 'Ο καφές σου<br><em>σε περιμένει.</em>', 'Από τις 07:00'],
     ['ps-smile', 'apron-cup', '', 'Καλημέρα<br><em>από τον πάγκο.</em>', '', 'plate'],
     ['ps-apron', 'apron-cup', '', 'Ένα cappuccino;<br><em>Έρχεται.</em>', '2.60€', 'plate'],
     ['ps-phone', 'staff-jacket', 'Τηλεφωνο', '<em>211 218 1815</em>', 'Ρόδου 68, Κάτω Πατήσια.'],
@@ -429,7 +429,7 @@ const STORIES = [
     ['ps-street', 'cup-street-left', 'Κανε tag', 'Το ποτήρι σου<br><em>στη γειτονιά.</em>', '@blessedcoffee2024'],
     ['ps-delivery', 'cup-counter', 'Delivery', 'Παράγγειλε<br><em>από το κινητό.</em>', 'e-food · Wolt · Box'],
     ['ps-summer', 'cup-street-left', 'Καλοκαιρι', 'Freddo<br><em>για τον δρόμο.</em>', 'Freddo espresso 2.40€'],
-    ['ps-winter-steam', 'espresso-steam', 'Espresso · 2€', 'Κρύο έξω;<br><em>Ζέστανε με έναν.</em>', ''],
+    ['ps-winter-steam', 'espresso-steam', 'Cappuccino · 2.60€', 'Κρύο έξω;<br><em>Ζεστό cappuccino μέσα.</em>', ''],
   ].map(([id, img, kicker, headline, lede, pos]) => ({ id, html: () => photoStory({ img: `shoot/${img}.jpg`, kicker, headline, lede, pos }) })),
   // ─── Round 2: the same photos with new lines, so the rotation runs twice as long before a story
   //     comes back word for word. Ids end in -2. ──

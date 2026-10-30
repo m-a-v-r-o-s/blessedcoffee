@@ -753,11 +753,11 @@ const POSTS = [
       <img class="mark" src="${logo}">
       <div class="body tight">
         <div class="kicker">Απο πανω</div>
-        <h1 class="sm">Με καπάκι,<br><em>για τον δρόμο.</em></h1>
+        <h1 class="sm">Πάρ' τον<br><em>και take away.</em></h1>
       </div>`, null, false, 'cupground'),
     caption: {
-      el: `Με καπάκι, για τον δρόμο. Ρόδου 68, κάθε μέρα 07:00 – 22:00. ${TAG_US.el}`,
-      en: `With a lid, for the road. Rodou 68, every day 07:00 – 22:00. ${TAG_US.en}`,
+      el: `Πάρ' τον και take away. Ρόδου 68, κάθε μέρα 07:00 – 22:00. ${TAG_US.el}`,
+      en: `Grab it and take it away. Rodou 68, every day 07:00 – 22:00. ${TAG_US.en}`,
     },
   },
   {
