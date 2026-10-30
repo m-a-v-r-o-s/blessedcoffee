@@ -169,7 +169,9 @@ const CSS = `
   .card.s-cream { background: #F3EDE4; --i: #0A0A0A; --m: #6B5A4C; --e: #8A6414; --line: #D9CFC2; }
   .card.s-winter { background: linear-gradient(180deg, #33231A 0%, #22170F 100%); --m: #B8A596; --line: #4A382C; }
   /* Photographer shot behind a series card: dark at the top for the headline, at the bottom for the rows. */
-  .card.s > .fade.both { background: linear-gradient(180deg, rgba(8,8,8,.9) 0%, rgba(8,8,8,.6) 30%, rgba(8,8,8,.25) 50%, rgba(6,6,6,.94) 86%); }
+  .card.s > .fade.both { background: linear-gradient(180deg, rgba(8,8,8,.9) 0%, rgba(8,8,8,.6) 30%, rgba(8,8,8,.25) 50%, rgba(6,6,6,.78) 64%, rgba(6,6,6,.94) 86%); }
+  /* Prices sit over the busiest part of the shot (the red Mrs Rose tin): fade alone left 2€ unreadable. */
+  .card.s.photo .row { text-shadow: 0 0 18px rgba(0,0,0,.95), 0 1px 4px rgba(0,0,0,.85); }
   .card.s-summer { background: #D7E6E8; --i: #0A0A0A; --m: #4F5F63; --e: #8A6414; --line: #B5C8CB; }
   .s-gold .mark, .s-cream .mark, .s-summer .mark { filter: none; }
   /* Any ground with a photo behind it goes light-on-dark, whatever its own colours are. */
