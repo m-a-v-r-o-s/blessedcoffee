@@ -161,7 +161,7 @@ PROGS = {
 REELS = {
     'reel-day': dict(sec=12, bpm=100, prog='window', lead='marimba', groove='four', start=0, sweep=True,
         fx=[('bell', 10.6, .4, 77)], ticks=True,
-        what='A clock-tick groove in F, 100 BPM: marimba and a ticking hi-hat while the clock runs 07:00 to 22:00. The tone starts soft, opens up around midday and mellows toward the evening, ending on one soft chime.'),
+        what='A clock-tick groove in F, 100 BPM: marimba and a ticking hi-hat while the clock runs 06:00 to 22:00. The tone starts soft, opens up around midday and mellows toward the evening, ending on one soft chime.'),
     'reel-reveal': dict(sec=8, bpm=84, prog='morning', lead='pad', groove='lofi', start=4.2,
         fx=[('riser', 1.2, .5, 3.0), ('bell', 4.2, .45, 75), ('bell', 4.45, .3, 82)],
         what='Opens on a slow pad while the cup turns into the light, a riser into the reveal, two bells on "A taste of heaven", then a gentle beat underneath.'),
@@ -363,7 +363,7 @@ REDO = {
         what='Calm, warm guitar loop in F, 72 BPM: picked guitar over soft shaker, no drums to speak of, repeating seamlessly while the slogan ring turns.'),
     'reel-hours': dict(gain_db=-1.9, sec=10, bpm=84, prog='sunrise', groove='none', chords='organ', arp=None,
         climb=('vibes', .4), cues=[('note', 7.6, .45, 'bell', 81)],
-        what='A gentle vibraphone melody in D that climbs as the sun rises and comes back down as it sets, over a soft organ and bass, no drums. A chime when "07:00 to 22:00" appears.'),
+        what='A gentle vibraphone melody in D that climbs as the sun rises and comes back down as it sets, over a soft organ and bass, no drums. A chime when "06:00 to 22:00" appears.'),
 }
 
 

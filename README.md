@@ -89,7 +89,7 @@ AI-generated imagery.
 | `node social/render-reels.mjs [ids]` | Reels (MP4, 1080x1920) built around the 3D cup, into `social/library-reels/` |
 | `node social/cup/shots.mjs [ids]` | Posed transparent stills of the 3D cup (`social/cup/`) used by the cards |
 
-The library is organised as recurring series, each on its own colour: **07:00** (early mornings),
+The library is organised as recurring series, each on its own colour: **06:00** (early mornings),
 **Στο μενού** (menu and prices), **Είπατε** (real Google reviews), seasonal coffee (hot espresso and
 cappuccino in winter, freddos in summer), plus occasion greetings. Real photos are in
 `social/photos/`; each photo backs one feed post, and stories may reuse photos with a different line.

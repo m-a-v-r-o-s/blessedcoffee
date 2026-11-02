@@ -60,7 +60,7 @@ try {
   assert.equal(process.exitCode, 1, 'unsafe draft fails the run so GitHub emails');
   process.exitCode = 0;
 
-  assert.equal(check('Ευχαριστούμε Μαρία! Τα λέμε από τις 07:00 ☕'), null);
+  assert.equal(check('Ευχαριστούμε Μαρία! Τα λέμε από τις 06:00 ☕'), null);
   assert.equal(check('see www.x.gr'), 'link');
   assert.equal(check('mail a@b.gr'), 'link');
   assert.equal(check('mail me@blessed'), 'email');

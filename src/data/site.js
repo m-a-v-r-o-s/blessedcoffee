@@ -21,7 +21,7 @@ export const SHOPS = [
     locality: { el: 'Αθήνα', en: 'Athens' },
     postal: '104 45',
     phones: ['+302112181815', '+306932917800'],
-    hours: { opens: '07:00', closes: '22:00' },
+    hours: { opens: '06:00', closes: '22:00' },
     geo: { lat: 38.0039997, lng: 23.7243728 },
     query: 'Blessed Coffee, Ρόδου 68, Αθήνα 104 45',
     embed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3143.848258999412!2d23.72437279554395!3d38.00399970171721!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a1a2d0879e2663%3A0xae1b9a8dccbf3a7e!2zzqHPjM60zr_PhSA2OCwgzpHOuM6uzr3OsSAxMDQgNDU!5e0!3m2!1sel!2sgr!4v1779614962924!5m2!1sel!2sgr',

@@ -210,7 +210,7 @@ const shell = (inner, bg, real, cls = '') => `<div class="card ${cls}">
   <div class="foot"><span>${BRAND.address}</span><span>${BRAND.site}</span></div>
 </div>`;
 
-// Series card. ground: gold (07:00), cream (Είπατε, reviews), black (Στο μενού).
+// Series card. ground: gold (06:00), cream (Είπατε, reviews), black (Στο μενού).
 // Whenever one of these is priced next to any other product, all four show (owner, 2026-10-30).
 const COFFEE = [['Espresso', '2€'], ['Freddo espresso', '2.40€'], ['Cappuccino', '2.60€'], ['Freddo cappuccino', '2.60€']];
 const rows = (items) => `<div class="rows">${items.map(([k, v]) =>
@@ -250,60 +250,60 @@ const TAG_US = {
 // caption.el / caption.en are published together: the cafe serves both languages
 // and the existing feed already mixes them.
 const POSTS = [
-  // ─── 07:00: the morning-routine series, gold ground. Facts: hours + MENU only. ──
+  // ─── 06:00: the morning-routine series, gold ground. Facts: hours + MENU only. ──
   {
     id: 'early',
-    html: () => series({ ground: 'gold', tag: '07:00 · №01',
+    html: () => series({ ground: 'gold', tag: '06:00 · №01',
       say: 'Πρώτα<br>ο καφές.<br><em>Μετά όλα<br>τα άλλα.</em>',
-      sub: 'Ανοιχτά κάθε μέρα από τις 07:00.' }),
+      sub: 'Ανοιχτά κάθε μέρα από τις 06:00.' }),
     caption: {
-      el: `Πρώτα ο καφές, μετά όλα τα άλλα. Ανοιχτά κάθε μέρα από τις 07:00, Ρόδου 68. ${TAG_US.el}`,
-      en: `Coffee first, everything else after. Open every day from 7am, Rodou 68. ${TAG_US.en}`,
+      el: `Πρώτα ο καφές, μετά όλα τα άλλα. Ανοιχτά κάθε μέρα από τις 06:00, Ρόδου 68. ${TAG_US.el}`,
+      en: `Coffee first, everything else after. Open every day from 6am, Rodou 68. ${TAG_US.en}`,
     },
   },
   {
     id: '0700-alarm',
-    html: () => series({ ground: 'gold', tag: '07:00 · №02',
-      say: 'Ξυπνητήρι:<br>06:45.<br><em>Blessed:<br>07:00.</em>',
+    html: () => series({ ground: 'gold', tag: '06:00 · №02',
+      say: 'Ξυπνητήρι:<br>05:45.<br><em>Blessed:<br>06:00.</em>',
       sub: 'Κάθε μέρα. Ρόδου 68, Κάτω Πατήσια.' }),
     caption: {
-      el: `Ξυπνητήρι 06:45, Blessed 07:00. Κάθε μέρα, Ρόδου 68. ${TAG_US.el}`,
-      en: `Alarm at 6:45, Blessed at 7:00. Every day, Rodou 68. ${TAG_US.en}`,
+      el: `Ξυπνητήρι 05:45, Blessed 06:00. Κάθε μέρα, Ρόδου 68. ${TAG_US.el}`,
+      en: `Alarm at 5:45, Blessed at 6:00. Every day, Rodou 68. ${TAG_US.en}`,
     },
   },
   {
     id: '0700-first',
-    html: () => series({ ground: 'gold', tag: '07:00 · №03',
+    html: () => series({ ground: 'gold', tag: '06:00 · №03',
       say: 'Μη μου<br>μιλάς πριν<br>τον <em>πρώτο.</em>',
-      sub: 'Εμείς καταλαβαίνουμε. Από τις 07:00.' }),
+      sub: 'Εμείς καταλαβαίνουμε. Από τις 06:00.' }),
     caption: {
-      el: `Μη μου μιλάς πριν τον πρώτο καφέ. Εμείς καταλαβαίνουμε, από τις 07:00. ${TAG_US.el}`,
-      en: `Don't talk to me before the first coffee. We get it, from 7am. ${TAG_US.en}`,
+      el: `Μη μου μιλάς πριν τον πρώτο καφέ. Εμείς καταλαβαίνουμε, από τις 06:00. ${TAG_US.el}`,
+      en: `Don't talk to me before the first coffee. We get it, from 6am. ${TAG_US.en}`,
     },
   },
   {
     id: '0700-breakfast',
-    html: () => series({ ground: 'gold', tag: '07:00 · №04',
+    html: () => series({ ground: 'gold', tag: '06:00 · №04',
       say: 'Μπουγάτσα<br>και freddo.<br><em>Πρωινό.</em>',
       extra: rows([['Μπουγάτσα κρέμα', '2.80€'], ...COFFEE]) }),
     caption: {
-      el: `Μπουγάτσα κρέμα 2.80€, espresso 2€, freddo espresso 2.40€, cappuccino 2.60€, freddo cappuccino 2.60€. Το πρωινό, λυμένο. Από τις 07:00. ${TAG_US.el}`,
-      en: `Cream bougatsa €2.80, espresso €2, freddo espresso €2.40, cappuccino €2.60, freddo cappuccino €2.60. Breakfast, sorted. From 7am. ${TAG_US.en}`,
+      el: `Μπουγάτσα κρέμα 2.80€, espresso 2€, freddo espresso 2.40€, cappuccino 2.60€, freddo cappuccino 2.60€. Το πρωινό, λυμένο. Από τις 06:00. ${TAG_US.el}`,
+      en: `Cream bougatsa €2.80, espresso €2, freddo espresso €2.40, cappuccino €2.60, freddo cappuccino €2.60. Breakfast, sorted. From 6am. ${TAG_US.en}`,
     },
   },
   {
     id: '0700-sunday',
-    html: () => series({ ground: 'gold', tag: '07:00 · №05',
+    html: () => series({ ground: 'gold', tag: '06:00 · №05',
       say: 'Κυριακή;<br><em>Ανοιχτά.</em>',
-      sub: 'Κάθε μέρα 07:00 – 22:00. Ναι, κάθε μέρα.' }),
+      sub: 'Κάθε μέρα 06:00 – 22:00. Ναι, κάθε μέρα.' }),
     caption: {
-      el: `Κυριακή; Ανοιχτά. Κάθε μέρα 07:00 – 22:00, Ρόδου 68. ${TAG_US.el}`,
-      en: `Sunday? Open. Every day 07:00 – 22:00, Rodou 68. ${TAG_US.en}`,
+      el: `Κυριακή; Ανοιχτά. Κάθε μέρα 06:00 – 22:00, Ρόδου 68. ${TAG_US.el}`,
+      en: `Sunday? Open. Every day 06:00 – 22:00, Rodou 68. ${TAG_US.en}`,
     },
   },
   {
     id: '0700-late',
-    html: () => series({ ground: 'gold', tag: '07:00 · №06',
+    html: () => series({ ground: 'gold', tag: '06:00 · №06',
       say: 'Άργησες;<br>Είμαστε εδώ<br>ως τις <em>22:00.</em>',
       sub: 'Για τον δεύτερο. Ή τον τρίτο.' }),
     caption: {
@@ -319,10 +319,10 @@ const POSTS = [
     html: () => series({ ground: 'summer', tag: 'Καλοκαίρι · №01', img: shoot('summer-freddo'),
       say: 'Καύσωνας;<br><em>Freddo.</em>',
       extra: rows(COFFEE),
-      sub: 'Με πολύ πάγο, από τις 07:00.' }),
+      sub: 'Με πολύ πάγο, από τις 06:00.' }),
     caption: {
-      el: `Καύσωνας; Freddo. Freddo espresso 2.40€, freddo cappuccino 2.60€, με πολύ πάγο. Espresso 2€, cappuccino 2.60€. Ρόδου 68, κάθε μέρα από τις 07:00. ${TAG_US.el}`,
-      en: `Heatwave? Freddo. Freddo espresso €2.40, freddo cappuccino €2.60, plenty of ice. Espresso €2, cappuccino €2.60. Rodou 68, every day from 7am. ${TAG_US.en}`,
+      el: `Καύσωνας; Freddo. Freddo espresso 2.40€, freddo cappuccino 2.60€, με πολύ πάγο. Espresso 2€, cappuccino 2.60€. Ρόδου 68, κάθε μέρα από τις 06:00. ${TAG_US.el}`,
+      en: `Heatwave? Freddo. Freddo espresso €2.40, freddo cappuccino €2.60, plenty of ice. Espresso €2, cappuccino €2.60. Rodou 68, every day from 6am. ${TAG_US.en}`,
     },
   },
   {
@@ -341,10 +341,10 @@ const POSTS = [
     html: () => series({ ground: 'winter', tag: 'Χειμώνας · №01', img: shoot('espresso-steam'),
       say: 'Κρύο έξω.<br><em>Espresso μέσα.</em>', cls: 'sm', // two lines: a third sat on the cup's logo
       extra: rows([['Espresso', '2€']]),
-      sub: 'Ζεστός, από τις 07:00.' }),
+      sub: 'Ζεστός, από τις 06:00.' }),
     caption: {
-      el: `Κρύο έξω, espresso μέσα. Espresso 2€, κάθε μέρα από τις 07:00, Ρόδου 68. ${TAG_US.el}`,
-      en: `Cold outside, espresso inside. Espresso €2, every day from 7am, Rodou 68. ${TAG_US.en}`,
+      el: `Κρύο έξω, espresso μέσα. Espresso 2€, κάθε μέρα από τις 06:00, Ρόδου 68. ${TAG_US.el}`,
+      en: `Cold outside, espresso inside. Espresso €2, every day from 6am, Rodou 68. ${TAG_US.en}`,
     },
   },
   {
@@ -354,19 +354,19 @@ const POSTS = [
       extra: rows([['Cappuccino', '2.60€']]),
       sub: 'Πάρ\' τον μαζί σου, σε ζεσταίνει ως τη δουλειά.' }),
     caption: {
-      el: `Cappuccino 2.60€, για τα κρύα πρωινά. Πάρ' τον μαζί σου, σε ζεσταίνει ως τη δουλειά. Από τις 07:00. ${TAG_US.el}`,
-      en: `Cappuccino €2.60, for the cold mornings. Take it with you, it keeps you warm all the way to work. From 7am. ${TAG_US.en}`,
+      el: `Cappuccino 2.60€, για τα κρύα πρωινά. Πάρ' τον μαζί σου, σε ζεσταίνει ως τη δουλειά. Από τις 06:00. ${TAG_US.el}`,
+      en: `Cappuccino €2.60, for the cold mornings. Take it with you, it keeps you warm all the way to work. From 6am. ${TAG_US.en}`,
     },
   },
   // ─── Στο μενού: the promos, black ground. Priced straight from MENU in src/App.jsx. ──
   {
     id: 'hours',
     html: () => series({ ground: 'black', tag: 'Στο μενού · Ωράριο',
-      say: '07:00 –<br>22:00.<br><em>Κάθε μέρα.</em>',
+      say: '06:00 –<br>22:00.<br><em>Κάθε μέρα.</em>',
       sub: 'Ναι, και Κυριακή.' }),
     caption: {
-      el: 'Είμαστε εδώ από τις 7 το πρωί ως τις 10 το βράδυ, κάθε μέρα. Και Κυριακή.',
-      en: 'We open at 7am and close at 10pm, every day. Sundays too.',
+      el: 'Είμαστε εδώ από τις 6 το πρωί ως τις 10 το βράδυ, κάθε μέρα. Και Κυριακή.',
+      en: 'We open at 6am and close at 10pm, every day. Sundays too.',
     },
   },
   {
@@ -376,8 +376,8 @@ const POSTS = [
       extra: rows([['Freddo espresso', '2.40€'], ['Cappuccino', '2.60€'], ['Freddo cappuccino', '2.60€']]),
       sub: 'Αυτό. Δεν έχουμε κάτι άλλο να πούμε.' }),
     caption: {
-      el: 'Espresso 2€. Freddo espresso 2.40€. Cappuccino 2.60€. Freddo cappuccino 2.60€. Στα Κάτω Πατήσια, κάθε μέρα από τις 07:00.',
-      en: 'Espresso €2. Freddo espresso €2.40. Cappuccino €2.60. Freddo cappuccino €2.60. Kato Patisia, every day from 7am.',
+      el: 'Espresso 2€. Freddo espresso 2.40€. Cappuccino 2.60€. Freddo cappuccino 2.60€. Στα Κάτω Πατήσια, κάθε μέρα από τις 06:00.',
+      en: 'Espresso €2. Freddo espresso €2.40. Cappuccino €2.60. Freddo cappuccino €2.60. Kato Patisia, every day from 6am.',
     },
   },
   {
@@ -523,8 +523,8 @@ const POSTS = [
         <div class="lede">Ρόδου 68.</div>
       </div>`, bg, real),
     caption: {
-      el: 'Ρόδου 68, Κάτω Πατήσια. Κάθε μέρα 07:00 – 22:00.',
-      en: 'Rodou 68, Kato Patisia. Every day 07:00 – 22:00.',
+      el: 'Ρόδου 68, Κάτω Πατήσια. Κάθε μέρα 06:00 – 22:00.',
+      en: 'Rodou 68, Kato Patisia. Every day 06:00 – 22:00.',
     },
   },
   {
@@ -532,14 +532,14 @@ const POSTS = [
     html: (bg, real) =>
       shell(`<img class="mark" src="${logo}">
       <div class="body tight">
-        <div class="kicker">07:00</div>
-        <h1 class="sm">Ανοίγουμε<br><em>στις 07:00.</em></h1>
+        <div class="kicker">06:00</div>
+        <h1 class="sm">Ανοίγουμε<br><em>στις 06:00.</em></h1>
         <div class="rule"></div>
-        <div class="lede">Ανοιχτά κάθε μέρα από τις 07:00.</div>
+        <div class="lede">Ανοιχτά κάθε μέρα από τις 06:00.</div>
       </div>`, bg, real),
     caption: {
-      el: 'Ανοίγουμε στις 07:00, κάθε μέρα.',
-      en: 'We open at 7am, every day.',
+      el: 'Ανοίγουμε στις 06:00, κάθε μέρα.',
+      en: 'We open at 6am, every day.',
     },
   },
   // ─── Real shop photography. No scrim tricks needed, this is the actual product. ──
@@ -573,8 +573,8 @@ const POSTS = [
     bg: photo('Screenshot_2026-09-20_21-34-43.png'),
     real: true,
     caption: {
-      el: 'Cappuccino 2.60€, με φρέσκο γάλα. Ρόδου 68, από τις 07:00.',
-      en: 'Cappuccino €2.60, with fresh milk. Rodou 68, from 7am.',
+      el: 'Cappuccino 2.60€, με φρέσκο γάλα. Ρόδου 68, από τις 06:00.',
+      en: 'Cappuccino €2.60, with fresh milk. Rodou 68, from 6am.',
     },
   },
   {
@@ -585,13 +585,13 @@ const POSTS = [
         <div class="kicker">Espresso</div>
         <h1 class="sm">Ένας espresso<br><em>και φεύγεις;</em></h1>
         <div class="rule"></div>
-        <div class="lede">2€, από τις 07:00.</div>
+        <div class="lede">2€, από τις 06:00.</div>
       </div>`, bg, real),
     bg: photo('Screenshot_2026-09-20_21-34-55.png'),
     real: true,
     caption: {
-      el: 'Ένας espresso και φεύγεις; 2€, Ρόδου 68, από τις 07:00.',
-      en: 'An espresso and off you go? €2, Rodou 68, from 7am.',
+      el: 'Ένας espresso και φεύγεις; 2€, Ρόδου 68, από τις 06:00.',
+      en: 'An espresso and off you go? €2, Rodou 68, from 6am.',
     },
   },
   {
@@ -602,7 +602,7 @@ const POSTS = [
         <div class="kicker">Καθε παραγγελια</div>
         <h1 class="sm">Φτιάχνεται<br><em>όταν τη ζητάς.</em></h1>
         <div class="rule"></div>
-        <div class="lede">Ρόδου 68, από τις 07:00.</div>
+        <div class="lede">Ρόδου 68, από τις 06:00.</div>
       </div>`, bg, real),
     bg: photo('Screenshot_2026-09-20_21-36-24.png'),
     real: true,
@@ -733,11 +733,11 @@ const POSTS = [
         <div class="kicker">Take away</div>
         <h1>Πάρ' τον<br><em>μαζί</em><br>σου.</h1>
         <div class="rule"></div>
-        <div class="lede" style="max-width:12ch">Κάθε μέρα, 07:00 – 22:00.</div>
+        <div class="lede" style="max-width:12ch">Κάθε μέρα, 06:00 – 22:00.</div>
       </div>`, null, false, 'cupground'),
     caption: {
-      el: `Πάρ' τον μαζί σου. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα 07:00 – 22:00. ${TAG_US.el}`,
-      en: `Take it with you. Rodou 68, Kato Patisia, every day 07:00 – 22:00. ${TAG_US.en}`,
+      el: `Πάρ' τον μαζί σου. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα 06:00 – 22:00. ${TAG_US.el}`,
+      en: `Take it with you. Rodou 68, Kato Patisia, every day 06:00 – 22:00. ${TAG_US.en}`,
     },
   },
   {
@@ -747,7 +747,7 @@ const POSTS = [
       <svg class="shot" viewBox="0 0 1000 1000" style="width:1000px;left:40px;top:10px">
         <defs><path id="ring" d="M500,500 m-405,0 a405,405 0 1,1 810,0 a405,405 0 1,1 -810,0"/></defs>
         <text font-family="Barlow Semi Condensed" font-weight="600" font-size="30" fill="${BRAND.gold}">
-          <textPath href="#ring" textLength="2500" lengthAdjust="spacing">ΡΟΔΟΥ 68 · ΚΑΤΩ ΠΑΤΗΣΙΑ · ΚΑΘΕ ΜΕΡΑ 07:00 – 22:00 · BLESSED.CAFE ·</textPath>
+          <textPath href="#ring" textLength="2500" lengthAdjust="spacing">ΡΟΔΟΥ 68 · ΚΑΤΩ ΠΑΤΗΣΙΑ · ΚΑΘΕ ΜΕΡΑ 06:00 – 22:00 · BLESSED.CAFE ·</textPath>
         </text>
       </svg>
       <img class="mark" src="${logo}">
@@ -756,8 +756,8 @@ const POSTS = [
         <h1 class="sm">Πάρ' τον<br><em>και take away.</em></h1>
       </div>`, null, false, 'cupground'),
     caption: {
-      el: `Πάρ' τον και take away. Ρόδου 68, κάθε μέρα 07:00 – 22:00. ${TAG_US.el}`,
-      en: `Grab it and take it away. Rodou 68, every day 07:00 – 22:00. ${TAG_US.en}`,
+      el: `Πάρ' τον και take away. Ρόδου 68, κάθε μέρα 06:00 – 22:00. ${TAG_US.el}`,
+      en: `Grab it and take it away. Rodou 68, every day 06:00 – 22:00. ${TAG_US.en}`,
     },
   },
   {
@@ -780,8 +780,8 @@ const POSTS = [
         <div class="el">Σε ποτήρι που κρατάει ζεστό τον δρόμο.</div>
       </div>`, null, false, 'cupground'),
     caption: {
-      el: 'Espresso 2€, americano 2€, macchiato 2.10€, cappuccino 2.60€, cappuccino latte 2.70€, freddo espresso 2.40€, freddo cappuccino 2.60€. Στη Ρόδου 68, κάθε μέρα από τις 07:00.',
-      en: 'Espresso €2, americano €2, macchiato €2.10, cappuccino €2.60, cappuccino latte €2.70, freddo espresso €2.40, freddo cappuccino €2.60. Rodou 68, every day from 7am.',
+      el: 'Espresso 2€, americano 2€, macchiato 2.10€, cappuccino 2.60€, cappuccino latte 2.70€, freddo espresso 2.40€, freddo cappuccino 2.60€. Στη Ρόδου 68, κάθε μέρα από τις 06:00.',
+      en: 'Espresso €2, americano €2, macchiato €2.10, cappuccino €2.60, cappuccino latte €2.70, freddo espresso €2.40, freddo cappuccino €2.60. Rodou 68, every day from 6am.',
     },
   },
   // Carousel: cover, one slide per label panel, then where and when. Publish as one post, in order.
@@ -839,7 +839,7 @@ const POSTS = [
         <div class="kicker">Βρες το εδω</div>
         <h1 class="sm">Ρόδου 68,<br><em>Κάτω Πατήσια.</em></h1>
         <div class="rows" style="width:100%;margin-top:14px">
-          <div class="row"><span class="k">ΚΑΘΕ ΜΕΡΑ</span><span class="dots"></span><span class="v">07:00 – 22:00</span></div>
+          <div class="row"><span class="k">ΚΑΘΕ ΜΕΡΑ</span><span class="dots"></span><span class="v">06:00 – 22:00</span></div>
         </div>
       </div>`, null, false, 'cupground'),
   },
@@ -891,14 +891,14 @@ const POSTS = [
         <div class="kicker">Φρεσκο αλεσμα</div>
         <h1 class="sm">Αλέθεται<br><em>τη στιγμή.</em></h1>
         <div class="rule"></div>
-        <div class="lede">Φρέσκος καφές, κάθε μέρα από τις 07:00.</div>
+        <div class="lede">Φρέσκος καφές, κάθε μέρα από τις 06:00.</div>
       </div>`, bg, real),
     // Not 21-35-35: its chalkboard shows a happy-hour offer that isn't on the site.
     bg: photo('Screenshot_2026-09-20_21-36-37.png'),
     real: true,
     caption: {
-      el: 'Φρέσκος καφές, κάθε μέρα από τις 07:00.',
-      en: 'Fresh coffee, every day from 7am.',
+      el: 'Φρέσκος καφές, κάθε μέρα από τις 06:00.',
+      en: 'Fresh coffee, every day from 6am.',
     },
   },
   // ─── Photographer shoot, 2026-10-26 (social/photos/shoot/). One shot per feed post. Strong shots
@@ -909,8 +909,8 @@ const POSTS = [
   {
     id: 'shop-storefront', bare: 'storefront-day', keep: 0.62, // trims the round sign the frame cuts
     caption: {
-      el: 'Εδώ ξεκινάει η μέρα. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα από τις 07:00.',
-      en: 'This is where the day starts. Rodou 68, Kato Patisia, every day from 7am.',
+      el: 'Εδώ ξεκινάει η μέρα. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα από τις 06:00.',
+      en: 'This is where the day starts. Rodou 68, Kato Patisia, every day from 6am.',
     },
   },
   {
@@ -930,15 +930,15 @@ const POSTS = [
   {
     id: 'shop-shutter', bare: 'shutter-christ-2', keep: 0.76, // trims the round sign the frame cuts
     caption: {
-      el: 'Αν βλέπεις το ρολό, είναι πριν τις 07:00 ή μετά τις 22:00. Όλες τις άλλες ώρες, ελάτε μέσα.',
-      en: 'If you can see the shutter, it is before 07:00 or after 22:00. Any other time, come on in.',
+      el: 'Αν βλέπεις το ρολό, είναι πριν τις 06:00 ή μετά τις 22:00. Όλες τις άλλες ώρες, ελάτε μέσα.',
+      en: 'If you can see the shutter, it is before 06:00 or after 22:00. Any other time, come on in.',
     },
   },
   {
     id: 'shop-inside', bare: 'interior-wide',
     caption: {
-      el: 'Κάτσε λίγο. Τα mail μπορούν να περιμένουν. Ρόδου 68, κάθε μέρα 07:00 – 22:00.',
-      en: 'Sit for a bit. The emails can wait. Rodou 68, every day 07:00 – 22:00.',
+      el: 'Κάτσε λίγο. Τα mail μπορούν να περιμένουν. Ρόδου 68, κάθε μέρα 06:00 – 22:00.',
+      en: 'Sit for a bit. The emails can wait. Rodou 68, every day 06:00 – 22:00.',
     },
   },
   {
@@ -956,24 +956,24 @@ const POSTS = [
       say: 'Ο κλασικός<br><em>μας.</em>',
       extra: rows(COFFEE) }),
     caption: {
-      el: 'Mrs Rose Caffè, ο κλασικός μας. Espresso 2€, freddo espresso 2.40€, cappuccino 2.60€, freddo cappuccino 2.60€. Ρόδου 68, από τις 07:00.',
-      en: 'Mrs Rose Caffè, our classic. Espresso €2, freddo espresso €2.40, cappuccino €2.60, freddo cappuccino €2.60. Rodou 68, from 7am.',
+      el: 'Mrs Rose Caffè, ο κλασικός μας. Espresso 2€, freddo espresso 2.40€, cappuccino 2.60€, freddo cappuccino 2.60€. Ρόδου 68, από τις 06:00.',
+      en: 'Mrs Rose Caffè, our classic. Espresso €2, freddo espresso €2.40, cappuccino €2.60, freddo cappuccino €2.60. Rodou 68, from 6am.',
     },
   },
   // Το ποτήρι
   {
     id: 'cup-slogan', bare: 'cup-black',
     caption: {
-      el: `Ένας καφές για τον δρόμο; Ρόδου 68, κάθε μέρα από τις 07:00. ${TAG_US.el}`,
-      en: `A coffee for the road? Rodou 68, every day from 7am. ${TAG_US.en}`,
+      el: `Ένας καφές για τον δρόμο; Ρόδου 68, κάθε μέρα από τις 06:00. ${TAG_US.el}`,
+      en: `A coffee for the road? Rodou 68, every day from 6am. ${TAG_US.en}`,
     },
   },
   {
     id: 'cup-ready',
     html: () => pro({ img: 'cup-counter', kicker: 'Take away', h1: 'Κόλλησες στην κίνηση;<br><em>Τουλάχιστον έχεις καφέ.</em>', sm: true }),
     caption: {
-      el: `Κόλλησες στην κίνηση; Τουλάχιστον έχεις καφέ. Ρόδου 68, κάθε μέρα 07:00 – 22:00. ${TAG_US.el}`,
-      en: `Stuck in traffic? At least you have coffee. Rodou 68, every day 07:00 – 22:00. ${TAG_US.en}`,
+      el: `Κόλλησες στην κίνηση; Τουλάχιστον έχεις καφέ. Ρόδου 68, κάθε μέρα 06:00 – 22:00. ${TAG_US.el}`,
+      en: `Stuck in traffic? At least you have coffee. Rodou 68, every day 06:00 – 22:00. ${TAG_US.en}`,
     },
   },
   {
@@ -995,8 +995,8 @@ const POSTS = [
   {
     id: 'cup-foam', bare: 'foam-macro',
     caption: {
-      el: 'Η ζωή είναι μικρή για κακό cappuccino. 2.60€, κάθε μέρα από τις 07:00.',
-      en: 'Life is too short for a bad cappuccino. €2.60, every day from 7am.',
+      el: 'Η ζωή είναι μικρή για κακό cappuccino. 2.60€, κάθε μέρα από τις 06:00.',
+      en: 'Life is too short for a bad cappuccino. €2.60, every day from 6am.',
     },
   },
   {
@@ -1010,8 +1010,8 @@ const POSTS = [
   {
     id: 'bean-01', bare: 'beans-macro',
     caption: {
-      el: 'Πριν γίνει η καλημέρα σου. Ρόδου 68, από τις 07:00.',
-      en: 'Before it becomes your good morning. Rodou 68, from 7am.',
+      el: 'Πριν γίνει η καλημέρα σου. Ρόδου 68, από τις 06:00.',
+      en: 'Before it becomes your good morning. Rodou 68, from 6am.',
     },
   },
   {
@@ -1046,29 +1046,29 @@ const POSTS = [
   {
     id: 'team-01', bare: 'staff-machine',
     caption: {
-      el: 'Η παραγγελία σου, ξεκίνησε. Κάθε μέρα από τις 07:00.',
-      en: 'Your order, on its way. Every day from 7am.',
+      el: 'Η παραγγελία σου, ξεκίνησε. Κάθε μέρα από τις 06:00.',
+      en: 'Your order, on its way. Every day from 6am.',
     },
   },
   {
     id: 'team-02', bare: 'apron-cup',
     caption: {
-      el: 'Ένα cappuccino, έρχεται. 2.60€, κάθε μέρα από τις 07:00.',
-      en: 'One cappuccino, coming up. €2.60, every day from 7am.',
+      el: 'Ένα cappuccino, έρχεται. 2.60€, κάθε μέρα από τις 06:00.',
+      en: 'One cappuccino, coming up. €2.60, every day from 6am.',
     },
   },
   {
     id: 'team-phone', bare: 'staff-jacket',
     caption: {
-      el: 'Θα μας αναγνωρίσεις. Ή πάρε μας: 211 218 1815, Ρόδου 68, κάθε μέρα 07:00 – 22:00.',
-      en: "You'll recognise us. Or call: 211 218 1815, Rodou 68, every day 07:00 – 22:00.",
+      el: 'Θα μας αναγνωρίσεις. Ή πάρε μας: 211 218 1815, Ρόδου 68, κάθε μέρα 06:00 – 22:00.',
+      en: "You'll recognise us. Or call: 211 218 1815, Rodou 68, every day 06:00 – 22:00.",
     },
   },
   {
     id: 'team-03', bare: 'staff-back',
     caption: {
-      el: 'Εδώ από τις 07:00 ως τις 22:00. Πέρνα να πεις μια καλημέρα.',
-      en: 'Here from 07:00 to 22:00. Drop by and say good morning.',
+      el: 'Εδώ από τις 06:00 ως τις 22:00. Πέρνα να πεις μια καλημέρα.',
+      en: 'Here from 06:00 to 22:00. Drop by and say good morning.',
     },
   },
   // Η βιτρίνα: pastries. Only items identified for sure get a name and a MENU price.
@@ -1078,8 +1078,8 @@ const POSTS = [
       say: 'Πεϊνιρλί,<br><em>ζεστό.</em>', cls: 'sm',
       extra: rows([['Πεϊνιρλί', '2.80€'], ['Κρουασάν', '2.50€']]) }),
     caption: {
-      el: 'Πεϊνιρλί 2.80€, κρουασάν 2.50€. Φρέσκα στη βιτρίνα από τις 07:00.',
-      en: 'Peinirli €2.80, croissant €2.50. Fresh in the window from 7am.',
+      el: 'Πεϊνιρλί 2.80€, κρουασάν 2.50€. Φρέσκα στη βιτρίνα από τις 06:00.',
+      en: 'Peinirli €2.80, croissant €2.50. Fresh in the window from 6am.',
     },
   },
   {
@@ -1088,36 +1088,36 @@ const POSTS = [
       say: 'Πίτα;<br><em>Διάλεξε.</em>',
       extra: rows([['Τυρόπιτα', '1.60€'], ['Σπανακόπιτα', '2.50€'], ['Λουκανικόπιτα', '2.50€']]) }),
     caption: {
-      el: 'Τυρόπιτα 1.60€, σπανακόπιτα 2.50€, λουκανικόπιτα 2.50€. Διάλεξε, από τις 07:00.',
-      en: 'Cheese pie €1.60, spinach pie €2.50, sausage pie €2.50. Take your pick, from 7am.',
+      el: 'Τυρόπιτα 1.60€, σπανακόπιτα 2.50€, λουκανικόπιτα 2.50€. Διάλεξε, από τις 06:00.',
+      en: 'Cheese pie €1.60, spinach pie €2.50, sausage pie €2.50. Take your pick, from 6am.',
     },
   },
   {
     id: 'vitrine-craving', bare: 'pastry-sesame',
     caption: {
-      el: 'Κάτι για τη λιγούρα, όπως το είπε κι η Martha στο Google. Η βιτρίνα γεμίζει από τις 07:00.',
-      en: 'Something for the craving, as Martha put it on Google. The counter fills up from 7am.',
+      el: 'Κάτι για τη λιγούρα, όπως το είπε κι η Martha στο Google. Η βιτρίνα γεμίζει από τις 06:00.',
+      en: 'Something for the craving, as Martha put it on Google. The counter fills up from 6am.',
     },
   },
   {
     id: 'vitrine-plate', bare: 'pie-plate',
     caption: {
-      el: 'Δεν έφαγες πρωινό. Το ξέρουμε. Για εδώ ή για το δρόμο, από τις 07:00.',
-      en: "You skipped breakfast. We know. For here or to go, from 7am.",
+      el: 'Δεν έφαγες πρωινό. Το ξέρουμε. Για εδώ ή για το δρόμο, από τις 06:00.',
+      en: "You skipped breakfast. We know. For here or to go, from 6am.",
     },
   },
   {
     id: 'vitrine-window', bare: 'vitrine-window',
     caption: {
-      el: 'Ρίξε μια ματιά στη βιτρίνα και έλα να διαλέξεις. Σε περιμένουμε, Ρόδου 68, από τις 07:00.',
-      en: 'Take a look at the counter and come pick something. We will be here, Rodou 68, from 7am.',
+      el: 'Ρίξε μια ματιά στη βιτρίνα και έλα να διαλέξεις. Σε περιμένουμε, Ρόδου 68, από τις 06:00.',
+      en: 'Take a look at the counter and come pick something. We will be here, Rodou 68, from 6am.',
     },
   },
   {
     id: 'vitrine-snack', bare: 'snack-cup',
     caption: {
-      el: `Το πρωινό, λυμένο, από τις 07:00. ${TAG_US.el}`,
-      en: `Breakfast, sorted, from 7am. ${TAG_US.en}`,
+      el: `Το πρωινό, λυμένο, από τις 06:00. ${TAG_US.el}`,
+      en: `Breakfast, sorted, from 6am. ${TAG_US.en}`,
     },
   },
   // ─── Carousels from the shoot: a type cover, bare middle slides (4:5, or the whole shot on the
@@ -1126,8 +1126,8 @@ const POSTS = [
     id: 'bean-carousel-1',
     html: () => pro({ img: 'beans-pour', kicker: 'Συρε →', h1: 'Πώς γίνεται<br><em>ο καφές σου.</em>', sm: true }),
     caption: {
-      el: 'Πώς γίνεται ο καφές σου: άλεσμα, espresso, γάλα. Σύρε. Ρόδου 68, από τις 07:00.',
-      en: 'How your coffee gets made: grind, espresso, milk. Swipe. Rodou 68, from 7am.',
+      el: 'Πώς γίνεται ο καφές σου: άλεσμα, espresso, γάλα. Σύρε. Ρόδου 68, από τις 06:00.',
+      en: 'How your coffee gets made: grind, espresso, milk. Swipe. Rodou 68, from 6am.',
     },
   },
   { id: 'bean-carousel-2', bare: 'beans-pile', fixed: true },
@@ -1142,14 +1142,14 @@ const POSTS = [
     id: 'shop-carousel-1',
     html: () => series({ ground: 'black', tag: 'Συρε →', say: 'Ρόδου 68.<br><em>Δες το μαγαζί.</em>', cls: 'sm' }),
     caption: {
-      el: 'Το μαγαζί στη Ρόδου 68. Σύρε για φωτογραφίες. Ανοιχτά κάθε μέρα 07:00 – 22:00.',
-      en: 'The shop at Rodou 68. Swipe for photos. Open every day 07:00 – 22:00.',
+      el: 'Το μαγαζί στη Ρόδου 68. Σύρε για φωτογραφίες. Ανοιχτά κάθε μέρα 06:00 – 22:00.',
+      en: 'The shop at Rodou 68. Swipe for photos. Open every day 06:00 – 22:00.',
     },
   },
   { id: 'shop-carousel-2', bare: 'beans-hopper', fixed: true },
   { id: 'shop-carousel-3', bare: 'drip-close', fixed: true },
-  { id: 'shop-carousel-4', html: () => series({ ground: 'gold', tag: '07:00', say: 'Σε<br><em>περιμένουμε.</em>',
-      sub: 'Ρόδου 68, Κάτω Πατήσια. Κάθε μέρα 07:00 – 22:00.' }) },
+  { id: 'shop-carousel-4', html: () => series({ ground: 'gold', tag: '06:00', say: 'Σε<br><em>περιμένουμε.</em>',
+      sub: 'Ρόδου 68, Κάτω Πατήσια. Κάθε μέρα 06:00 – 22:00.' }) },
   {
     id: 'vitrine-carousel-1',
     html: () => pro({ img: 'vitrine-tall', kicker: 'Συρε →', h1: 'Τι έχει<br><em>η βιτρίνα.</em>', sm: true }),
@@ -1167,8 +1167,8 @@ const POSTS = [
     id: 'team-carousel-1',
     html: () => pro({ img: 'staff-profile', kicker: 'Συρε →', h1: 'Πίσω από<br><em>τον πάγκο.</em>', sm: true }),
     caption: {
-      el: 'Πίσω από τον πάγκο στο Blessed, από τον πρώτο espresso ως το τελευταίο ποτήρι. Σύρε. Κάθε μέρα 07:00 – 22:00.',
-      en: 'Behind the counter at Blessed, from the first espresso to the last cup. Swipe. Every day 07:00 – 22:00.',
+      el: 'Πίσω από τον πάγκο στο Blessed, από τον πρώτο espresso ως το τελευταίο ποτήρι. Σύρε. Κάθε μέρα 06:00 – 22:00.',
+      en: 'Behind the counter at Blessed, from the first espresso to the last cup. Swipe. Every day 06:00 – 22:00.',
     },
   },
   { id: 'team-carousel-2', bare: 'staff-wide', fixed: true },

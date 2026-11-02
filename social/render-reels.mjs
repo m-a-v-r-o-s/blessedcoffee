@@ -98,8 +98,8 @@ const REELS = [
       $.show('#k', $.seg(s, 3.6, 4.4)); $.show('#h', $.out($.seg(s, 4.2, 5.4)), 40);
     },
     caption: {
-      el: 'Γεύση απ\' τον παράδεισο, σε κάθε ποτήρι. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα 07:00 – 22:00.',
-      en: 'A taste of heaven in every cup. Rodou 68, Kato Patisia, every day 07:00 – 22:00.',
+      el: 'Γεύση απ\' τον παράδεισο, σε κάθε ποτήρι. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα 06:00 – 22:00.',
+      en: 'A taste of heaven in every cup. Rodou 68, Kato Patisia, every day 06:00 – 22:00.',
     },
   },
   {
@@ -122,8 +122,8 @@ const REELS = [
       }
     },
     caption: {
-      el: 'Γύρνα το ποτήρι. Το σήμα μας, το σύνθημά μας, ο καφές μας: Mrs Rose Caffè. Ρόδου 68, κάθε μέρα 07:00 – 22:00.',
-      en: 'Turn the cup. Our mark, our motto, our coffee: Mrs Rose Caffè. Rodou 68, every day 07:00 – 22:00.',
+      el: 'Γύρνα το ποτήρι. Το σήμα μας, το σύνθημά μας, ο καφές μας: Mrs Rose Caffè. Ρόδου 68, κάθε μέρα 06:00 – 22:00.',
+      en: 'Turn the cup. Our mark, our motto, our coffee: Mrs Rose Caffè. Rodou 68, every day 06:00 – 22:00.',
     },
   },
   {
@@ -133,7 +133,7 @@ const REELS = [
     front: `<div class="txt">
       <div class="kicker fade" id="k">Βρες μας</div>
       <h1 class="fade" id="h">Ρόδου 68,<br><em>Κάτω Πατήσια.</em></h1>
-      <div class="lede fade" id="l">Κάθε μέρα, 07:00 – 22:00.</div>
+      <div class="lede fade" id="l">Κάθε μέρα, 06:00 – 22:00.</div>
     </div>${foot}`,
     frame: (s, $) => {
       const a = $.io($.seg(s, 0.8, 5.2));
@@ -144,8 +144,8 @@ const REELS = [
       $.show('#k', $.seg(s, 4.8, 5.4)); $.show('#h', $.out($.seg(s, 5.1, 6)), 40); $.show('#l', $.seg(s, 5.8, 6.5), 20);
     },
     caption: {
-      el: 'Από πάνω μέχρι το σήμα. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα 07:00 – 22:00.',
-      en: 'From the lid down to the logo. Rodou 68, Kato Patisia, every day 07:00 – 22:00.',
+      el: 'Από πάνω μέχρι το σήμα. Ρόδου 68, Κάτω Πατήσια, κάθε μέρα 06:00 – 22:00.',
+      en: 'From the lid down to the logo. Rodou 68, Kato Patisia, every day 06:00 – 22:00.',
     },
   },
   {
@@ -165,8 +165,8 @@ const REELS = [
       $.show('#h', $.out($.seg(s, 2, 2.9)), 40); $.show('#k', $.seg(s, 2.8, 3.4));
     },
     caption: {
-      el: 'Ο καφές σου, έτοιμος. Espresso 2€, κάθε μέρα από τις 07:00. Ρόδου 68.',
-      en: 'Your coffee, ready. Espresso €2, every day from 7am. Rodou 68.',
+      el: 'Ο καφές σου, έτοιμος. Espresso 2€, κάθε μέρα από τις 06:00. Ρόδου 68.',
+      en: 'Your coffee, ready. Espresso €2, every day from 6am. Rodou 68.',
     },
   },
   {
@@ -212,8 +212,8 @@ const REELS = [
     seconds: 10,
     front: `<div class="txt">
       <div class="kicker">Καθε μερα / Every day</div>
-      <h1 id="clock" style="font-size:190px;margin-top:10px;font-variant-numeric:tabular-nums">07:00</h1>
-      <div class="lede fade" id="l">Από τις 07:00 έως τις 22:00.</div>
+      <h1 id="clock" style="font-size:190px;margin-top:10px;font-variant-numeric:tabular-nums">06:00</h1>
+      <div class="lede fade" id="l">Από τις 06:00 έως τις 22:00.</div>
     </div>${foot}`,
     frame: (s, $) => {
       const a = $.io($.seg(s, 0.6, 7.4));
@@ -222,14 +222,14 @@ const REELS = [
       $.pose({ ...$.LID, rot: $.lerp(-0.04, 0.04, a), cam: [0, 150, 830], look: [0, 36, 0], fov: 26,
         keyPos: [480 * Math.sin(sun), 130 + 360 * Math.cos(sun), 300], keyI: 9000 + 5000 * Math.cos(sun), keyAngle: 0.5,
         exposure: 0.85 + 0.2 * Math.cos(sun), steam: s });
-      const m = 7 * 60 + Math.round(15 * 60 * a / 5) * 5;
+      const m = 6 * 60 + Math.round(15 * 60 * a / 5) * 5;
       $.q('#clock').textContent = `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
       $.q('#ground').style.filter = `brightness(${0.75 + 0.45 * Math.cos(sun)})`;
       $.show('#l', $.seg(s, 7.6, 8.3), 20);
     },
     caption: {
-      el: 'Από τις 07:00 έως τις 22:00, κάθε μέρα. Ρόδου 68, Κάτω Πατήσια.',
-      en: 'From 07:00 to 22:00, every day. Rodou 68, Kato Patisia.',
+      el: 'Από τις 06:00 έως τις 22:00, κάθε μέρα. Ρόδου 68, Κάτω Πατήσια.',
+      en: 'From 06:00 to 22:00, every day. Rodou 68, Kato Patisia.',
     },
   },
   {
@@ -254,8 +254,8 @@ const REELS = [
       });
     },
     caption: {
-      el: 'Φέρνουμε τον καφέ σε σένα: e-food, Wolt και Box. Κάθε μέρα 07:00 – 22:00.',
-      en: 'We bring the coffee to you: e-food, Wolt and Box. Every day 07:00 – 22:00.',
+      el: 'Φέρνουμε τον καφέ σε σένα: e-food, Wolt και Box. Κάθε μέρα 06:00 – 22:00.',
+      en: 'We bring the coffee to you: e-food, Wolt and Box. Every day 06:00 – 22:00.',
     },
   },
   // ─── Photo reels from the 2026-10-26 shoot. Like stories, they may reuse a shot that backs a feed post. ──
@@ -265,11 +265,11 @@ const REELS = [
     seconds: 12,
     back: shots([['beans-macro', 0, 2], ['grinder-pour', 2, 4], ['espresso-splash', 4, 6], ['crema-double', 6, 8], ['milk-close', 8, 10], ['staff-cup', 10, 13]]),
     front: lines('Ενα cappuccino', [['Πρώτα,<br><em>ο κόκκος.</em>', 0.3, 2], ['Μετά,<br><em>το άλεσμα.</em>', 2.1, 4], ['Ο <em>espresso.</em>', 4.1, 6],
-      ['Η <em>κρέμα.</em>', 6.1, 8], ['Λίγο <em>γάλα.</em>', 8.1, 10], ['Και τέλος,<br><em>ο δικός σου.</em>', 10.1, 99]], ['Ρόδου 68 · από τις 07:00', 10.6]),
+      ['Η <em>κρέμα.</em>', 6.1, 8], ['Λίγο <em>γάλα.</em>', 8.1, 10], ['Και τέλος,<br><em>ο δικός σου.</em>', 10.1, 99]], ['Ρόδου 68 · από τις 06:00', 10.6]),
     frame: (s, $) => $.photos(s),
     caption: {
-      el: 'Ένα cappuccino από την αρχή, σε 12 δευτερόλεπτα. Ρόδου 68, από τις 07:00.',
-      en: 'A cappuccino from the start, in 12 seconds. Rodou 68, from 7am.',
+      el: 'Ένα cappuccino από την αρχή, σε 12 δευτερόλεπτα. Ρόδου 68, από τις 06:00.',
+      en: 'A cappuccino from the start, in 12 seconds. Rodou 68, from 6am.',
     },
   },
   {
@@ -278,11 +278,11 @@ const REELS = [
     seconds: 10,
     back: shots([['storefront-leaves', 0, 2.5, 1, 1.05, 0, true], ['storefront-glass', 2.5, 5, 1, 1.05, 0, true], ['sign-round', 5, 7.5, 1, 1.05, 0, true], ['interior', 7.5, 11]]),
     front: lines('Ροδου 68', [['Ανοιχτά<br><em>κάθε μέρα.</em>', 0.4, 4.9], ['Από <em>το 2024.</em>', 5.1, 7.4], ['Κάτσε <em>λίγο.</em>', 7.6, 99]],
-      ['Κάθε μέρα 07:00 – 22:00', 8.2]),
+      ['Κάθε μέρα 06:00 – 22:00', 8.2]),
     frame: (s, $) => $.photos(s),
     caption: {
-      el: 'Ρόδου 68, Κάτω Πατήσια. Κάθε μέρα 07:00 – 22:00. Κάτσε λίγο.',
-      en: 'Rodou 68, Kato Patisia. Every day 07:00 – 22:00. Stay a while.',
+      el: 'Ρόδου 68, Κάτω Πατήσια. Κάθε μέρα 06:00 – 22:00. Κάτσε λίγο.',
+      en: 'Rodou 68, Kato Patisia. Every day 06:00 – 22:00. Stay a while.',
     },
   },
   {
@@ -291,11 +291,11 @@ const REELS = [
     seconds: 10,
     back: shots([['vitrine-tall', 0, 2], ['pastry-sesame', 2, 4], ['vitrine-peinirli', 4, 6], ['pie-macro', 6, 8], ['snack-cup', 8, 11, 1, 1.05, 0, true]]), // whole: the cup sits on the edge
     front: lines('Η βιτρινα', [['Κάτι για <em>λιγούρα;</em>', 0.4, 3.9], ['Πεϊνιρλί <em>2.80€.</em>', 4.1, 5.9], ['Μην <em>αντισταθείς.</em>', 6.1, 7.9], ['Και ένας <em>καφές.</em>', 8.1, 99]],
-      ['Από τις 07:00, Ρόδου 68', 8.6]),
+      ['Από τις 06:00, Ρόδου 68', 8.6]),
     frame: (s, $) => $.photos(s),
     caption: {
-      el: 'Κάτι για τη λιγούρα; Πεϊνιρλί 2.80€, κρουασάν 2.50€, μπουγάτσα κρέμα 2.80€, τυρόπιτα 1.60€. Η βιτρίνα γεμίζει από τις 07:00.',
-      en: 'Something for the craving? Peinirli €2.80, croissant €2.50, cream bougatsa €2.80, cheese pie €1.60. The counter fills up from 7am.',
+      el: 'Κάτι για τη λιγούρα; Πεϊνιρλί 2.80€, κρουασάν 2.50€, μπουγάτσα κρέμα 2.80€, τυρόπιτα 1.60€. Η βιτρίνα γεμίζει από τις 06:00.',
+      en: 'Something for the craving? Peinirli €2.80, croissant €2.50, cream bougatsa €2.80, cheese pie €1.60. The counter fills up from 6am.',
     },
   },
   {
@@ -305,18 +305,18 @@ const REELS = [
     back: shots([['storefront-glass', 0, 2, 1, 1.05, 0, true], ['staff-machine', 2, 4], ['cup-counter', 4, 6], ['vitrine-window', 6, 8], ['staff-back', 8, 10], ['shutter-faith', 10, 13]]),
     front: `<img class="mark" src="${logo}"><div class="txt">
       <div class="kicker">Καθε μερα / Every day</div>
-      <h1 id="clock" style="font-size:190px;margin-top:10px;font-variant-numeric:tabular-nums">07:00</h1>
-      <div class="lede fade" id="l">Από τις 07:00 έως τις 22:00.</div>
+      <h1 id="clock" style="font-size:190px;margin-top:10px;font-variant-numeric:tabular-nums">06:00</h1>
+      <div class="lede fade" id="l">Από τις 06:00 έως τις 22:00.</div>
     </div>${foot}`,
     frame: (s, $) => {
       $.photos(s);
-      const m = 7 * 60 + Math.round(15 * 60 * $.io($.seg(s, 0.5, 10.5)) / 5) * 5;
+      const m = 6 * 60 + Math.round(15 * 60 * $.io($.seg(s, 0.5, 10.5)) / 5) * 5;
       $.q('#clock').textContent = `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
       $.show('#l', $.seg(s, 10.6, 11.2), 20);
     },
     caption: {
-      el: 'Μια μέρα στο Blessed, από τις 07:00 ως τις 22:00. Κάθε μέρα, και Κυριακή. Ρόδου 68.',
-      en: 'A day at Blessed, from 07:00 to 22:00. Every day, Sundays too. Rodou 68.',
+      el: 'Μια μέρα στο Blessed, από τις 06:00 ως τις 22:00. Κάθε μέρα, και Κυριακή. Ρόδου 68.',
+      en: 'A day at Blessed, from 06:00 to 22:00. Every day, Sundays too. Rodou 68.',
     },
   },
   {
@@ -337,11 +337,11 @@ const REELS = [
     seconds: 10,
     back: shots([['staff-profile', 0, 2.5], ['staff-wide', 2.5, 5], ['milk-steam', 5, 7.5], ['staff-cup', 7.5, 11]]), // not apron-cup: the mark sat on its logo
     front: lines('Πισω απο τον παγκο', [['<em>Καλημέρα.</em>', 0.4, 4.9], ['Τι θα <em>πάρεις;</em>', 5.1, 7.4], ['Ρόδου <em>68.</em>', 7.6, 99]],
-      ['Κάθε μέρα 07:00 – 22:00', 8.2]),
+      ['Κάθε μέρα 06:00 – 22:00', 8.2]),
     frame: (s, $) => $.photos(s),
     caption: {
-      el: 'Πίσω από τον πάγκο, κάθε μέρα 07:00 – 22:00. Ο καφές σου, φτιαγμένος τη στιγμή. Ρόδου 68.',
-      en: 'Behind the counter, every day 07:00 – 22:00. Your coffee, made to order. Rodou 68.',
+      el: 'Πίσω από τον πάγκο, κάθε μέρα 06:00 – 22:00. Ο καφές σου, φτιαγμένος τη στιγμή. Ρόδου 68.',
+      en: 'Behind the counter, every day 06:00 – 22:00. Your coffee, made to order. Rodou 68.',
     },
   },
 ];
