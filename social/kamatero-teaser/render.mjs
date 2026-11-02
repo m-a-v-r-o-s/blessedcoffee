@@ -25,14 +25,12 @@ h1 em{font-style:italic;font-weight:400;color:#C9972A}
 .mark{position:absolute;left:76px;top:84px;width:150px;filter:invert(1);opacity:.94}
 .foot{position:absolute;right:76px;bottom:64px;font:600 25px 'Barlow Semi Condensed',sans-serif;letter-spacing:.2em;color:#CFC6BC}
 .soon{position:absolute;left:0;right:0;top:calc(50% + 110px);text-align:center;font:600 30px 'Barlow Semi Condensed',sans-serif;letter-spacing:.34em;color:#C9972A}
-.en{position:absolute;left:1080px;width:1080px;top:calc(50% + 175px);text-align:center;font:italic 400 38px 'Playfair Display',serif;color:#FAF6F0;opacity:.9}
 </style>
 ${tiles.map((n, i) => `<div class="t" style="left:${i * 1080}px"><img src="${shoot(n)}"></div>`).join('')}
 <div class="shade" style="position:absolute;left:0;top:0;width:3240px;height:1350px"></div>
 <img class="mark" src="${logo}">
 <h1>Σας περιμένουμε σύντομα <em>στο νέο μας</em> Blessed</h1>
 <div class="soon">ΑΝΟΙΓΟΥΜΕ ΣΥΝΤΟΜΑ</div>
-<div class="en">Opening soon...</div>
 <div class="foot" style="left:2236px;right:auto;width:928px;text-align:right">ΚΑΜΑΤΕΡΟ · ΚΩΣΤΗ ΠΑΛΑΜΑ 17Α</div>`;
 
 const br = await chromium.launch({ executablePath: CHROME });
