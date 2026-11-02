@@ -1,6 +1,5 @@
 [
   "shop-storefront",
-  "bean-01",
   "team-01",
   "early",
   "cup-slogan",
@@ -12,6 +11,7 @@
   "espresso-price",
   "reel-shop",
   "cup-foam",
+  "bean-01",
   "cup-street",
   "0700-alarm",
   "shop-inside",
@@ -19,7 +19,6 @@
   "vitrine-craving",
   "review-mourati",
   "reel-reveal",
-  "shop-carousel",
   "bean-02",
   "bougatsa",
   "cup-hero",
@@ -73,5 +72,6 @@
   "reel-hours",
   "beer",
   "stamp-machine",
-  "reel-delivery"
+  "reel-delivery",
+  "shop-carousel"
 ]
