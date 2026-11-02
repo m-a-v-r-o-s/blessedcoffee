@@ -30,8 +30,8 @@ ${tiles.map((n, i) => `<div class="t" style="left:${i * 1080}px"><img src="${sho
 <div class="shade" style="position:absolute;left:0;top:0;width:3240px;height:1350px"></div>
 <img class="mark" src="${logo}">
 <h1>Σας περιμένουμε σύντομα <em>στο νέο μας</em> Blessed</h1>
-<div class="soon">ΚΑΜΑΤΕΡΟ</div>
-<div class="foot" style="left:2236px;right:auto;width:928px;text-align:right">ΚΩΣΤΗ ΠΑΛΑΜΑ 17Α · ΚΑΜΑΤΕΡΟ</div>`;
+<div class="soon">ΑΝΟΙΓΟΥΜΕ ΣΥΝΤΟΜΑ</div>
+<div class="foot" style="left:2236px;right:auto;width:928px;text-align:right">ΚΑΜΑΤΕΡΟ · ΚΩΣΤΗ ΠΑΛΑΜΑ 17Α</div>`;
 
 const br = await chromium.launch({ executablePath: CHROME });
 const pg = await br.newPage({ viewport: { width: 3240, height: 1350 }, deviceScaleFactor: 1 });
