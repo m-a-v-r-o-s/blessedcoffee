@@ -49,6 +49,9 @@ function greetingDate(spec, year) {
   return iso(d);
 }
 
+// Athens hours a story slot may post in: crons and triggers land 07:30-08:30 and 17:30-18:30.
+export const slotOpen = (slot, hour) => (slot === 'morning' ? hour >= 6 && hour < 13 : hour >= 15 && hour < 23);
+
 // Pure decision: what to post for this mode on this date. Returns { id, next } or null (nothing today).
 export function pick(mode, today, { queue, schedule, state }, slot = 'morning') {
   const year = Number(today.slice(0, 4)), month = Number(today.slice(5, 7));
@@ -107,8 +110,14 @@ async function main() {
   const read = (f) => JSON.parse(readFileSync(`${DIR}/${f}`, 'utf8'));
   const state = read('state.json');
   const today = PUBLISH_DATE || new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Athens' });
-  // The workflow sets SLOT; a manual run goes by the clock.
-  const slot = process.env.SLOT || (new Date().getUTCHours() < 12 ? 'morning' : 'evening');
+  const hour = Number(new Date().toLocaleString('en-GB', { timeZone: 'Europe/Athens', hour: '2-digit', hourCycle: 'h23' }));
+  // The workflow sets SLOT; a manual run goes by the Athens clock.
+  const slot = process.env.SLOT || (hour < 14 ? 'morning' : 'evening');
+  // A slot picked by hand on a manual run always posts; otherwise a run outside its slot's hours
+  // (a GitHub cron delayed past midnight) would spend the next day's slot.
+  const manual = process.env.GITHUB_EVENT_NAME === 'workflow_dispatch' && process.env.SLOT;
+  if (mode === 'story' && !manual && !PUBLISH_DATE && !slotOpen(slot, hour))
+    return console.log(`${today} ${slot}: ${hour}:00 Athens is outside the slot's hours, skipping.`);
   const choice = pick(mode, today, { queue: read('queue.json'), schedule: read('schedule.json'), state }, slot);
   if (!choice) return console.log(`${today}${mode === 'story' ? ` ${slot}` : ''}: nothing to post (no feed day, or already posted).`);
 

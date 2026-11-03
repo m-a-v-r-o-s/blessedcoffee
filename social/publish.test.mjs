@@ -1,7 +1,7 @@
 // node social/publish.test.mjs  (no network, no credentials)
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
-import { orthodoxEaster, pick } from './publish.mjs';
+import { orthodoxEaster, pick, slotOpen } from './publish.mjs';
 
 const read = (f) => JSON.parse(readFileSync(new URL(`./publish/${f}`, import.meta.url), 'utf8'));
 const cfg = (state = {}) => ({ queue: read('queue.json'), schedule: read('schedule.json'), state });
@@ -76,3 +76,6 @@ const d1 = pick('story', '2026-10-31', cfg(), 'morning');
 assert.equal(pick('story', '2026-10-31', cfg(d1.next), 'morning'), null);
 assert.ok(pick('story', '2026-10-31', cfg(d1.next), 'evening'));
 assert.ok(pick('story', '2026-11-01', cfg(d1.next), 'morning'));
+// A late cron outside its slot's Athens hours skips (2026-11-02's 17:23 run landed at 01:08).
+assert.ok(slotOpen('morning', 7) && slotOpen('evening', 17) && slotOpen('evening', 18));
+assert.ok(!slotOpen('evening', 1) && !slotOpen('morning', 14) && !slotOpen('evening', 23));
