@@ -155,6 +155,8 @@ const CSS = `
   /* Text under the mark instead of low, for shots with a logo in the bottom half. */
   .card.ph.top { justify-content: flex-start; padding-top: 450px; }
   .card.ph.top > .shade { background: linear-gradient(180deg, rgba(8,8,8,.92) 0%, rgba(8,8,8,.8) 30%, rgba(8,8,8,0) 50%, rgba(8,8,8,0) 82%, rgba(6,6,6,.85) 100%); }
+  .card.ph.bare > .shade { background: linear-gradient(180deg, rgba(8,8,8,.4) 0%, rgba(8,8,8,0) 16%, rgba(8,8,8,0) 80%, rgba(6,6,6,.85) 100%); }
+  .card.ph.bare .foot { color: #D8CFC6; border-top-color: rgba(255,255,255,.18); }
   .card.ph .kicker, .card.ph h1, .card.ph .lede { text-shadow: 0 1px 14px rgba(0,0,0,.7); }
   /* Summer ground: pale ice-blue, dark type. */
   .card.summer { background: #D7E6E8; color: #0A0A0A; }
@@ -231,15 +233,16 @@ const priceStory = ({ kicker, price, note }) => `<div class="card">
 // pos 'plate' shows the shot full-width under the mark instead of cropping its sides, so signage never gets
 // cut; 'plate:<ratio>' also trims the bottom to that ratio (drops a sign the photographer's frame cuts).
 // at 'top' puts the type under the mark, for shots with a logo low in the frame.
-const photoStory = ({ img, kicker, headline, lede = '', pos = 'center', at = 'bottom' }) => `<div class="card ph${at === 'top' ? ' top' : ''}">
+// No headline = bare: just the photo, the mark and the footer, for shots whose line would only label them.
+const photoStory = ({ img, kicker, headline, lede = '', pos = 'center', at = 'bottom' }) => `<div class="card ph${at === 'top' ? ' top' : ''}${headline ? '' : ' bare'}">
   ${pos.startsWith('plate') ? `<img class="plate" src="${photo(img)}" style="aspect-ratio:${pos.split(':')[1] || 'auto'}">`
     : `<img class="fill" src="${photo(img)}" style="object-position:${pos}">`}<div class="shade"></div>
   <img class="mark" src="${logo}">
-  <div class="over">
+  ${headline ? `<div class="over">
     <div class="kicker">${kicker}</div>
     <h1>${headline}</h1>
     ${lede ? `<div class="lede">${lede}</div>` : ''}
-  </div>
+  </div>` : ''}
   ${foot()}
 </div>`;
 
@@ -403,21 +406,21 @@ const STORIES = [
   ...[
     ['ps-open', 'storefront-day', 'Καλημερα', 'Ανοίξαμε.<br><em>06:00.</em>', 'Ρόδου 68, Κάτω Πατήσια.', 'plate:2'],
     ['ps-closing', 'shutter-christ-2', 'Διευθυνση', 'Θα μας βρεις<br><em>Ρόδου 68.</em>', 'Κάτω Πατήσια', 'plate:1.97'],
-    ['ps-faith', 'shutter-faith', 'Ροδου 68', 'Faith<br><em>over fear.</em>', '', 'plate'],
+    ['ps-faith', 'shutter-faith', '', '', '', 'plate'],
     ['ps-heaven', 'cup-black', 'Take away', 'Ένας<br><em>για τον δρόμο;</em>', 'Από τις 06:00'],
     ['ps-waiting', 'cup-counter-2', 'Σημερα', 'Έχεις πιει<br><em>καφέ ακόμα;</em>', 'Από τις 06:00 σε περιμένουμε'],
     ['ps-pair', 'cup-pair', 'Για δυο', 'Κερνάς<br><em>ή κερνάω;</em>', 'Κάνε tag τον φίλο σου.'],
-    ['ps-foam', 'foam-macro', 'Στο μενου', 'Cappuccino<br><em>2.60€.</em>', ''],
-    ['ps-latte', 'milk-steam', 'Στο μενου', 'Cappuccino latte<br><em>2.70€.</em>', 'Ζεστό, με γάλα.'],
+    ['ps-foam', 'foam-macro', '', ''],
+    ['ps-latte', 'milk-steam', '', ''],
     ['ps-splash', 'espresso-splash', 'Espresso · 2€', 'Χρειάζεσαι<br><em>έναν espresso;</em>', ''],
     ['ps-crema', 'crema-double-2', 'Espresso', 'Ένας espresso<br><em>και φεύγεις;</em>', ''],
     ['ps-drop', 'last-drop', 'Espresso', 'Δεύτερος<br><em>καφές;</em>', 'Espresso 2€'],
     ['ps-beans', 'beans-macro', 'Καλημερα', 'Καλημέρα.<br><em>Έναν καφέ;</em>', ''],
     ['ps-hopper', 'beans-hopper', 'Καθε μερα', 'Σε περιμένουμε<br><em>πρωί, μεσημέρι<br>ή βράδυ.</em>', '06:00 – 22:00'],
-    ['ps-mrs-rose', 'mrs-rose-tins', '', 'Ο κλασικός μας.<br><em>Espresso 2€.</em>', ''],
+    ['ps-mrs-rose', 'mrs-rose-tins', '', ''],
     ['ps-guide', 'coffee-guide', 'Ερωτηση', 'Τι πίνεις<br><em>σήμερα;</em>', 'Στείλε μας DM.'],
-    ['ps-peinirli', 'vitrine-peinirli', 'Η βιτρινα', 'Πεϊνιρλί<br><em>2.80€.</em>', ''],
-    ['ps-pies', 'vitrine-pies', 'Η βιτρινα', 'Τυρόπιτα<br><em>1.60€.</em>', 'Σπανακόπιτα 2.50€'],
+    ['ps-peinirli', 'vitrine-peinirli', '', ''],
+    ['ps-pies', 'vitrine-pies', '', ''],
     ['ps-craving', 'pastry-sesame', 'Λιγουρα', 'Πείνασες;<br><em>Δες τη βιτρίνα.</em>', 'Ρόδου 68'],
     ['ps-sesame', 'bread-sesame', 'Η βιτρινα', 'Μην<br><em>αντισταθείς.</em>', ''],
     ['ps-window', 'vitrine-window', 'Περνας;', 'Τι θα τσιμπήσουμε<br><em>σήμερα;</em>', 'Ρόδου 68'],
@@ -456,10 +459,10 @@ const STORIES = [
     ['ps-drop-2', 'last-drop', 'Espresso', 'Espresso ή<br><em>Americano;</em>', '2€ και τα δύο'],
     ['ps-beans-2', 'beans-macro', 'Mrs Rose · Il Modo', 'Δύο χαρμάνια.<br><em>Ποιο σου πάει;</em>', ''],
     ['ps-hopper-2', 'beans-hopper', 'Καθε μερα', 'Καφές μετά<br><em>το φαγητό;</em>', 'Ως τις 22:00.'],
-    ['ps-mrs-rose-2', 'mrs-rose-tins', '', 'Freddo espresso<br><em>2.40€.</em>', ''],
+    ['ps-mrs-rose-2', 'mrs-rose-tins', '', ''],
     ['ps-guide-2', 'coffee-guide', 'Ερωτηση', 'Ελληνικός<br><em>ή freddo;</em>', 'Πες μας στο DM.'],
     ['ps-peinirli-2', 'vitrine-peinirli', 'Πρωινο', 'Πεϊνιρλί<br><em>και καφές.</em>', 'Από τις 06:00'],
-    ['ps-pies-2', 'vitrine-pies', 'Η βιτρινα', 'Πίτες<br><em>από 1.60€.</em>', 'Τυρόπιτα · Σπανακόπιτα · Λουκανικόπιτα'],
+    ['ps-pies-2', 'vitrine-pies', '', ''],
     ['ps-craving-2', 'pastry-sesame', 'Η βιτρινα', 'Κάτι<br><em>αλμυρό;</em>', 'Ρόδου 68'],
     ['ps-sesame-2', 'bread-sesame', 'Πρωινο', 'Πρωινό<br><em>από τις 06:00.</em>', 'Καφές και κάτι αλμυρό.'],
     ['ps-snack-2', 'snack-cup', 'Sandwiches', 'Για το<br><em>μεσημέρι.</em>', 'Από 2.60€'],
