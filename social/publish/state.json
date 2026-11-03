@@ -1,12 +1,12 @@
 {
   "cursor": 1,
   "storyCursor": {
-    "morning": 4,
+    "morning": 5,
     "evening": 6
   },
   "posted": {
     "story-evening": "2026-11-03",
-    "story-morning": "2026-11-02",
+    "story-morning": "2026-11-03",
     "feed": "2026-11-02"
   }
 }
