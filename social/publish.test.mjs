@@ -38,19 +38,21 @@ assert.equal(pick('feed', '2027-01-04', cfg(s3.next)).id, read('queue.json')[1])
 // Next winter the pair comes round again.
 assert.equal(pick('feed', '2027-12-02', cfg(s3.next)).id, 'winter-espresso');
 
-// Stories: a morning and an evening rotation, each with its own cursor; seasonal extras join the
-// evening one. Food stories never go out in the evening (it sells out by noon).
+// Stories: a morning and an evening rotation, indexed by days since 2026-10-29 (no stored cursor);
+// seasonal extras join each. Food stories never go out in the evening (it sells out by noon).
 const { stories, seasons: { winter } } = read('schedule.json');
-assert.equal(pick('story', '2026-10-01', cfg()).id, stories.morning[0]);
-assert.equal(pick('story', '2026-10-01', cfg(), 'evening').id, stories.evening[0]);
-const am = pick('story', '2026-10-01', cfg({ storyCursor: { evening: 5 } }));
-assert.deepEqual(am.next.storyCursor, { morning: 1, evening: 5 });
-assert.equal(pick('story', '2026-10-01', cfg({ storyCursor: { morning: stories.morning.length } })).id, stories.morning[0]);
-assert.equal(pick('story', '2026-12-10', cfg({ storyCursor: { morning: stories.morning.length } })).id, winter.stories.morning[0]);
+assert.equal(pick('story', '2026-10-29', cfg()).id, stories.morning[0]);
+assert.equal(pick('story', '2026-10-29', cfg(), 'evening').id, stories.evening[0]);
+assert.equal(pick('story', '2026-10-30', cfg({ storyCursor: { morning: 5 } })).id, stories.morning[1]); // old cursors ignored
+assert.equal(pick('story', '2026-10-30', cfg({ storyCursor: { morning: 5 } })).next.storyCursor, undefined);
+assert.equal(pick('story', '2026-12-08', cfg()).id, winter.stories.morning[0]); // day 40 of a 41-long winter pool
 const FOOD = /^ps-(peinirli|pies|craving|sesame|snack|window)(-2)?$/;
 for (const id of stories.evening) assert.ok(!FOOD.test(id), `food story in the evening: ${id}`);
 // Quiz: question in the evening, answer the next morning.
-assert.equal(stories.evening.indexOf('story-quiz-espresso') + 1, stories.morning.indexOf('story-quiz-answer'));
+const quizDay = new Date(Date.UTC(2026, 9, 29 + stories.evening.indexOf('story-quiz-espresso')));
+assert.equal(pick('story', iso(quizDay), cfg(), 'evening').id, 'story-quiz-espresso');
+quizDay.setUTCDate(quizDay.getUTCDate() + 1);
+assert.equal(pick('story', iso(quizDay), cfg(), 'morning').id, 'story-quiz-answer');
 // Same length, so each day's pair stays the same every cycle; and a day's two stories never share a look.
 assert.equal(stories.morning.length, stories.evening.length);
 const look = (id) => { const b = id.replace(/-2$/, '');

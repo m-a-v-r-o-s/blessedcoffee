@@ -10,7 +10,7 @@
 //                  seasons (months, extra feed posts and stories), and the story rotations: one for
 //                  the morning run, one for the evening run (no food in the evening: it sells out
 //                  by noon). A season adds one list to each rotation.
-//   state.json     cursors plus what already went out, written back by the workflow.
+//   state.json     feed cursor plus what already went out, written back by the workflow.
 //
 // Required env: IG_ACCESS_TOKEN, IG_USER_ID, GITHUB_REPOSITORY (set in Actions).
 // Optional: DRY_RUN=1 prints what would be posted and posts nothing;
@@ -29,6 +29,9 @@ const DIR = `${ROOT}/social/publish`;
 const GRAPH = 'https://graph.instagram.com/v26.0';
 const FEED_DAYS = [1, 4]; // Monday, Thursday
 const SEASONAL_GAP_DAYS = 14; // seasonal feed posts replace a rotation slot at most this often
+// Story rotations go by the date, not a stored cursor: a skipped or doubled run can't push morning
+// and evening out of step (the evening quiz must be followed by its answer the next morning).
+const STORY_EPOCH = '2026-10-29';
 
 // Orthodox Easter (Julian computus + 13 days, valid 1900-2099) as a UTC date.
 export function orthodoxEaster(y) {
@@ -70,9 +73,9 @@ export function pick(mode, today, { queue, schedule, state }, slot = 'morning') 
   function choose() {
   if (mode === 'story') {
     const pool = [...schedule.stories[slot], ...seasons.flatMap(([, s]) => s.stories[slot])];
-    const cursor = state.storyCursor?.[slot] ?? 0;
-    next.storyCursor = { ...state.storyCursor, [slot]: (cursor + 1) % pool.length };
-    return { id: pool[cursor % pool.length], next };
+    delete next.storyCursor; // left over from the stored-cursor days
+    const n = pool.length;
+    return { id: pool[((days(STORY_EPOCH, today) % n) + n) % n], next };
   }
 
   const greeting = schedule.greetings.find((g) => greetingDate(g.date, year) === today);
