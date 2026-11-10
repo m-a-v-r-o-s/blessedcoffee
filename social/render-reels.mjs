@@ -66,6 +66,13 @@ const CSS = `
   .stack { position: relative; height: 215px; margin-top: 26px; } /* room for a two-line headline */
   .stack h1 { position: absolute; left: 0; right: 0; bottom: 0; margin: 0; }
 `;
+// Feed action row for the ad-pour fake posts: like, comment, repost, share, save (plain outline icons),
+// act([likes, comments, reposts]) adds the counts next to them.
+const ACT = ['M12 20.5S3 15 3 9.2C3 6.3 5.1 4.5 7.5 4.5c1.9 0 3.5 1 4.5 2.6 1-1.6 2.6-2.6 4.5-2.6 2.4 0 4.5 1.8 4.5 4.7 0 5.8-9 11.3-9 11.3z',
+  'M20.6 16.4A9 9 0 1 0 17 20.1L21 21z', 'M17 2.5l3.5 3.5L17 9.5M3.5 11V9.5A3.5 3.5 0 0 1 7 6h13.5M7 21.5L3.5 18 7 14.5M20.5 13v1.5A3.5 3.5 0 0 1 17 18H3.5',
+  'M21.5 2.5L10 13M21.5 2.5l-7 19-4.5-8.5-8.5-4.5z', 'M19 21l-7-5.5L5 21V3h14z']
+  .map((d) => `<svg viewBox="0 0 24 24"><path d="${d}"/></svg>`);
+const act = (counts = []) => ACT.map((svg, i) => `<i>${svg}${counts[i] ? `<b>${counts[i]}</b>` : ''}</i>`).join('');
 const foot = `<div class="foot"><span>${BRAND.address}</span><span>${BRAND.site}</span></div>`;
 
 // Photo reels (no cup): [img, from s, to s, zoom from, zoom to, pan px, whole] per shot; each fades in over
@@ -342,6 +349,114 @@ const REELS = [
     caption: {
       el: 'Πίσω από τον πάγκο, κάθε μέρα 06:00 – 22:00. Ο καφές σου, φτιαγμένος τη στιγμή. Ρόδου 68.',
       en: 'Behind the counter, every day 06:00 – 22:00. Your coffee, made to order. Rodou 68.',
+    },
+  },
+  // ─── Ad: one reel drawn as two stacked feed posts (Kamatero above, Patisia below: the cup says Ρόδου 68). The top post has
+  // no header: Instagram's own (the posting account) sits right above the video. The espresso falls out of
+  // the top post, through its like row and caption, into the cup in the post below. The steam wand hangs out of the top
+  // post down to its nozzle in the bottom one, and the steam rises from there up through both posts.
+  // Real shoot photos only: espresso-logo-cup-wide has the portafilter spouts painted out (headroom over the cup, and
+  // no spout in both posts) and 200px of blurred mirror on each side, so the cup can sit smaller and centred under the
+  // spouts. espresso-steam-popout is the wand and spout tips cut from the machine photo. No end card: the caption
+  // carries the addresses.
+  {
+    id: 'ad-pour',
+    photo: true,
+    seconds: 8,
+    back: `<style>@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+      #feed { position: absolute; inset: 0; background: #000; font-family: Roboto, sans-serif; color: #F5F5F5; }
+      #feed .m { position: absolute; left: 0; width: ${W}px; overflow: hidden; }
+      #feed .m img { position: absolute; left: 0; }
+      #feed .hd { position: absolute; left: 30px; right: 30px; height: 80px; display: flex; align-items: center; gap: 20px; }
+      #feed .av { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1.5px solid #363636; }
+      #feed .ring { padding: 4px; border-radius: 50%; display: flex; background: linear-gradient(45deg, #FEDA75, #FA7E1E 30%, #D62976 60%, #962FBF 85%, #4F5BD5); }
+      #feed .ring .av { width: 66px; height: 66px; border: 4px solid #000; } /* story ring: unseen story */
+      #feed .av img { width: 82%; transform: translate(-1.4%, 1.5%); } /* the logo sits 1.5% off centre in its file */
+      #feed .hd b { display: block; font-size: 29px; font-weight: 700; }
+      #feed .hd div span { display: block; font-size: 24px; color: #A8A8A8; margin-top: 3px; }
+      #feed .hd .more { margin-left: auto; font-size: 40px; letter-spacing: 2px; color: #F5F5F5; }
+      #feed .act { position: absolute; left: 30px; right: 30px; height: 60px; display: flex; gap: 26px; }
+      #feed .act i { display: flex; align-items: center; gap: 10px; font-style: normal; }
+      #feed .act b { font-size: 31px; font-weight: 500; }
+      #feed .act i:last-child { margin-left: auto; }
+      #feed .act svg { width: 60px; height: 60px; fill: none; stroke: #F5F5F5; stroke-width: 1.9; stroke-linejoin: round; stroke-linecap: round; }
+      #feed .cap { position: absolute; left: 30px; right: 30px; font-size: 28px; line-height: 1.35; }
+      </style>
+      <div id="feed">
+        <div class="m" style="top:0;height:820px"><img src="/social/photos/shoot/espresso-steam.jpg" style="width:1334px;top:-40px"></div>
+        <div class="act" style="top:868px">${act([87, 3, 6])}</div>
+        <div class="cap" style="top:944px"><b>blessedcoffeekamatero</b> Καλημέρα από το Καματερό.</div>
+        <div class="hd" style="top:984px"><span class="ring"><span class="av" style="background:#fff"><img src="${logo}"></span></span>
+          <div><b>blessedcoffee2024</b><span>Ρόδου 68, Κάτω Πατήσια</span></div><span class="more">···</span></div>
+        <div class="m" style="top:1066px;height:854px"><img src="/social/photos/shoot/espresso-logo-cup-wide.jpg" style="width:1317.1px;left:-198.6px;top:-418px"></div>
+        <img src="/social/photos/shoot/espresso-steam-popout.png" style="position:absolute;left:0;top:800px;width:1334px">
+      </div>`,
+    front: `<svg id="pour" width="${W}" height="${H}" style="position:absolute;inset:0">
+        <defs><linearGradient id="esp" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#1A0A03"/><stop offset=".3" stop-color="#5E2C0E"/><stop offset=".46" stop-color="#B9763B"/>
+          <stop offset=".56" stop-color="#7A3E16"/><stop offset="1" stop-color="#1A0A03"/></linearGradient></defs>
+        <path id="s0" fill="url(#esp)"/><path id="s1" fill="url(#esp)"/></svg>
+      <canvas id="steam" width="${W}" height="${H}" style="position:absolute;inset:0"></canvas>
+`,
+    frame: (s, $) => {
+      // Steam: the cup.js steam noise, two plumes from the wand's nozzle in the bottom post, gone before the frame top.
+      const g = window.G ||= (() => {
+        const gl = $.q('#steam').getContext('webgl', { preserveDrawingBuffer: true });
+        const sh = (type, src) => { const o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o); return o; };
+        const p = gl.createProgram();
+        gl.attachShader(p, sh(gl.VERTEX_SHADER, 'attribute vec2 a; void main(){ gl_Position = vec4(a, 0, 1); }'));
+        gl.attachShader(p, sh(gl.FRAGMENT_SHADER, `precision highp float; uniform float uT;
+          float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+          float noise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+            return mix(mix(hash(i), hash(i + vec2(1, 0)), f.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), f.x), f.y); }
+          float fbm(vec2 p){ float v = 0.0, a = 0.5; for (int i = 0; i < 4; i++){ v += a * noise(p); p *= 2.03; a *= 0.5; } return v; }
+          float plume(vec2 p, vec2 src, float h, float w, float t, float seed){
+            float y = (src.y - p.y) / h;
+            if (y < 0.0 || y > 1.0) return 0.0;
+            float x = (p.x - src.x) / h + (fbm(vec2(y * 1.6 - t * 0.12, t * 0.07 + seed)) - 0.5) * 0.5 * y;
+            vec2 q = vec2(x * 5.0, y * 3.6 - t * 0.9) + seed;
+            float n = fbm(q + vec2(fbm(q * 1.7 + t * 0.09), 0.0));
+            float column = exp(-x * x / (w * w * (0.15 + 4.0 * y)));
+            float fade = smoothstep(0.0, 0.12, y) * (1.0 - smoothstep(0.6, 1.0, y));
+            return smoothstep(0.38, 0.78, n) * column * fade;
+          }
+          void main(){
+            vec2 p = vec2(gl_FragCoord.x, 1920.0 - gl_FragCoord.y);
+            float a = 1.0 * plume(p, vec2(872.0, 1236.0), 1150.0, 0.055, uT, 0.0) + 0.7 * plume(p, vec2(872.0, 1236.0), 980.0, 0.05, uT * 1.1, 7.0);
+            gl_FragColor = vec4(vec3(a), a);
+          }`));
+        gl.linkProgram(p); gl.useProgram(p);
+        gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+        gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+        return { gl, uT: gl.getUniformLocation(p, 'uT') };
+      })();
+      g.gl.uniform1f(g.uT, s + 12); // start with the plumes already up
+      g.gl.drawArrays(g.gl.TRIANGLES, 0, 3);
+
+      // Espresso: two streams from the spout tips (which hang past the top post's edge, espresso-steam-popout) into the cup below.
+      const TOP = 857, LAND = 1218, XS = [414, 534], W0 = 12, G = 2600;
+      const fall = (t0) => TOP + 120 * Math.max(0, s - t0) + 0.5 * G * Math.max(0, s - t0) ** 2;
+      XS.forEach((x0, k) => {
+        const on = 0.9 + k * 0.08, off = 6.8 + k * 0.06;
+        const head = Math.min(LAND, fall(on)), tail = s < off ? TOP : Math.min(LAND, fall(off));
+        const e = $.q('#s' + k);
+        if (s < on || tail >= LAND) { e.setAttribute('d', ''); return; }
+        const L = [], R = [];
+        for (let i = 0; i <= 40; i++) {
+          const y = $.lerp(tail, head, i / 40), u = (y - TOP) / (LAND - TOP);
+          const w = W0 * (1.3 - 0.4 * u) * (1 + 0.14 * Math.sin(y * 0.09 - s * 30 + k * 2)) * (s > off - 0.3 ? $.lerp(1, 0.55, $.seg(s, off - 0.3, off)) : 1);
+          const x = x0 + 1.4 * Math.sin(y * 0.03 + s * 7 + k);
+          L.push(`${(x - w / 2).toFixed(1)},${y.toFixed(1)}`); R.unshift(`${(x + w / 2).toFixed(1)},${y.toFixed(1)}`);
+        }
+        // round the head while it falls, and the tail once the pour has stopped
+        const r = (W0 / 2).toFixed(1), cap = (end) => (end ? `A${r},${r * 1.6} 0 0 0 ` : 'L');
+        e.setAttribute('d', `M${L.join('L')}${cap(head < LAND)}${R.join('L')}${cap(s > off)}${L[0]}Z`);
+      });
+    },
+    caption: {
+      el: 'Από τη μηχανή στο ποτήρι σου. Ρόδου 68, Κάτω Πατήσια (06:00 – 22:00, delivery σε e-food, Wolt, Box) και Κωστή Παλαμά 17Α, Καματερό.',
+      en: 'From the machine to your cup. Rodou 68, Kato Patisia (06:00 – 22:00, delivery on e-food, Wolt, Box) and Kosti Palama 17A, Kamatero.',
     },
   },
 ];

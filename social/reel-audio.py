@@ -364,6 +364,9 @@ REDO = {
     'reel-hours': dict(gain_db=-1.9, sec=10, bpm=84, prog='sunrise', groove='none', chords='organ', arp=None,
         climb=('vibes', .4), cues=[('note', 7.6, .45, 'bell', 81)],
         what='A gentle vibraphone melody in D that climbs as the sun rises and comes back down as it sets, over a soft organ and bass, no drums. A chime when "06:00 to 22:00" appears.'),
+    'ad-pour': dict(gain_db=0, sec=8, bpm=92, prog='acoustic', groove='soft', chords='pluck', arp=('marimba', .3), start=1.25,
+        cues=[('run', .9, .4, 'marimba', (81, 77, 74), .1), ('knock', 1.25, .3, 120)],
+        what='Three falling marimba notes as the espresso drops out of the top post, a soft wood knock as it lands in the cup, then a warm guitar and marimba groove in G, 92 BPM, under the pour.'),
 }
 
 
