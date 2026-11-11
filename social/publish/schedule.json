@@ -1,4 +1,5 @@
 {
+  "overrides": { "2026-11-11 evening": "closed-2026-11-12" },
   "greetings": [
     { "id": "new-year", "date": "01-01" },
     { "id": "clean-monday", "date": "easter-48" },

@@ -63,12 +63,18 @@ const look = (id) => { const b = id.replace(/-2$/, '');
     : ['ps-heaven', 'ps-waiting', 'ps-pair', 'ps-street', 'ps-delivery'].includes(b) ? 'cup' : 'coffee'; };
 stories.morning.forEach((m, k) => assert.notEqual(look(m), look(stories.evening[k]), `same look on day ${k}: ${m} / ${stories.evening[k]}`));
 
+// A one-off override replaces only its own slot, still once per day.
+const ov = { ...cfg(), schedule: { ...read('schedule.json'), overrides: { '2026-11-11 evening': 'x' } } };
+assert.equal(pick('story', '2026-11-11', ov, 'evening').id, 'x');
+assert.notEqual(pick('story', '2026-11-11', ov, 'morning').id, 'x');
+assert.equal(pick('story', '2026-11-11', { ...ov, state: { posted: { 'story-evening': '2026-11-11' } } }, 'evening'), null);
+
 // Every scheduled id resolves to a real file.
 const has = (id) => ['library', 'library-reels'].some((d) => existsSync(new URL(`./${d}/${id}.${d === 'library' ? 'jpg' : 'mp4'}`, import.meta.url)))
   || existsSync(new URL(`./library/${id}-1.jpg`, import.meta.url));
 const { greetings, seasons } = read('schedule.json');
 for (const id of [...read('queue.json'), ...greetings.map((g) => g.id), ...Object.values(seasons).flatMap((s) => s.feed)]) assert.ok(has(id), `missing feed media: ${id}`);
-for (const id of [...stories.morning, ...stories.evening, ...Object.values(seasons).flatMap((s) => [...s.stories.morning, ...s.stories.evening])])
+for (const id of [...stories.morning, ...stories.evening, ...Object.values(read('schedule.json').overrides ?? {}),...Object.values(seasons).flatMap((s) => [...s.stories.morning, ...s.stories.evening])])
   assert.ok(existsSync(new URL(`./library-stories/${id}.jpg`, import.meta.url)), `missing story: ${id}`);
 
 console.log('publish: all checks passed');

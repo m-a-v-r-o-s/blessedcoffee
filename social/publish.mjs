@@ -9,7 +9,8 @@
 //   schedule.json  greetings (fixed "MM-DD", or "easter" / "easter±N" for Orthodox Easter),
 //                  seasons (months, extra feed posts and stories), and the story rotations: one for
 //                  the morning run, one for the evening run (no food in the evening: it sells out
-//                  by noon). A season adds one list to each rotation.
+//                  by noon). A season adds one list to each rotation. overrides maps
+//                  "YYYY-MM-DD morning|evening" to a one-off story id (a closure notice).
 //   state.json     feed cursor plus what already went out, written back by the workflow.
 //
 // Required env: IG_ACCESS_TOKEN, IG_USER_ID, GITHUB_REPOSITORY (set in Actions).
@@ -72,6 +73,9 @@ export function pick(mode, today, { queue, schedule, state }, slot = 'morning') 
 
   function choose() {
   if (mode === 'story') {
+    // One-off notices (closures etc.): "YYYY-MM-DD slot": id replaces that slot's rotation story.
+    const override = schedule.overrides?.[`${today} ${slot}`];
+    if (override) return { id: override, next };
     const pool = [...schedule.stories[slot], ...seasons.flatMap(([, s]) => s.stories[slot])];
     delete next.storyCursor; // left over from the stored-cursor days
     const n = pool.length;

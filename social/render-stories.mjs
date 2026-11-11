@@ -266,6 +266,16 @@ const STORIES = [
         lede: '06:00 – 22:00.',
       }),
   },
+  // One-off, posted 2026-11-11 evening via schedule.json overrides.
+  {
+    id: 'closed-2026-11-12',
+    html: () =>
+      textAnnouncementStory({
+        kicker: 'Πεμπτη 12 Νοεμβριου',
+        headline: 'Αύριο<br>είμαστε <em>κλειστά.</em>',
+        lede: 'Εργασίες ΔΕΔΔΗΕ.<br>Ανοίγουμε ξανά<br>Παρασκευή, 06:00.',
+      }),
+  },
   { id: 'order-delivery', html: () => deliveryStory() },
   {
     id: 'espresso-price',
