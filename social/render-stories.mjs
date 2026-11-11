@@ -273,7 +273,7 @@ const STORIES = [
       textAnnouncementStory({
         kicker: 'Πεμπτη 12 Νοεμβριου',
         headline: 'Αύριο<br>είμαστε <em>κλειστά.</em>',
-        lede: 'Εργασίες ΔΕΔΔΗΕ.<br>Ανοίγουμε ξανά<br>Παρασκευή, 06:00.',
+        lede: '<span style="display:block;white-space:nowrap;margin:0 -80px">Λόγω εργασιών ΔΕΔΔΗΕ.</span>Ανοίγουμε ξανά<br>Παρασκευή, 06:00.',
       }),
   },
   { id: 'order-delivery', html: () => deliveryStory() },
