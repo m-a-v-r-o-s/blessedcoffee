@@ -160,7 +160,7 @@ const REELS = [
     bg: 'crema-double-2',
     seconds: 6,
     front: `<div class="txt">
-      <div class="kicker fade" id="k">Espresso · 2€</div>
+      <div class="kicker fade" id="k">Espresso · 1.80€</div>
       <h1 class="fade" id="h">Ο καφές σου.<br><em>Έτοιμος.</em></h1>
     </div>${foot}`,
     frame: (s, $) => {
@@ -172,8 +172,8 @@ const REELS = [
       $.show('#h', $.out($.seg(s, 2, 2.9)), 40); $.show('#k', $.seg(s, 2.8, 3.4));
     },
     caption: {
-      el: 'Ο καφές σου, έτοιμος. Espresso 2€, κάθε μέρα από τις 06:00. Ρόδου 68.',
-      en: 'Your coffee, ready. Espresso €2, every day from 6am. Rodou 68.',
+      el: 'Ο καφές σου, έτοιμος. Espresso 1.80€, κάθε μέρα από τις 06:00. Ρόδου 68.',
+      en: 'Your coffee, ready. Espresso €1.80, every day from 6am. Rodou 68.',
     },
   },
   {

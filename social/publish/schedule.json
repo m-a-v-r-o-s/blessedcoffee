@@ -15,7 +15,6 @@
   "stories": {
     "morning": [
       "ps-beans",
-      "ps-shift",
       "ps-pair",
       "ps-open",
       "ps-pies",
@@ -40,7 +39,6 @@
       "ph-delivery",
       "ps-shift-2",
       "ps-pies-2",
-      "ph-morning-2",
       "ps-splash-2",
       "ps-peinirli-2",
       "ps-smile-2",
@@ -57,7 +55,6 @@
     ],
     "evening": [
       "ps-closing",
-      "ps-mrs-rose",
       "story-see-you-7",
       "ps-latte",
       "ps-inside",
@@ -82,7 +79,6 @@
       "ps-closing-2",
       "ps-pair-2",
       "ps-inside-2",
-      "ps-mrs-rose-2",
       "ps-delivery-2",
       "ph-break-2",
       "ps-hopper-2",

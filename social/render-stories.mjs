@@ -282,8 +282,8 @@ const STORIES = [
     html: () =>
       priceStory({
         kicker: 'Espresso',
-        price: '2.00',
-        note: 'Freddo espresso 2.40€<br>Cappuccino 2.60€<br>Freddo cappuccino 2.60€',
+        price: '1.80',
+        note: 'Freddo espresso 2.30€<br>Cappuccino 2.60€<br>Freddo cappuccino 2.60€',
       }),
   },
   { id: 'reformat-review-martha', html: () => reformatStory('review-martha.jpg') },
@@ -298,20 +298,6 @@ const STORIES = [
         <div class="kicker">Σημερα / Today</div>
         <h1>Ανοιχτά<br><em>06:00 – 22:00.</em></h1>
         <div class="lede">Κάθε μέρα. Ρόδου 68.</div>
-      </div>
-      ${foot()}
-    </div>`,
-  },
-  {
-    id: 'story-poll-side',
-    html: () => `<div class="card">
-      ${backdrop('slat-wall')}
-      <div class="kicker">Ψηφισε / Vote</div>
-      <h1 style="font-size:96px">Από ποια πλευρά<br><em>πίνεις;</em></h1>
-      <div class="thumbs">
-        <figure><img src="${shot('thumb-logo')}"><figcaption><b>A</b>ΤΟ ΣΗΜΑ</figcaption></figure>
-        <figure><img src="${shot('thumb-slogan')}"><figcaption><b>B</b>ΤΟ ΣΥΝΘΗΜΑ</figcaption></figure>
-        <figure><img src="${shot('thumb-partner')}"><figcaption><b>C</b>MRS ROSE</figcaption></figure>
       </div>
       ${foot()}
     </div>`,
@@ -370,11 +356,11 @@ const STORIES = [
       <div class="over">
         <div class="kicker">Ο καφες μας</div>
         <div class="rows" style="gap:18px;margin-top:30px">
-          <div class="row"><span class="k">Espresso</span><span class="dots"></span><span class="v">2€</span></div>
+          <div class="row"><span class="k">Espresso</span><span class="dots"></span><span class="v">1.80€</span></div>
           <div class="row"><span class="k">Americano</span><span class="dots"></span><span class="v">2€</span></div>
-          <div class="row"><span class="k">Macchiato</span><span class="dots"></span><span class="v">2.10€</span></div>
+          <div class="row"><span class="k">Macchiato</span><span class="dots"></span><span class="v">2€</span></div>
           <div class="row"><span class="k">Cappuccino</span><span class="dots"></span><span class="v">2.60€</span></div>
-          <div class="row"><span class="k">Freddo espresso</span><span class="dots"></span><span class="v">2.40€</span></div>
+          <div class="row"><span class="k">Freddo espresso</span><span class="dots"></span><span class="v">2.30€</span></div>
           <div class="row"><span class="k">Freddo cappuccino</span><span class="dots"></span><span class="v">2.60€</span></div>
         </div>
       </div>
@@ -388,7 +374,7 @@ const STORIES = [
       <img class="mark" src="${logo}">
       <div class="kicker">Καλοκαιρι</div>
       <h1>Καύσωνας;<br><em>Freddo.</em></h1>
-      <div class="lede">Freddo espresso 2.40€<br>Freddo cappuccino 2.60€<br>Espresso 2€<br>Cappuccino 2.60€</div>
+      <div class="lede">Freddo espresso 2.30€<br>Freddo cappuccino 2.60€<br>Espresso 1.80€<br>Cappuccino 2.60€</div>
       ${foot()}
     </div>`,
   },
@@ -398,16 +384,16 @@ const STORIES = [
       <img class="mark" src="${logo}">
       <div class="kicker">Χειμωνας</div>
       <h1>Κρύο έξω.<br><em>Ζεστός</em> μέσα.</h1>
-      <div class="lede">Espresso 2€<br>Freddo espresso 2.40€<br>Cappuccino 2.60€<br>Freddo cappuccino 2.60€</div>
+      <div class="lede">Espresso 1.80€<br>Freddo espresso 2.30€<br>Cappuccino 2.60€<br>Freddo cappuccino 2.60€</div>
       ${foot()}
     </div>`,
   },
   // ─── Photo stories: the real photos again, new lines. Never 21-35-35 (unlisted happy-hour offer). ──
   ...[
     ['ph-morning', '21-34-43', 'Απο τις 06:00', 'Πρώτος καφές<br><em>της ημέρας;</em>', 'Κάθε μέρα, Ρόδου 68.', 'top'],
-    ['ph-espresso', '21-34-55', 'Espresso', 'Ζεστός<br><em>ή freddo;</em>', 'Espresso 2€ · Freddo espresso 2.40€'],
+    ['ph-espresso', '21-34-55', 'Espresso', 'Ζεστός<br><em>ή freddo;</em>', 'Espresso 1.80€ · Freddo espresso 2.30€'],
     ['ph-takeaway', '21-35-16', 'Ροδου 68', 'Takeaway;', 'Κάθε μέρα 06:00 – 22:00', 'top'],
-    ['ph-break', '21-36-13', 'Διαλειμμα', 'Διάλειμμα;<br><em>Ένας espresso.</em>', '2€', 'top'],
+    ['ph-break', '21-36-13', 'Διαλειμμα', 'Διάλειμμα;<br><em>Ένας espresso.</em>', '1.80€', 'top'],
     ['ph-for-you', '21-36-24', 'Η παραγγελια σου', 'Μέτριο,<br><em>μαύρη πάλι;</em>', '', 'top'],
     ['ph-grind', '21-36-37', 'Φρεσκο αλεσμα', 'Αλέθουμε<br><em>κάθε μέρα.</em>', 'Φρέσκος καφές σε κάθε ποτήρι.'],
     ['ph-delivery', '21-34-55', 'Delivery', 'Καφές<br><em>στην πόρτα σου.</em>', 'e-food · Wolt · Box'],
@@ -422,12 +408,11 @@ const STORIES = [
     ['ps-pair', 'cup-pair', 'Για δυο', 'Κερνάς<br><em>ή κερνάω;</em>', 'Κάνε tag τον φίλο σου.'],
     ['ps-foam', 'foam-macro', '', ''],
     ['ps-latte', 'milk-steam', '', ''],
-    ['ps-splash', 'espresso-splash', 'Espresso · 2€', 'Χρειάζεσαι<br><em>έναν espresso;</em>', ''],
+    ['ps-splash', 'espresso-splash', 'Espresso · 1.80€', 'Χρειάζεσαι<br><em>έναν espresso;</em>', ''],
     ['ps-crema', 'crema-double-2', 'Espresso', 'Ένας espresso<br><em>και φεύγεις;</em>', ''],
-    ['ps-drop', 'last-drop', 'Espresso', 'Δεύτερος<br><em>καφές;</em>', 'Espresso 2€'],
+    ['ps-drop', 'last-drop', 'Espresso', 'Δεύτερος<br><em>καφές;</em>', 'Espresso 1.80€'],
     ['ps-beans', 'beans-macro', 'Καλημερα', 'Καλημέρα.<br><em>Έναν καφέ;</em>', ''],
     ['ps-hopper', 'beans-hopper', 'Καθε μερα', 'Σε περιμένουμε<br><em>πρωί, μεσημέρι<br>ή βράδυ.</em>', '06:00 – 22:00'],
-    ['ps-mrs-rose', 'mrs-rose-tins', '', ''],
     ['ps-guide', 'coffee-guide', 'Ερωτηση', 'Τι πίνεις<br><em>σήμερα;</em>', 'Στείλε μας DM.'],
     ['ps-peinirli', 'vitrine-peinirli', '', ''],
     ['ps-pies', 'vitrine-pies', '', ''],
@@ -441,14 +426,14 @@ const STORIES = [
     ['ps-inside', 'interior', 'Μεσα', 'Κάτσε<br><em>λίγο.</em>', '06:00 – 22:00'],
     ['ps-street', 'cup-street-left', 'Κανε tag', 'Το ποτήρι σου<br><em>στη γειτονιά.</em>', '@blessedcoffee2024'],
     ['ps-delivery', 'cup-counter', 'Delivery', 'Παράγγειλε<br><em>από το κινητό.</em>', 'e-food · Wolt · Box'],
-    ['ps-summer', 'cup-street-left', 'Καλοκαιρι', 'Freddo<br><em>για τον δρόμο.</em>', 'Freddo espresso 2.40€'],
+    ['ps-summer', 'cup-street-left', 'Καλοκαιρι', 'Freddo<br><em>για τον δρόμο.</em>', 'Freddo espresso 2.30€'],
     ['ps-winter-steam', 'espresso-steam', 'Cappuccino · 2.60€', 'Κρύο έξω;<br><em>Ζεστό cappuccino μέσα.</em>', ''],
   ].map(([id, img, kicker, headline, lede, pos]) => ({ id, html: () => photoStory({ img: `shoot/${img}.jpg`, kicker, headline, lede, pos }) })),
   // ─── Round 2: the same photos with new lines, so the rotation runs twice as long before a story
   //     comes back word for word. Ids end in -2. ──
   ...[
     ['ph-morning-2', '21-34-43', 'Ροδου 68', 'Καφές<br><em>για το πρωί.</em>', 'Από τις 06:00.', 'top'],
-    ['ph-espresso-2', '21-34-55', 'Στο μενου', 'Espresso ή<br><em>cappuccino;</em>', 'Espresso 2€ · Cappuccino 2.60€'],
+    ['ph-espresso-2', '21-34-55', 'Στο μενου', 'Espresso ή<br><em>cappuccino;</em>', 'Espresso 1.80€ · Cappuccino 2.60€'],
     ['ph-takeaway-2', '21-35-16', 'Take away', 'Βιάζεσαι;<br><em>Take away.</em>', 'Ρόδου 68', 'top'],
     ['ph-break-2', '21-36-13', 'Διαλειμμα', 'Κάτσε να πιεις<br><em>έναν καφέ.</em>', 'Cappuccino 2.60€', 'top'],
     ['ph-for-you-2', '21-36-24', 'Η παραγγελια σου', 'Όπως<br><em>τον πίνεις.</em>', 'Πες μας και τον φτιάχνουμε.', 'top'],
@@ -462,14 +447,13 @@ const STORIES = [
     ['ps-heaven-2', 'cup-black', 'Take away', 'Στον δρόμο<br><em>για τη δουλειά;</em>', 'Από τις 06:00'],
     ['ps-waiting-2', 'cup-counter-2', 'Σημερα', 'Τον πίνεις<br><em>σκέτο ή γλυκό;</em>', ''],
     ['ps-pair-2', 'cup-pair', 'Για δυο', 'Έρχεσαι<br><em>με παρέα;</em>', 'Ρόδου 68'],
-    ['ps-foam-2', 'foam-macro', 'Cappuccino', 'Ζεστό<br><em>ή freddo;</em>', 'Espresso 2€<br>Freddo espresso 2.40€<br>Cappuccino 2.60€<br>Freddo cappuccino 2.60€'],
-    ['ps-latte-2', 'milk-steam', 'Cappuccino latte · 2.70€', 'Κρύο<br><em>σήμερα;</em>', 'Πάρε κάτι ζεστό.'],
-    ['ps-splash-2', 'espresso-splash', 'Espresso', 'Γρήγορος<br><em>και δυνατός.</em>', '2€'],
+    ['ps-foam-2', 'foam-macro', 'Cappuccino', 'Ζεστό<br><em>ή freddo;</em>', 'Espresso 1.80€<br>Freddo espresso 2.30€<br>Cappuccino 2.60€<br>Freddo cappuccino 2.60€'],
+    ['ps-latte-2', 'milk-steam', 'Cappuccino latte · 2.60€', 'Κρύο<br><em>σήμερα;</em>', 'Πάρε κάτι ζεστό.'],
+    ['ps-splash-2', 'espresso-splash', 'Espresso', 'Γρήγορος<br><em>και δυνατός.</em>', '1.80€'],
     ['ps-crema-2', 'crema-double-2', 'Espresso', 'Σκέτος<br><em>ή με ζάχαρη;</em>', ''],
-    ['ps-drop-2', 'last-drop', 'Espresso', 'Espresso ή<br><em>Americano;</em>', '2€ και τα δύο'],
-    ['ps-beans-2', 'beans-macro', 'Mrs Rose · Il Modo', 'Δύο χαρμάνια.<br><em>Ποιο σου πάει;</em>', ''],
+    ['ps-drop-2', 'last-drop', 'Espresso', 'Espresso ή<br><em>Americano;</em>', 'Espresso 1.80€<br>Americano 2€'],
+    ['ps-beans-2', 'beans-macro', '', ''],
     ['ps-hopper-2', 'beans-hopper', 'Καθε μερα', 'Καφές μετά<br><em>το φαγητό;</em>', 'Ως τις 22:00.'],
-    ['ps-mrs-rose-2', 'mrs-rose-tins', '', ''],
     ['ps-guide-2', 'coffee-guide', 'Ερωτηση', 'Ελληνικός<br><em>ή freddo;</em>', 'Πες μας στο DM.'],
     ['ps-peinirli-2', 'vitrine-peinirli', 'Πρωινο', 'Πεϊνιρλί<br><em>και καφές.</em>', 'Από τις 06:00'],
     ['ps-pies-2', 'vitrine-pies', '', ''],

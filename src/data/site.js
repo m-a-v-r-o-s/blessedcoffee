@@ -65,11 +65,11 @@ export const price = (n) => (n == null ? '' : `${n.toFixed(2)}€`);
 // only: shop id, the section is shown for that shop only (hidden by the shop switch).
 export const MENU = [
   {
-    id: 'coffee', title: { el: 'Καφές', en: 'Coffee' }, cols: ['Mrs Rose', 'Il Modo'],
+    id: 'coffee', title: { el: 'Καφές', en: 'Coffee' },
     items: [
-      ['Freddo Espresso', 2.4, 2.3], ['Freddo Cappuccino', 2.6, 2.5], ['Cappuccino', 2.6, 2.5],
-      ['Espresso', 2, 1.9], ['Cappuccino Latte', 2.7, 2.6], ['Macchiato', 2.1, 2], ['NES', 1.8, null],
-      ['Frappe', 1.8, null], ['Φίλτρου', 2, null], ['Ελληνικός', 1.8, null], ['Americano', 2, null],
+      ['Freddo Espresso', 2.3], ['Freddo Cappuccino', 2.6], ['Cappuccino', 2.6],
+      ['Espresso', 1.8], ['Cappuccino Latte', 2.6], ['Macchiato', 2], ['NES', 1.8],
+      ['Frappe', 1.8], ['Φίλτρου', 2], ['Ελληνικός', 1.8], ['Americano', 2],
     ],
   },
   {

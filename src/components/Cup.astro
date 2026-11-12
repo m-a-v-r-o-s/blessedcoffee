@@ -3,7 +3,6 @@ import { Image, getImage } from 'astro:assets';
 import { T } from '../i18n.js';
 import poster from '../assets/cup-front.png';
 import labelSrc from '../assets/cup-label.jpg';
-import mrsRose from '../assets/mrsrose.webp';
 
 const { lang } = Astro.props;
 const t = T[lang];
@@ -19,10 +18,6 @@ const label = await getImage({ src: labelSrc, width: 2048, format: 'webp', quali
       <p class="eyebrow">{t.cupEyebrow}</p>
       <h2 id="cup-title" class="h2">{t.cupTitle}</h2>
       <p class="lede">{t.cupText}</p>
-      <div class="partner">
-        <Image src={mrsRose} alt="Mrs Rose Caffè" width={96} height={96} />
-        <span class="eyebrow">{t.partner}</span>
-      </div>
     </div>
   </div>
 </section>
@@ -55,6 +50,4 @@ const label = await getImage({ src: labelSrc, width: 2048, format: 'webp', quali
   .live canvas { opacity: 1; }
   .live :global(.poster) { opacity: 0; }
   .copy { display: grid; gap: 18px; justify-items: start; }
-  .partner { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
-  .partner :global(img) { width: 72px; height: 72px; }
 </style>

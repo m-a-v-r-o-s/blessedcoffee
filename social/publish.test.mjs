@@ -45,7 +45,7 @@ assert.equal(pick('story', '2026-10-29', cfg()).id, stories.morning[0]);
 assert.equal(pick('story', '2026-10-29', cfg(), 'evening').id, stories.evening[0]);
 assert.equal(pick('story', '2026-10-30', cfg({ storyCursor: { morning: 5 } })).id, stories.morning[1]); // old cursors ignored
 assert.equal(pick('story', '2026-10-30', cfg({ storyCursor: { morning: 5 } })).next.storyCursor, undefined);
-assert.equal(pick('story', '2026-12-08', cfg()).id, winter.stories.morning[0]); // day 40 of a 41-long winter pool
+assert.equal(pick('story', '2026-12-06', cfg()).id, winter.stories.morning[0]); // day 38 of a 39-long winter pool
 const FOOD = /^ps-(peinirli|pies|craving|sesame|snack|window)(-2)?$/;
 for (const id of stories.evening) assert.ok(!FOOD.test(id), `food story in the evening: ${id}`);
 // Quiz: question in the evening, answer the next morning.
