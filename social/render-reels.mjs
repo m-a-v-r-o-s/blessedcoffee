@@ -112,25 +112,24 @@ const REELS = [
   {
     id: 'reel-panels',
     bg: 'slat-wall',
-    seconds: 12, // seamless: 3 x 4s, hold 2.4s on each panel, 1.6s turn to the next
+    seconds: 12, // seamless: 2 x 6s, hold 4.4s on each panel, 1.6s turn to the next
     front: `<div class="txt">
       <div id="p0" class="fade"><div class="kicker">Το σημα</div><h1>Coffee<br><em>&amp; spirits.</em></h1></div>
       <div id="p1" class="fade" style="position:absolute;left:0;right:0;bottom:0"><div class="kicker">Το συνθημα</div><h1>Γεύση απ' τον<br><em>παράδεισο.</em></h1></div>
-      <div id="p2" class="fade" style="position:absolute;left:0;right:0;bottom:0"><div class="kicker">Ο καφες</div><h1>Mrs Rose<br><em>Caffè.</em></h1></div>
     </div>${foot}`,
     frame: (s, $) => {
-      const stops = [$.PANEL.logo, $.PANEL.slogan, $.PANEL.partner, 1];
-      const i = Math.floor(s / 4) % 3, u = s % 4;
-      const rot = $.lerp(stops[i], stops[i + 1], $.io($.seg(u, 2.4, 4)));
+      const stops = [$.PANEL.logo, $.PANEL.slogan, 1];
+      const i = Math.floor(s / 6) % 2, u = s % 6;
+      const rot = $.lerp(stops[i], stops[i + 1], $.io($.seg(u, 4.4, 6)));
       $.pose({ ...$.LABEL, rot, cam: [0, 130, 750], look: [0, 40, 0], fov: 26, keyPos: [-260, 360, 420] });
-      for (let k = 0; k < 3; k++) {
-        const d = ((s - 4 * k + 12 + 0.5) % 12) - 0.5; // seconds since panel k's hold began, wrapped
-        $.show(`#p${k}`, Math.min($.seg(d, -0.6, 0), 1 - $.seg(d, 2.3, 2.7)), 24);
+      for (let k = 0; k < 2; k++) {
+        const d = ((s - 6 * k + 12 + 0.5) % 12) - 0.5; // seconds since panel k's hold began, wrapped
+        $.show(`#p${k}`, Math.min($.seg(d, -0.6, 0), 1 - $.seg(d, 4.3, 4.7)), 24);
       }
     },
     caption: {
-      el: 'Γύρνα το ποτήρι. Το σήμα μας, το σύνθημά μας, ο καφές μας: Mrs Rose Caffè. Ρόδου 68, κάθε μέρα 06:00 – 22:00.',
-      en: 'Turn the cup. Our mark, our motto, our coffee: Mrs Rose Caffè. Rodou 68, every day 06:00 – 22:00.',
+      el: 'Γύρνα το ποτήρι. Το σήμα μας και το σύνθημά μας. Ρόδου 68, κάθε μέρα 06:00 – 22:00.',
+      en: 'Turn the cup. Our mark and our motto. Rodou 68, every day 06:00 – 22:00.',
     },
   },
   {

@@ -1,13 +1,13 @@
-// The 16oz Blessed cup in 3D, ported from social/cup/cup.html (same measurements and label), restaged as a
+// The 16oz Blessed cup in 3D, wrapped in the printer's die-line (social/cup/dieline), restaged as a
 // studio product shot. Drag to turn it: momentum carries the flick and it settles on the nearest printed panel.
 import * as THREE from 'three';
 import { project, velocityTracker, springTo, prefersReducedMotion } from './spring.js';
 
-// Panel centres in turns, measured off renders (social/cup/shots.mjs). Seams sit near 0.185 / 0.53 / 0.85.
-export const PANELS = [0, 0.37, 0.69];
+// Panel centres in turns (logo, slogan), measured off the unwrapped die-line (social/cup/dieline/unwrap.py).
+export const PANELS = [0, 0.474];
 const H = 132.8, RT = 45, RB = 31.2;
-// Label u for a cup turned t turns is 0.5 - t. The paper side seam goes on the scan's stitch at 0.5375 turns.
-const SEAM_U = 0.9625;
+// Label u for a cup turned t turns is 0.5 - t. The paper side seam goes where the die-line's edges meet.
+const SEAM_U = 0.2535;
 
 // Paper grain as a tiling normal map: wrapped value noise, fibres a little longer than they are wide.
 function grain(N = 256) {
@@ -255,7 +255,7 @@ export async function mount(canvas, labelUrl) {
   let stop, dragging = false;
 
   // Scroll turn: up to 0.07 turns either side while the section crosses the viewport, square to the
-  // camera when centred. 0.07 keeps every panel well clear of a seam.
+  // camera when centred. 0.07 keeps both panels well clear of the seam.
   const scrollTurn = () => {
     if (reduced) return 0;
     const r = canvas.getBoundingClientRect();
