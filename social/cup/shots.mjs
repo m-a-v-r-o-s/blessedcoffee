@@ -27,7 +27,7 @@ export const SHOTS = {
   'lid-top': [1000, 1000, { ...LID, rot: 0.02, cam: [0, 495, 1], look: [0, 94, 0], fov: 20, keyPos: [-300, 380, -100], keyI: 14000, rimI: 2, env: 0.2 }],
   'logo-close': [1080, 1350, { ...LABEL, rot: PANEL.logo, cam: [0, 77, 205], look: [0, 64, 0], fov: 32 }],
   'slogan-close': [1080, 1350, { ...LABEL, rot: PANEL.slogan, cam: [0, 77, 205], look: [0, 64, 0], fov: 32 }],
-  'front': [620, 820, { ...LABEL, rot: PANEL.logo, cam: [0, 127, 560], look: [0, 61, 0], fov: 21, steam: 2 }],
+  'front': [620, 820, { ...LABEL, rot: PANEL.logo, cam: [0, 123, 560], look: [0, 57, 0], fov: 21, steam: 2 }],
   'thumb-logo': [300, 400, { ...LABEL, rot: PANEL.logo, cam: [0, 102, 400], look: [0, 71, 0], fov: 21 }],
   'thumb-slogan': [300, 400, { ...LABEL, rot: PANEL.slogan, cam: [0, 102, 400], look: [0, 71, 0], fov: 21 }],
 };

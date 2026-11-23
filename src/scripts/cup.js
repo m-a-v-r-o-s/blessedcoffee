@@ -6,10 +6,10 @@ import { project, velocityTracker, springTo, prefersReducedMotion } from './spri
 // Panel centres in turns (logo, slogan), measured off the unwrapped die-line (social/cup/dieline/unwrap.py).
 export const PANELS = [0, 0.482];
 // 12oz: same 90mm lid as before, sleeve taper and height from the die-line.
-const H = 109, RT = 45, RB = 32;
+const H = 100.5, RT = 45, RB = 33;
 // Double wall: the printed sleeve ends FOLD mm up (its 6mm fold tucks inward there); below it the plain,
 // stiffer base cup shows as a ring GAP mm narrower.
-const FOLD = 17, GAP = 1.5, rAt = (y) => RB + ((RT - RB) * y) / H;
+const FOLD = 8.5, GAP = 1.5, rAt = (y) => RB + ((RT - RB) * y) / H;
 // Label u for a cup turned t turns is 0.5 - t. The paper side seam goes where the die-line's edges meet.
 const SEAM_U = 0.24;
 
@@ -244,8 +244,8 @@ export async function mount(canvas, labelUrl) {
 
   // 'front' framing from shots.mjs, so the poster image and the live canvas line up.
   const camera = new THREE.PerspectiveCamera(21, 620 / 820, 300, 900);
-  camera.position.set(0, 127, 560);
-  camera.lookAt(0, 61, 0);
+  camera.position.set(0, 123, 560);
+  camera.lookAt(0, 57, 0);
 
   steam.quaternion.copy(camera.quaternion);
   steam.visible = !reduced;

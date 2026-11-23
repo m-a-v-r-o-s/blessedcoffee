@@ -47,7 +47,7 @@ const camera = new THREE.PerspectiveCamera(24, innerWidth / innerHeight, 20, 300
 // clock in seconds (left out: no steam).
 const D = { keyPos: key.position.toArray(), keyI: key.intensity, keyAngle: key.angle, rimI: rim.intensity, env: scene.environmentIntensity };
 const v3 = new THREE.Vector3();
-window.pose = ({ rot = 0, tilt: z = 0, lean = 0, lift = 0, cam = [0, 127, 560], look = [0, 61, 0], fov = 21,
+window.pose = ({ rot = 0, tilt: z = 0, lean = 0, lift = 0, cam = [0, 123, 560], look = [0, 57, 0], fov = 21,
                  keyPos = D.keyPos, keyI = D.keyI, keyAngle = D.keyAngle, rimI = D.rimI, env = D.env, exposure = 1,
                  shadow = 1, steam: st } = {}) => {
   tilt.rotation.set(lean, 0, z);
