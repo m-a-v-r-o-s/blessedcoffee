@@ -1,13 +1,17 @@
-// The 16oz Blessed cup in 3D, wrapped in the printer's die-line (social/cup/dieline), restaged as a
+// The 12oz Blessed cup in 3D, wrapped in the printer's die-line (social/cup/dieline), restaged as a
 // studio product shot. Drag to turn it: momentum carries the flick and it settles on the nearest printed panel.
 import * as THREE from 'three';
 import { project, velocityTracker, springTo, prefersReducedMotion } from './spring.js';
 
 // Panel centres in turns (logo, slogan), measured off the unwrapped die-line (social/cup/dieline/unwrap.py).
-export const PANELS = [0, 0.474];
-const H = 132.8, RT = 45, RB = 31.2;
+export const PANELS = [0, 0.482];
+// 12oz: same 90mm lid as before, sleeve taper and height from the die-line.
+const H = 109, RT = 45, RB = 32;
+// Double wall: the printed sleeve ends FOLD mm up (its 6mm fold tucks inward there); below it the plain,
+// stiffer base cup shows as a ring GAP mm narrower.
+const FOLD = 17, GAP = 1.5, rAt = (y) => RB + ((RT - RB) * y) / H;
 // Label u for a cup turned t turns is 0.5 - t. The paper side seam goes where the die-line's edges meet.
-const SEAM_U = 0.2535;
+const SEAM_U = 0.24;
 
 // Paper grain as a tiling normal map: wrapped value noise, fibres a little longer than they are wide.
 function grain(N = 256) {
@@ -56,10 +60,10 @@ function wall() {
     cols.push([u, 0]);
   }
   const P = [], UV = [], idx = [];
-  for (const [u, lift] of cols) for (const y of [0, H]) {
-    const th = Math.PI + u * 2 * Math.PI, r = RB + ((RT - RB) * y) / H + lift;
+  for (const [u, lift] of cols) for (const y of [FOLD, H]) {
+    const th = Math.PI + u * 2 * Math.PI, r = rAt(y) + lift;
     P.push(r * Math.sin(th), y, r * Math.cos(th));
-    UV.push(u, y / H);
+    UV.push(u, (y - FOLD) / (H - FOLD));
   }
   for (let c = 0; c < cols.length - 1; c++) {
     const a = c * 2, b = a + 2;
@@ -123,13 +127,22 @@ function buildCup(label) {
     map: label, roughness: 0.74, normalMap: grain(), normalScale: new THREE.Vector2(0.18, 0.18),
   }));
   const paper = new THREE.MeshStandardMaterial({ color: 0xf1eee8, roughness: 0.62 });
-  const base = new THREE.Mesh(new THREE.CircleGeometry(RB, 64), paper);
+  const base = new THREE.Mesh(new THREE.CircleGeometry(RB - GAP, 64), paper);
   base.rotation.x = Math.PI / 2;
+  // Base cup below the sleeve: smoother, harder board, no print. Runs 2mm up under the sleeve.
+  const ring = new THREE.Mesh(
+    new THREE.CylinderGeometry(rAt(FOLD + 2) - GAP, RB - GAP, FOLD + 2, 128, 1, true).translate(0, (FOLD + 2) / 2, 0),
+    new THREE.MeshStandardMaterial({ color: 0xf5f3ee, roughness: 0.48 }),
+  );
+  // The sleeve's folded bottom edge, closing the gap between sleeve and base cup.
+  const fold = new THREE.Mesh(new THREE.RingGeometry(rAt(FOLD) - GAP, rAt(FOLD), 128), paper);
+  fold.rotation.x = Math.PI / 2;
+  fold.position.y = FOLD;
   // Rolled rim: the bead the lid snaps over, its lower half shows under the lid skirt.
   const lip = new THREE.Mesh(new THREE.TorusGeometry(RT + 1, 1.7, 16, 192), paper);
   lip.rotation.x = Math.PI / 2;
   lip.position.y = H - 1.7;
-  cup.add(body, base, lip, lid());
+  cup.add(body, ring, fold, base, lip, lid());
   return cup;
 }
 
@@ -230,9 +243,9 @@ export async function mount(canvas, labelUrl) {
   const { scene, tilt, cup, steam, vent } = await studioScene(renderer, labelUrl);
 
   // 'front' framing from shots.mjs, so the poster image and the live canvas line up.
-  const camera = new THREE.PerspectiveCamera(24, 620 / 820, 300, 900);
-  camera.position.set(0, 150, 560);
-  camera.lookAt(0, 72, 0);
+  const camera = new THREE.PerspectiveCamera(21, 620 / 820, 300, 900);
+  camera.position.set(0, 127, 560);
+  camera.lookAt(0, 61, 0);
 
   steam.quaternion.copy(camera.quaternion);
   steam.visible = !reduced;

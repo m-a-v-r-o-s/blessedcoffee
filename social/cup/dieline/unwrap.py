@@ -1,21 +1,21 @@
-# Unwraps the printer's flat 16oz die-line (dieline/16oz.jpg, a phone screenshot of their proof) into the
+# Unwraps the printer's flat 12oz die-line (dieline/12oz.jpg, a phone screenshot of their proof) into the
 # rectangular label the 3D cup wraps (src/assets/cup-label.jpg): u runs once round the cup from the paper
 # seam, v from the bottom fold up to the rim. Measured off the screenshot: the arcs share a centre, the
-# side edges are radial at +-15.93 deg, the cut line's top arc is r 2176 and the bottom fold r 1645.
+# side edges are radial at -18.28 / +18.08 deg, the cut line's top arc is r 1900 and the bottom fold r 1480.
 #   python3 social/cup/dieline/unwrap.py [roll]   roll = turns to shift so the logo faces front
 import sys
 import numpy as np
 from PIL import Image
 
 HERE = __file__.rsplit('/', 1)[0]
-CX, CY = 659.53, 3200.02
-R_TOP, R_FOLD = 2170, 1650          # a few px inside the yellow cut line and the pink fold line
-TH_L = np.radians(-15.93 + 0.15)    # skip the yellow side edge
-TH_R = np.radians(15.93 - 0.86)     # last 7mm hide under the flap (32px at the rim)
+CX, CY = 682.83, 2946.11
+R_TOP, R_FOLD = 1894, 1485          # a few px inside the yellow cut line and the pink fold line
+TH_L = np.radians(-18.28 + 0.15)    # skip the yellow side edge
+TH_R = np.radians(18.08 - 0.94)     # last 7mm hide under the flap (31px at the rim)
 W, H, UP = 3072, 1024, 3
 roll = float(sys.argv[1]) if len(sys.argv) > 1 else 0
 
-src = Image.open(f'{HERE}/16oz.jpg').convert('RGB')
+src = Image.open(f'{HERE}/12oz.jpg').convert('RGB')
 src = np.asarray(src.resize((src.width * UP, src.height * UP), Image.LANCZOS)).astype(np.float32)
 u = (np.arange(W) + 0.5) / W
 v = (np.arange(H) + 0.5) / H
