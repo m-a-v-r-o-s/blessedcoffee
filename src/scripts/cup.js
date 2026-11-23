@@ -1,17 +1,16 @@
-// The 12oz Blessed cup in 3D, wrapped in the printer's die-line (social/cup/dieline), restaged as a
+// The 16oz Blessed cup in 3D, wrapped in the printer's die-line (social/cup/dieline), restaged as a
 // studio product shot. Drag to turn it: momentum carries the flick and it settles on the nearest printed panel.
 import * as THREE from 'three';
 import { project, velocityTracker, springTo, prefersReducedMotion } from './spring.js';
 
 // Panel centres in turns (logo, slogan), measured off the unwrapped die-line (social/cup/dieline/unwrap.py).
-export const PANELS = [0, 0.482];
-// 12oz: same 90mm lid as before, sleeve taper and height from the die-line.
-const H = 100.5, RT = 45, RB = 33;
+export const PANELS = [0, 0.474];
+const H = 132.8, RT = 45, RB = 31.2;
 // Double wall: the printed sleeve ends FOLD mm up (its 6mm fold tucks inward there); below it the plain,
 // stiffer base cup shows as a ring GAP mm narrower.
 const FOLD = 8.5, GAP = 1.5, rAt = (y) => RB + ((RT - RB) * y) / H;
 // Label u for a cup turned t turns is 0.5 - t. The paper side seam goes where the die-line's edges meet.
-const SEAM_U = 0.24;
+const SEAM_U = 0.2535;
 
 // Paper grain as a tiling normal map: wrapped value noise, fibres a little longer than they are wide.
 function grain(N = 256) {
@@ -243,9 +242,9 @@ export async function mount(canvas, labelUrl) {
   const { scene, tilt, cup, steam, vent } = await studioScene(renderer, labelUrl);
 
   // 'front' framing from shots.mjs, so the poster image and the live canvas line up.
-  const camera = new THREE.PerspectiveCamera(21, 620 / 820, 300, 900);
-  camera.position.set(0, 123, 560);
-  camera.lookAt(0, 57, 0);
+  const camera = new THREE.PerspectiveCamera(24, 620 / 820, 300, 900);
+  camera.position.set(0, 150, 560);
+  camera.lookAt(0, 72, 0);
 
   steam.quaternion.copy(camera.quaternion);
   steam.visible = !reduced;

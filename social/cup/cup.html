@@ -43,11 +43,11 @@ const camera = new THREE.PerspectiveCamera(24, innerWidth / innerHeight, 20, 300
 
 // Posed stills and reels (social/cup/shots.mjs, social/render-reels.mjs). Every field is optional;
 // anything left out falls back to the site's 'front' framing and studio light. rot is in turns:
-// 0 = logo panel, 0.482 = slogan panel. The paper seam sits at 0.26: never hold a close-up there. shadow scales the contact shadow, steam is the steam's
+// 0 = logo panel, 0.474 = slogan panel. The paper seam sits at 0.2465: never hold a close-up there. shadow scales the contact shadow, steam is the steam's
 // clock in seconds (left out: no steam).
 const D = { keyPos: key.position.toArray(), keyI: key.intensity, keyAngle: key.angle, rimI: rim.intensity, env: scene.environmentIntensity };
 const v3 = new THREE.Vector3();
-window.pose = ({ rot = 0, tilt: z = 0, lean = 0, lift = 0, cam = [0, 123, 560], look = [0, 57, 0], fov = 21,
+window.pose = ({ rot = 0, tilt: z = 0, lean = 0, lift = 0, cam = [0, 150, 560], look = [0, 72, 0], fov = 24,
                  keyPos = D.keyPos, keyI = D.keyI, keyAngle = D.keyAngle, rimI = D.rimI, env = D.env, exposure = 1,
                  shadow = 1, steam: st } = {}) => {
   tilt.rotation.set(lean, 0, z);
