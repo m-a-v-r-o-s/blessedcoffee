@@ -1,48 +1,132 @@
 """Erase Mrs Rose / Goppion branding from library photos (partnerships ended Nov 2026).
 
-Content-aware fill without ML: each region is filled with a smooth membrane (Laplace) from
-the pixels around it, then given back grain sampled from its surroundings. Where a region
-straddles an edge (a cup against the background), the edge line is fitted from the clean rows
-above and below and each side is filled only from its own side, so the silhouette stays crisp.
-
-Run from repo root: python3 social/photos/erase-brands.py [name ...]
+LaMa inpainting ("smart eraser"): each brand mark is masked and redrawn from its surroundings.
+Needs a venv with torch + simple-lama-inpainting (the big-lama model downloads on first run):
+  python3 -m venv lama && lama/bin/pip install torch torchvision pillow numpy opencv-python-headless fire
+  lama/bin/pip install --no-deps simple-lama-inpainting
+Run from repo root: lama/bin/python social/photos/erase-brands.py [name ...]
 Always starts from the file's pre-edit original in git (ORIG), so it can be re-run.
-Regions are (polygon [(x, y), ...], edge) in original pixels; edge 'v' = fit a near-vertical
-silhouette through the region, None = one surface.
+
+Regions are in original pixels, either (cx, cy, rx, ry, angle_deg, p) superellipses
+(p=2 ellipse, p=4 rounded rect, grown by GROW) or [(x, y), ...] polygons drawn as given.
+KEEP shapes are inpainted too (so their colour can't bleed into the fill) and then restored from
+the original: the red/blue plastic badge on the cups stays.
 """
 import io
 import subprocess
 import sys
 from pathlib import Path
 
+import cv2
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageDraw, ImageFilter, JpegImagePlugin
 
 ROOT = Path(__file__).resolve().parent
 ORIG = '67496ca^'  # last commit before any brand edit
-FEATHER = 8
-OUTLIER = 45  # luminance distance from a surface's median that counts as foreign
+GROW = 1.2
+# Cropped after the brand edit (ORIG would undo the crop) or unused: never erase these.
+SKIP = {'shoot/shutter-christ.jpg', 'shoot/shutter-christ-2.jpg', 'shoot/storefront-day.jpg',
+        'shoot/storefront-glass.jpg', 'shoot/storefront-leaves.jpg', 'shoot/grinder-fill.jpg',
+        'shoot/grinder-pour.jpg'}
 
-def shape(cx, cy, rx, ry, ang=0, p=2, grow=1.15):
-    """Superellipse outline (p=2 ellipse, 4+ rounded rect), rotated ang degrees, scaled by grow."""
-    t = np.linspace(0, 2 * np.pi, 72, endpoint=False)
+REGIONS = {
+    # paper cups with the old Mrs Rose + Goppion side panel
+    'shoot/apron-cup.jpg': [(272, 1205, 48, 82, 0, 2), (248, 1395, 52, 92, 0, 2)],
+    'shoot/cup-pair.jpg': [(228, 903, 32, 72, 0, 2), (245, 1068, 36, 72, 0, 2),
+                           (1100, 767, 60, 18, 69, 2), (1170, 950, 45, 20, 60, 2)],
+    'shoot/staff-cup.jpg': [[(500, 690), (518, 672), (552, 674), (576, 698), (582, 728), (580, 758), (558, 756),
+                             (542, 744), (522, 732), (506, 726), (498, 712)],  # logo above the finger only
+                            (558, 850, 52, 52, 0, 2), (680, 1290, 18, 85, 0, 2)],
+    'shoot/staff-machine.jpg': [
+        # cup stack top left: print only, the dark blur in front stays
+        [(0, 190), (62, 190), (62, 212), (50, 212), (50, 246), (64, 250), (64, 308), (40, 308), (36, 250),
+         (22, 246), (20, 210), (0, 210)],
+        [(282, 1035), (340, 1035), (340, 1095), (330, 1105), (330, 1142), (350, 1142), (350, 1163), (290, 1163),
+         (292, 1142), (298, 1105), (282, 1095)]],
+    'shoot/snack-cup.jpg': [[(430, 1210), (470, 1215), (395, 1310), (360, 1350), (334, 1376), (290, 1376),
+                             (315, 1345), (350, 1300), (405, 1235)]],  # strip along the cup edge
+    # edge slivers of the side panel
+    'shoot/cappuccino-foam.jpg': [(965, 910, 22, 62, 0, 2), (934, 1205, 16, 30, 0, 2)],
+    'shoot/cup-black.jpg': [(410, 930, 14, 62, -9.5, 4), (450, 1242, 13, 70, 0, 4)],
+    'shoot/cup-counter-2.jpg': [(396, 876, 12, 34, 0, 2), (427, 1163, 10, 18, 0, 2)],
+    'shoot/cup-counter.jpg': [(456, 1135, 10, 24, 0, 2)],
+    'shoot/espresso-logo-cup.jpg': [(966, 944, 12, 42, 0, 2), (937, 1225, 13, 32, 0, 2)],
+    # Goppion Dolce bags and poster
+    'shoot/dolce-bags.jpg': [(675, 837, 90, 95, 0, 4), (1200, 797, 78, 95, 0, 4), (688, 1045, 170, 55, 0, 4),
+                             (1175, 1040, 95, 55, 0, 4), (982, 1105, 30, 270, 0, 4),
+                             (690, 1112, 140, 30, 0, 4), (1140, 1112, 105, 25, 0, 4)],  # taglines
+    'shoot/dolce-hand.jpg': [(627, 890, 70, 80, 0, 4), (1128, 860, 75, 85, 0, 4), (638, 1070, 135, 48, 0, 4),
+                             (1095, 1050, 105, 48, 0, 4), (645, 1122, 120, 32, 0, 4), (1140, 1095, 105, 30, 0, 4),
+                             [(850, 800), (965, 800), (965, 1110), (915, 1110), (905, 1100), (850, 1095)]],  # stops above the fingertip
+    'shoot/shutter-faith.jpg': [(95, 1880, 60, 85, 0, 4)],
+    'shoot/shutter-faith-wide.jpg': [(350, 1407, 20, 21, 0, 2)],
+    # Mrs Rose blade sign (mid-frame here, so inpainted, not cropped), wall plaque, tins
+    'shoot/corner-wide.jpg': [[(1160, 686), (1300, 686), (1305, 815), (1160, 815)],  # sign plus its shadow
+                            (1132, 935, 24, 12, 0, 2)],
+    'shoot/interior.jpg': [(1104, 540, 60, 66, 0, 4)],
+    'shoot/interior-wide.jpg': [(1354, 399, 50, 52, 0, 4)],
+    'shoot/staff-wide.jpg': [(1249, 105, 92, 120, 0, 4), (1360, 85, 75, 100, 0, 4)],
+    'shoot/vitrine-window.jpg': [(500, 45, 240, 85, 0, 2)],
+    # older phone screenshots
+    'Screenshot_2026-09-20_21-34-43.png': [(407, 505, 13, 36, 0, 2)],
+    'Screenshot_2026-09-20_21-35-16.png': [[(770, 462), (812, 455), (832, 458), (830, 520), (826, 600), (820, 640),
+                                            (760, 645), (762, 610), (785, 600), (786, 540), (775, 525), (770, 490)]],
+    'Screenshot_2026-09-20_21-36-13.png': [[(570, 462), (632, 458), (628, 560), (620, 620), (612, 650), (556, 652),
+                                            (556, 615), (578, 600), (580, 565), (568, 540)]],
+    'Screenshot_2026-09-20_21-36-37.png': [(346, 149, 36, 30, 0, 2)],  # grinder screen logo
+    'Screenshot_2026-09-20_21-36-56.png': [(387, 722, 60, 22, 8, 2)],  # flyer footer badge
+    'Screenshot_2026-09-20_21-37-01.png': [(365, 735, 54, 19, 8, 2)],
+    'Screenshot_2026-09-20_21-37-08.png': [(368, 731, 54, 19, 8, 2)],
+}
+KEEP = {  # red/blue plastic badge next to the old panel
+    'shoot/staff-machine.jpg': [[(296, 1166), (347, 1166), (347, 1199), (296, 1199)]],
+    'shoot/snack-cup.jpg': [[(270, 1376), (332, 1376), (330, 1430), (262, 1430)]],
+    'Screenshot_2026-09-20_21-35-16.png': [[(756, 646), (824, 646), (822, 705), (756, 705)]],
+    'Screenshot_2026-09-20_21-36-13.png': [[(552, 653), (606, 653), (604, 710), (552, 710)]],
+}
+
+
+def outline(r):
+    if not isinstance(r, tuple):
+        return r
+    cx, cy, rx, ry, ang, p = r
+    t = np.linspace(0, 2 * np.pi, 96, endpoint=False)
     c, s = np.cos(t), np.sin(t)
-    x = rx * grow * np.sign(c) * np.abs(c) ** (2 / p)
-    y = ry * grow * np.sign(s) * np.abs(s) ** (2 / p)
+    x = rx * GROW * np.sign(c) * np.abs(c) ** (2 / p)
+    y = ry * GROW * np.sign(s) * np.abs(s) ** (2 / p)
     a = np.radians(ang)
     return [(cx + xi * np.cos(a) - yi * np.sin(a), cy + xi * np.sin(a) + yi * np.cos(a)) for xi, yi in zip(x, y)]
 
 
-REGIONS = {
-    # paper cups with the old Mrs Rose + Goppion side panel
-    'shoot/cup-pair.jpg': [
-        ([(150, 815), (280, 815), (280, 1140), (150, 1140)], 'v!'),
-        ([(1060, 690), (1135, 680), (1235, 1000), (1150, 1000)], 'v!'),
-    ],
-}
-# ponytail: membrane fill only holds up on plain surfaces and clean silhouettes; the other photos keep
-# blur-brands.py's blur until a real inpainting model (LaMa) is available. Never list shutter-christ(-2),
-# storefront-day/-glass/-leaves or grinder-fill here: they were cropped after, ORIG would undo the crop.
+def build_mask(size, regions):
+    m = Image.new('L', size, 0)
+    d = ImageDraw.Draw(m)
+    for r in regions:
+        d.polygon(outline(r), fill=255)
+    return m
+
+
+def erase(im, mask, lama):
+    """Inpaint each mask cluster in its own window, padded for context and scaled to LaMa's sweet spot."""
+    im = im.convert('RGB')
+    W, H = im.size
+    m = np.asarray(mask) > 0
+    n, labels = cv2.connectedComponents(cv2.dilate(m.astype(np.uint8), np.ones((121, 121), np.uint8)))
+    res = im.copy()
+    for k in range(1, n):
+        ys, xs = np.nonzero(m & (labels == k))
+        pad = int(max(96, max(np.ptp(ys), np.ptp(xs)) * 1.25))
+        box = (max(xs.min() - pad, 0), max(ys.min() - pad, 0), min(xs.max() + pad, W), min(ys.max() + pad, H))
+        win, wm = res.crop(box), mask.crop(box)
+        s = min(1.0, 900 / max(win.size))
+        small = win.resize((round(win.width * s), round(win.height * s)), Image.LANCZOS) if s < 1 else win
+        sm = wm.resize(small.size, Image.NEAREST).filter(ImageFilter.MaxFilter(5))
+        out = lama(small, sm).crop((0, 0, small.width, small.height))
+        if s < 1:
+            out = out.resize(win.size, Image.LANCZOS)
+        alpha = wm.filter(ImageFilter.MaxFilter(7)).filter(ImageFilter.GaussianBlur(2))
+        res.paste(Image.composite(out, win, alpha), box[:2])
+    return res
 
 
 def original(rel):
@@ -50,103 +134,25 @@ def original(rel):
     return Image.open(io.BytesIO(data))
 
 
-def membrane(img, unknown, domain, iters=60):
-    """Fill img[unknown] smoothly from img[domain & ~unknown]; only domain pixels count as neighbours."""
-    h, w = unknown.shape
-    if min(h, w) > 16:
-        # Coarse solve first (weighted 2x downsample), upsample as the starting guess.
-        H, W = h // 2 * 2, w // 2 * 2
-        wk = (domain & ~unknown)[:H, :W].astype(float)
-        cw = wk.reshape(H // 2, 2, W // 2, 2).sum((1, 3))
-        cv = (img[:H, :W] * wk[..., None]).reshape(H // 2, 2, W // 2, 2, 3).sum((1, 3))
-        cimg = cv / np.maximum(cw, 1e-6)[..., None]
-        cdom = domain[:H, :W].reshape(H // 2, 2, W // 2, 2).any((1, 3))
-        cunk = cdom & (cw == 0)
-        coarse = membrane(cimg, cunk, cdom, iters)
-        up = np.repeat(np.repeat(coarse, 2, 0), 2, 1)
-        guess = img.copy()
-        guess[:H, :W][unknown[:H, :W]] = up[unknown[:H, :W]]
-        img = guess
-    img = img.copy()
-    d = domain.astype(float)
-    for _ in range(iters):
-        acc = np.zeros_like(img)
-        wt = np.zeros(unknown.shape)
-        for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-            acc += np.roll(img * d[..., None], (dy, dx), (0, 1))
-            wt += np.roll(d, (dy, dx), (0, 1))
-        new = acc / np.maximum(wt, 1e-6)[..., None]
-        img[unknown] = new[unknown]
-    return img
-
-
-def erase(im, regions, seed=0):
-    rng = np.random.default_rng(seed)
-    a = np.asarray(im.convert('RGB')).astype(float)
-    H, W, _ = a.shape
-    for poly, edge in regions:
-        m = Image.new('L', (W, H), 0)
-        ImageDraw.Draw(m).polygon(poly, fill=255)
-        mask = np.asarray(m) > 0
-        ys, xs = np.nonzero(mask)
-        pad = 40
-        y0, y1, x0, x1 = max(ys.min() - pad, 0), min(ys.max() + pad, H), max(xs.min() - pad, 0), min(xs.max() + pad, W)
-        win, wm = a[y0:y1, x0:x1], mask[y0:y1, x0:x1]
-        lum = win.mean(2)
-        sides = [np.ones_like(wm)]
-        if edge in ('v', 'v!'):
-            # Silhouette: in each clean row, the strongest left-right luminance step. Fit x = a*y + b.
-            pts = []
-            g = np.abs(np.diff(lum, axis=1))
-            for r in range(win.shape[0]):
-                if wm[r].any():
-                    continue
-                c = int(np.argmax(g[r]))
-                if g[r, c] > 40:
-                    pts.append((r, c + 0.5))
-            if len(pts) >= 10:
-                pts = np.array(pts)
-                k, b = np.polyfit(pts[:, 0], pts[:, 1], 1)
-                resid = np.abs(pts[:, 1] - (k * pts[:, 0] + b))
-                if np.median(resid) < 3 or edge == 'v!':  # a real silhouette, not scattered print lines (v! = trust it)
-                    xx = np.arange(win.shape[1])[None, :]
-                    line = k * np.arange(win.shape[0])[:, None] + b
-                    sides = [xx < line, xx >= line]
-                else:
-                    print(f'  no clean edge near {poly[0]}, filling as one surface')
-        # Fill a band FEATHER px wider than the region and fade it out over that band, so print and
-        # texture run softly into the fill instead of stopping at a cut line.
-        grow = np.asarray(Image.fromarray((wm * 255).astype(np.uint8)).filter(ImageFilter.MaxFilter(2 * FEATHER + 1))) > 0
-        ramp = np.asarray(Image.fromarray((wm * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(FEATHER / 2))).astype(float) / 255
-        alpha = np.maximum(np.clip(ramp * 2, 0, 1), wm)[..., None]
-        blur = np.stack([np.asarray(Image.fromarray(win[..., c].astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.5))).astype(float) for c in range(3)], 2)
-        hp = (win - blur).mean(2)
-        out = win.copy()
-        for side in sides:
-            unk = grow & side
-            if not unk.any():
-                continue
-            # Boundary pixels that don't belong to this surface (a badge poking over the edge, a dark
-            # print line) would bleed into the fill: leave them out of the domain.
-            ref = np.median(lum[side & ~grow])
-            dom = side & ((np.abs(lum - ref) < OUTLIER) | unk)
-            filled = membrane(win, unk, dom)
-            # Grain: gaussian, strength matched to the clean pixels on this side (robust, ignores print lines).
-            std = 1.4826 * np.median(np.abs(hp[side & ~grow]))
-            out[unk] = filled[unk] + rng.normal(0, std, unk.sum())[:, None]
-        a[y0:y1, x0:x1] = out * alpha + win * (1 - alpha)
-    return Image.fromarray(a.clip(0, 255).astype(np.uint8))
-
-
 if __name__ == '__main__':
-    names = sys.argv[1:] or list(REGIONS)
+    from simple_lama_inpainting import SimpleLama
+
+    lama = SimpleLama()
+    names = sys.argv[1:] or [k for k in REGIONS if k not in SKIP]
     for rel in names:
+        assert rel not in SKIP, f'{rel} is cropped or unused, see SKIP'
         src = original(rel)
-        res = erase(src, REGIONS[rel])
+        keep = KEEP.get(rel, [])
+        res = erase(src, build_mask(src.size, REGIONS[rel] + keep), lama)
+        if keep:
+            res.paste(src.convert('RGB'), (0, 0), build_mask(src.size, keep).filter(ImageFilter.GaussianBlur(0.7)))
         path = ROOT / rel
-        kw = {'quality': 92, 'subsampling': 0} if path.suffix == '.jpg' else {}
-        for key in ('exif', 'icc_profile'):
-            if src.info.get(key):
-                kw[key] = src.info[key]
-        res.save(path, **kw)
-        print('erased', rel)
+        if path.suffix == '.png':
+            res.save(path, optimize=True)
+        else:  # same quantization tables as the original, so the file doesn't bloat
+            kw = {'qtables': src.quantization, 'subsampling': JpegImagePlugin.get_sampling(src)}
+            for key in ('exif', 'icc_profile'):
+                if src.info.get(key):
+                    kw[key] = src.info[key]
+            res.save(path, **kw)
+        print('erased', rel, flush=True)
