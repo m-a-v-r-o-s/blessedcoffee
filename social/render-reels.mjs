@@ -269,7 +269,7 @@ const REELS = [
     id: 'reel-bean-to-cup',
     photo: true,
     seconds: 12,
-    back: shots([['beans-macro', 0, 2], ['grinder-pour', 2, 4], ['espresso-splash', 4, 6], ['crema-double', 6, 8], ['milk-close', 8, 10], ['staff-cup', 10, 13]]),
+    back: shots([['beans-macro', 0, 2], ['grinder-fill', 2, 4], ['espresso-splash', 4, 6], ['crema-double', 6, 8], ['milk-close', 8, 10], ['staff-cup', 10, 13]]),
     front: lines('Ενα cappuccino', [['Πρώτα,<br><em>ο κόκκος.</em>', 0.3, 2], ['Μετά,<br><em>το άλεσμα.</em>', 2.1, 4], ['Ο <em>espresso.</em>', 4.1, 6],
       ['Η <em>κρέμα.</em>', 6.1, 8], ['Λίγο <em>γάλα.</em>', 8.1, 10], ['Και τέλος,<br><em>ο δικός σου.</em>', 10.1, 99]], ['Ρόδου 68 · από τις 06:00', 10.6]),
     frame: (s, $) => $.photos(s),

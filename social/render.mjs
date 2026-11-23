@@ -1106,7 +1106,7 @@ const POSTS = [
     },
   },
   { id: 'bean-carousel-2', bare: 'beans-pile', fixed: true },
-  { id: 'bean-carousel-3', bare: 'grinder-pour', fixed: true },
+  { id: 'bean-carousel-3', bare: 'grinder-fill', fixed: true },
   { id: 'bean-carousel-4', bare: 'crema-double-2', fixed: true },
   { id: 'bean-carousel-5', bare: 'milk-close', fixed: true },
   { id: 'bean-carousel-6', bare: 'staff-cup', fixed: true },
