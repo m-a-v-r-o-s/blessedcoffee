@@ -374,18 +374,18 @@ const REELS = [
       #feed .hd b { display: block; font-size: 43px; font-weight: 700; }
       #feed .hd div span { display: block; font-size: 36px; color: #A8A8A8; margin-top: 4px; }
       #feed .hd .more { margin-left: auto; font-size: 56px; letter-spacing: 2px; color: #F5F5F5; }
-      #feed .act { position: absolute; left: 30px; right: 30px; height: 60px; display: flex; gap: 26px; }
-      #feed .act i { display: flex; align-items: center; gap: 10px; font-style: normal; }
-      #feed .act b { font-size: 31px; font-weight: 500; }
+      #feed .act { position: absolute; left: 30px; right: 30px; height: 84px; display: flex; gap: 36px; }
+      #feed .act i { display: flex; align-items: center; gap: 14px; font-style: normal; }
+      #feed .act b { font-size: 43px; font-weight: 500; }
       #feed .act i:last-child { margin-left: auto; }
-      #feed .act svg { width: 60px; height: 60px; fill: none; stroke: #F5F5F5; stroke-width: 1.9; stroke-linejoin: round; stroke-linecap: round; }
+      #feed .act svg { width: 84px; height: 84px; fill: none; stroke: #F5F5F5; stroke-width: 1.9; stroke-linejoin: round; stroke-linecap: round; }
       #feed .cap { position: absolute; left: 30px; right: 30px; font-size: 28px; line-height: 1.35; }
       </style>
       <div id="feed">
         <div class="m" style="top:0;height:820px"><img src="/social/photos/shoot/espresso-steam.jpg" style="width:1334px;top:-40px"></div>
-        <div class="act" style="top:868px">${act([87, 3, 6])}</div>
-        <div class="cap" style="top:940px"><b>blessedcoffeekamatero</b> Καλημέρα από το Καματερό.</div>
-        <div class="hd" style="top:980px"><span class="ring"><span class="av" style="background:#fff"><img src="${logo}"></span></span>
+        <div class="act" style="top:846px">${act([87, 3, 6])}</div>
+        <div class="cap" style="top:932px"><b>blessedcoffeekamatero</b> Καλημέρα από το Καματερό.</div>
+        <div class="hd" style="top:972px"><span class="ring"><span class="av" style="background:#fff"><img src="${logo}"></span></span>
           <div><b>blessedcoffee2024</b><span>Ρόδου 68, Κάτω Πατήσια</span></div><span class="more">···</span></div>
         <div class="m" style="top:1116px;height:804px"><img src="/social/photos/shoot/espresso-logo-cup-wide.jpg" style="width:1317.1px;left:-198.6px;top:-468px"></div>
         <img src="/social/photos/shoot/espresso-steam-popout.png" style="position:absolute;left:0;top:800px;width:1334px">
