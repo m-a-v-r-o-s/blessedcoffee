@@ -366,14 +366,14 @@ const REELS = [
       #feed { position: absolute; inset: 0; background: #000; font-family: Roboto, sans-serif; color: #F5F5F5; }
       #feed .m { position: absolute; left: 0; width: ${W}px; overflow: hidden; }
       #feed .m img { position: absolute; left: 0; }
-      #feed .hd { position: absolute; left: 30px; right: 30px; height: 80px; display: flex; align-items: center; gap: 20px; }
+      #feed .hd { position: absolute; left: 30px; right: 30px; height: 136px; display: flex; align-items: center; gap: 30px; }
       #feed .av { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1.5px solid #363636; }
-      #feed .ring { padding: 4px; border-radius: 50%; display: flex; background: linear-gradient(45deg, #FEDA75, #FA7E1E 30%, #D62976 60%, #962FBF 85%, #4F5BD5); }
-      #feed .ring .av { width: 66px; height: 66px; border: 4px solid #000; } /* story ring: unseen story */
+      #feed .ring { padding: 6px; border-radius: 50%; display: flex; background: linear-gradient(45deg, #FEDA75, #FA7E1E 30%, #D62976 60%, #962FBF 85%, #4F5BD5); }
+      #feed .ring .av { width: 106px; height: 106px; border: 5px solid #000; } /* story ring: unseen story; sized to IG's own ad header */
       #feed .av img { width: 82%; transform: translate(-1.4%, 1.5%); } /* the logo sits 1.5% off centre in its file */
-      #feed .hd b { display: block; font-size: 29px; font-weight: 700; }
-      #feed .hd div span { display: block; font-size: 24px; color: #A8A8A8; margin-top: 3px; }
-      #feed .hd .more { margin-left: auto; font-size: 40px; letter-spacing: 2px; color: #F5F5F5; }
+      #feed .hd b { display: block; font-size: 43px; font-weight: 700; }
+      #feed .hd div span { display: block; font-size: 36px; color: #A8A8A8; margin-top: 4px; }
+      #feed .hd .more { margin-left: auto; font-size: 56px; letter-spacing: 2px; color: #F5F5F5; }
       #feed .act { position: absolute; left: 30px; right: 30px; height: 60px; display: flex; gap: 26px; }
       #feed .act i { display: flex; align-items: center; gap: 10px; font-style: normal; }
       #feed .act b { font-size: 31px; font-weight: 500; }
@@ -384,10 +384,10 @@ const REELS = [
       <div id="feed">
         <div class="m" style="top:0;height:820px"><img src="/social/photos/shoot/espresso-steam.jpg" style="width:1334px;top:-40px"></div>
         <div class="act" style="top:868px">${act([87, 3, 6])}</div>
-        <div class="cap" style="top:944px"><b>blessedcoffeekamatero</b> Καλημέρα από το Καματερό.</div>
-        <div class="hd" style="top:984px"><span class="ring"><span class="av" style="background:#fff"><img src="${logo}"></span></span>
+        <div class="cap" style="top:940px"><b>blessedcoffeekamatero</b> Καλημέρα από το Καματερό.</div>
+        <div class="hd" style="top:980px"><span class="ring"><span class="av" style="background:#fff"><img src="${logo}"></span></span>
           <div><b>blessedcoffee2024</b><span>Ρόδου 68, Κάτω Πατήσια</span></div><span class="more">···</span></div>
-        <div class="m" style="top:1066px;height:854px"><img src="/social/photos/shoot/espresso-logo-cup-wide.jpg" style="width:1317.1px;left:-198.6px;top:-418px"></div>
+        <div class="m" style="top:1116px;height:804px"><img src="/social/photos/shoot/espresso-logo-cup-wide.jpg" style="width:1317.1px;left:-198.6px;top:-468px"></div>
         <img src="/social/photos/shoot/espresso-steam-popout.png" style="position:absolute;left:0;top:800px;width:1334px">
       </div>`,
     front: `<svg id="pour" width="${W}" height="${H}" style="position:absolute;inset:0">
